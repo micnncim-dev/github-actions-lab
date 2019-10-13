@@ -1,6 +1,6 @@
 name: Dump GitHub Context
 
-on: [push]
+on: [issue_comment]
 jobs:
   build:
     name: Dump GitHub Context
