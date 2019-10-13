@@ -1,4 +1,4 @@
-- color: d73a4a
+- color: e89c5f
   description: Something isn't working
   name: bug
 - color: 0075ca
@@ -7,3 +7,6 @@
 - color: cfd3d7
   description: This issue or pull request already exists
   name: duplicate
+- color: e4e669
+  description: This doesn't seem right
+  name: invalid
