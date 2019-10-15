@@ -1,8 +1,10 @@
 name: Dump GitHub Context
 
 on:
-  issue_comment: [created]
-  pull_request_review_comment: [created]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
 jobs:
   build:
     name: Dump GitHub Context
