@@ -9,17 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1.0.0
-      - uses: micnncim/action-lgtm-reaction@v0.4.6
+      - uses: micnncim/action-lgtm-reaction@v0.5.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIPHY_API_KEY: ${{ secrets.GIPHY_API_KEY }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_ISSUE_NUMBER: ${{ github.event.issue.number }}
-          GITHUB_COMMENT_BODY: ${{ github.event.comment.body }}
-          GITHUB_COMMENT_ID: ${{ github.event.comment.id }}
-          GITHUB_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-          GITHUB_REVIEW_BODY: ${{ github.event.review.body }}
-          GITHUB_REVIEW_ID: ${{ github.event.review.id }}
+          GITHUB_REPOSITORY: ${{ github }}
         with:
           trigger: '["^LGTM .*$"]'
-          override: true
+          override: false
