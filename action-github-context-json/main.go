@@ -30,6 +30,8 @@ type GitHubContext struct {
 func main() {
 	githubContext := os.Getenv("GITHUB")
 
+	fmt.Println(githubContext)
+
 	var gc GitHubContext
 	if err := json.Unmarshal([]byte(githubContext), &gc); err != nil {
 		log.Fatal(err)
