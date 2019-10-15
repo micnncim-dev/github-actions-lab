@@ -11,4 +11,4 @@ jobs:
       - uses: actions/checkout@1.0.0
       - uses: ./action-github-context-json
         env:
-          GITHUB: ${{ github }}
+          GITHUB_EVENT: ${{ github.event }}

@@ -28,8 +28,10 @@ type GitHubContext struct {
 }
 
 func main() {
-	githubContext := os.Getenv("GITHUB")
+	eventContext := os.Getenv("GITHUB_EVENT")
+	fmt.Println(eventContext)
 
+	githubContext := os.Getenv("GITHUB")
 	fmt.Println(githubContext)
 
 	var gc GitHubContext
