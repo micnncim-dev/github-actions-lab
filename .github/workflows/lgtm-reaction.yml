@@ -13,7 +13,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIPHY_API_KEY: ${{ secrets.GIPHY_API_KEY }}
-          GITHUB_REPOSITORY: ${{ github }}
+          GITHUB: ${{ github }}
         with:
           trigger: '["^LGTM .*$"]'
           override: false
