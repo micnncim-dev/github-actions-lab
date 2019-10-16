@@ -20,3 +20,5 @@ jobs:
           GITHUB_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_REVIEW_BODY: ${{ github.event.review.body }}
           GITHUB_REVIEW_ID: ${{ github.event.review.id }}
+        with:
+          override: false
