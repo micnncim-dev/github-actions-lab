@@ -8,4 +8,6 @@ jobs:
     steps:
       - run: sudo apt-get install jq
       - run: echo $GITHUB_EVENT_PATH
-      - run: cat "$GITHUB_EVENT_PATH" | jq
+      - run: cat "$GITHUB_EVENT_PATH"
+      - run: cat "${GITHUB_EVENT_PATH}"
+      - run: cat ${GITHUB_EVENT_PATH}
