@@ -1,6 +1,6 @@
 name: Dump GitHub Event Path Content
 
-on: push
+on: [push, issue_comment]
 jobs:
   build:
     name: Dump GitHub Event Path Content
@@ -8,6 +8,4 @@ jobs:
     steps:
       - run: sudo apt-get install jq
       - run: echo $GITHUB_EVENT_PATH
-      - run: cat "$GITHUB_EVENT_PATH"
-      - run: cat "${GITHUB_EVENT_PATH}"
       - run: cat ${GITHUB_EVENT_PATH}
