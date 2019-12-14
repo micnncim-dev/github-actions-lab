@@ -1,0 +1,10 @@
+name: Dump GitHub Event Path Content
+
+on: push
+jobs:
+  build:
+    name: Dump GitHub Event Path Content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub Event Path Content
+        run: echo $GITHUB_EVENT_PATH
