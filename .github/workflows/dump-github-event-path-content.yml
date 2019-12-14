@@ -6,5 +6,6 @@ jobs:
     name: Dump GitHub Event Path Content
     runs-on: ubuntu-latest
     steps:
+      - run: apt install jq
       - name: Dump GitHub Event Path Content
-        run: echo $GITHUB_EVENT_PATH
+        run: cat $GITHUB_EVENT_PATH | jq
