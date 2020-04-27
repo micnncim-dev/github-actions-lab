@@ -14,5 +14,5 @@ if echo "${body}" | grep -Eq "${trigger}"; then
         -H "Authorization: token ${token}" \
         -H "Content-Type: application/json" \
         "https://api.github.com/repos/${repository}/issues/${number}/comments" \
-        -d "$(printf '{ "body": "Welcome, @%s!" }' "${actor}")"
+        -d "$(printf '{ "body": "Hello, @%s!" }' "${actor}")"
 fi

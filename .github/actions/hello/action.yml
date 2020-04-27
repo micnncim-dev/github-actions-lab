@@ -1,5 +1,5 @@
-name: Welcome
-description: Say welcome
+name: Hello
+description: Say hello
 author: micnncim
 inputs:
   github_token:
@@ -23,7 +23,7 @@ inputs:
     required: false
     default: ${{ github.actor }}
   trigger:
-    description: A regexp to trigger welcome action for the comment
+    description: A regexp to trigger hello action for the comment
     required: false
     default: "^/Hello$"
 runs:

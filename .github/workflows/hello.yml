@@ -1,4 +1,4 @@
-name: Welcome
+name: Hello
 
 on:
   issue_comment:
@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/welcome
+      - uses: ./.github/actions/hello
