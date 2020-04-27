@@ -1,0 +1,30 @@
+name: Welcome
+description: Say welcome
+author: micnncim
+inputs:
+  repository:
+    description: A repository
+    required: false
+    default: ${{ github.repository }}
+  number:
+    description: An issue number
+    required: false
+    default: ${{ github.event.issue.number }}
+  body:
+    description: A comment body
+    required: false
+    default: ${{ github.event.comment.body }}
+  actor:
+    description: An event actor
+    required: false
+    default: ${{ github.actor }}
+  trigger:
+    description: A regexp to trigger welcome action for the comment
+    required: false
+    default: "^/Hello$"
+runs:
+  using: docker
+  image: Dockerfile
+branding:
+  icon: circle
+  color: blue
