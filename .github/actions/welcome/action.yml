@@ -2,6 +2,10 @@ name: Welcome
 description: Say welcome
 author: micnncim
 inputs:
+  github_token:
+    description: A GitHub token to create an issue comment
+    required: false
+    default: ${{ github.token }}
   repository:
     description: A repository
     required: false
