@@ -1,9 +1,0 @@
-name: 'GitHub Context JSON'
-description: 'Print GitHub Context as JSON'
-author: 'micnncim'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
-branding:
-  icon: 'circle'
-  color: 'green'
