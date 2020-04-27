@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 
@@ -9,7 +9,7 @@ body=${INPUT_BODY}
 actor=${INPUT_ACTOR}
 trigger=${INPUT_TRIGGER}
 
-if [[ ${body} =~ ${trigger} ]]; then
+if echo "${body}" | grep -Eq "${trigger}"; then
     curl -X POST \
         -H "Authorization: token ${token}" \
         -H "Content-Type: application/json" \
