@@ -1,9 +1,0 @@
-- color: d73a4a
-  description: Something isn't working
-  name: bug
-- color: 0075ca
-  description: Improvements or additions to documentation
-  name: documentation
-- color: ff0000
-  description: Need help
-  name: help wanted!
