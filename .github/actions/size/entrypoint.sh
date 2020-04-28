@@ -55,7 +55,7 @@ number=$(echo "${event}" | jq -r '.pull_request.number')
 current_size_label=$(echo "${event}" | jq -r ".pull_request.labels[].name | select((. == \"$size_xs_label\") or (. == \"$size_s_label\") or (. == \"$size_m_label\") or (. == \"$size_l_label\") or (. == \"$size_xl_label\") or (. == \"$size_xxl_label\"))")
 if [ -n "${current_size_label}" ] && [ "${label}" != "${current_size_label}" ]; then
     echo "[DEBUG] DELETE /repos/${repository}/issues/${number}/labels/${current_size_label}"
-    curl -X DELETE \
+    curl -s -X DELETE \
         -H "Authorization: token ${token}" \
         -H "Content-Type: application/json" \
         "https://api.github.com/repos/${repository}/issues/${number}/labels/${current_size_label}"
@@ -64,7 +64,7 @@ fi
 # Add a new size label.
 if [ "${label}" != "${current_size_label}" ]; then
     echo "[DEBUG] POST repos/${repository}/issues/${number}/labels payload=$(printf '{"labels": [%s]}' "${label}")"
-    curl -X POST \
+    curl -s -X POST \
         -H "Authorization: token ${token}" \
         -H "Content-Type: application/json" \
         "https://api.github.com/repos/${repository}/issues/${number}/labels" \
