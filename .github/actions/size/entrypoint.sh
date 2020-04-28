@@ -25,8 +25,8 @@ if echo "${event}" | jq -r '.action' | grep -Eqv 'synchronize'; then
     exit 0
 fi
 
-additions=$(echo "${event}" | jq '.pull_request.additions')
-deletions=$(echo "${event}" | jq '.pull_request.deletions')
+additions=$(jq '.pull_request.additions' "${event}")
+deletions=$(jq '.pull_request.deletions' "${event}")
 changes=$((additions + deletions))
 
 # Determine what label will be added according to the number of changes.
@@ -46,13 +46,13 @@ else
 fi
 
 echo "[DEBUG] label=${label}"
-echo "[DEBUG] current_label=$(echo "${event}" | jq -r ".pull_request.labels[].name")"
+echo "[DEBUG] current_label=$(jq -r ".pull_request.labels[].name" "${event}")"
 
 repository=$(echo "${event}" | jq -r '.pull_request.repo.full_name')
 number=$(echo "${event}" | jq -r '.pull_request.number')
 
 # Remove the current size label if the desired label is different from it.
-current_size_label=$(echo "${event}" | jq -r ".pull_request.labels[].name | select((. == ${size_xs_label}) or (. == ${size_s_label}) or (. == ${size_m_label}) or (. == ${size_l_label}) or (. == ${size_xl_label}) or (. == ${size_xxl_label}))")
+current_size_label=$(jq -r ".pull_request.labels[].name | select((. == \"$size_xs_label\") or (. == \"$size_s_label\") or (. == \"$size_m_label\") or (. == \"$size_l_label\") or (. == \"$size_xl_label\") or (. == \"$size_xxl_label\"))" "${event}")
 if [ -n "${current_size_label}" ] && [ "${label}" != "${current_size_label}" ]; then
     curl -X DELETE \
         -H "Authorization: token ${token}" \
