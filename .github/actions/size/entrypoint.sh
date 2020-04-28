@@ -57,7 +57,6 @@ if [ -n "${current_size_label}" ] && [ "${label}" != "${current_size_label}" ]; 
     echo "[DEBUG] DELETE /repos/${repository}/issues/${number}/labels/${current_size_label}"
     curl -s -X DELETE \
         -H "Authorization: token ${token}" \
-        -H "Content-Type: application/json" \
         "https://api.github.com/repos/${repository}/issues/${number}/labels/${current_size_label}"
 fi
 
