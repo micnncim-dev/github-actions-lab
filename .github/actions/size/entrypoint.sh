@@ -48,7 +48,7 @@ fi
 echo "[DEBUG] label=${label}"
 echo "[DEBUG] current_label=$(echo "${event}" | jq -r ".pull_request.labels[].name")"
 
-repository=$(echo "${event}" | jq -r '.pull_request.repo.full_name')
+repository=$(echo "${event}" | jq -r '.repository.full_name')
 number=$(echo "${event}" | jq -r '.pull_request.number')
 
 # Remove the current size label if the desired label is different from it.
