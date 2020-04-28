@@ -11,7 +11,7 @@ inputs:
   github_event:
     description: A GitHub event to trigger this action
     required: false
-    default: ${{ github.event }}
+    default: ${{ toJson(github.event) }}
   size_xs_label:
     description: The name for size XS label
     required: false
