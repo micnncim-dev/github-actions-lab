@@ -45,6 +45,9 @@ else
     label=${size_xxl_label}
 fi
 
+echo "[DEBUG] label=${label}"
+echo "[DEBUG] current_label=$(echo "${event}" | jq -r ".pull_request.labels[].name")"
+
 repository=$(echo "${event}" | jq -r '.pull_request.repo.full_name')
 number=$(echo "${event}" | jq -r '.pull_request.number')
 
