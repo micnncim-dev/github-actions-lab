@@ -67,5 +67,5 @@ if [ "${label}" != "${current_size_label}" ]; then
         -H "Authorization: token ${token}" \
         -H "Content-Type: application/json" \
         "https://api.github.com/repos/${repository}/issues/${number}/labels" \
-        -d "$(printf '{"labels": [%s]}' "${label}")"
+        -d "$(printf '{"labels": ["%s"]}' "${label}")"
 fi
