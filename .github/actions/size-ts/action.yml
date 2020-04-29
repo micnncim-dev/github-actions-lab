@@ -4,7 +4,7 @@ description: |
   and finally labels the pull request with this size.
 author: Action Ecosystem Authors
 inputs:
-  repo-token:
+  github_token:
     description: A GitHub token.
     required: true
   size_xs_label:

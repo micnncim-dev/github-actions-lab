@@ -3532,7 +3532,7 @@ function run() {
 }
 function getAndValidateArgs() {
     const args = {
-        githubToken: core.getInput('repo-token', { required: true }),
+        githubToken: core.getInput('github_token', { required: true }),
         sizeXSLabel: core.getInput('size_xs_label'),
         sizeSLabel: core.getInput('size_s_label'),
         sizeMLabel: core.getInput('size_m_label'),
@@ -5055,7 +5055,7 @@ class Processor {
         this.options = options;
         this.client = new github.GitHub(options.githubToken);
         if (this.options.dryRun) {
-            core.warning('Running in dry-run mode. Debug output will be written but nothing will be processed.');
+            core.debug('Running in dry-run mode. Debug output will be written but nothing will be processed.');
         }
     }
     process() {
