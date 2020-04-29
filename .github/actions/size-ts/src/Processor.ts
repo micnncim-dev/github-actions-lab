@@ -43,18 +43,18 @@ export class Processor {
     }
   }
 
-  async process(): Promise<void> {
+  process() {
     if (!Processor.shouldHandle) {
       return;
     }
 
     const changes = Processor.getChangedLines();
-    const desiredLabel = await this.determineLabel(changes);
-    const currentLabels = await this.getCurrentSizeLabels();
-    return this.updateSizeLabel(desiredLabel, currentLabels);
+    const desiredLabel = this.determineLabel(changes);
+    const currentLabels = this.getCurrentSizeLabels();
+    this.updateSizeLabel(desiredLabel, currentLabels);
   }
 
-  private async getCurrentSizeLabels(): Promise<string[]> {
+  private getCurrentSizeLabels(): string[] {
     const payload = github.context
       .payload as Webhooks.WebhookPayloadPullRequest;
 
@@ -72,7 +72,7 @@ export class Processor {
       .map(label => label.name);
   }
 
-  private async determineLabel(changes: number): Promise<string> {
+  private determineLabel(changes: number): string {
     if (changes < this.options.sizeSThreshold) {
       return this.options.sizeXSLabel;
     } else if (changes < this.options.sizeMThreshold) {
@@ -88,10 +88,7 @@ export class Processor {
     }
   }
 
-  private async updateSizeLabel(
-    desiredLabel: string,
-    currentLabels: string[]
-  ): Promise<void> {
+  private updateSizeLabel(desiredLabel: string, currentLabels: string[]) {
     const payload = github.context
       .payload as Webhooks.WebhookPayloadPullRequest;
 

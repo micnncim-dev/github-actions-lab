@@ -6,7 +6,7 @@ async function run(): Promise<void> {
     const args = getAndValidateArgs();
 
     const processor: Processor = new Processor(args);
-    await processor.process();
+    processor.process();
   } catch (error) {
     core.error(error);
     core.setFailed(error.message);
