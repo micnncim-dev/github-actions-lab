@@ -43,7 +43,16 @@ export class Processor {
     }
   }
 
-  async process() {}
+  async process(): Promise<void> {
+    if (!Processor.shouldHandle) {
+      return;
+    }
+
+    const changes = Processor.getChangedLines();
+    const desiredLabel = await this.determineLabel(changes);
+    const currentLabels = await this.getCurrentSizeLabels();
+    await this.updateSizeLabel(desiredLabel, currentLabels);
+  }
 
   private async getCurrentSizeLabels(): Promise<string[]> {
     const payload = github.context
@@ -91,21 +100,19 @@ export class Processor {
     const number = payload.pull_request.number;
 
     // TODO(micnncim): Make processes asynchronous.
-    currentLabels
-      .filter(currentLabel => currentLabel !== desiredLabel)
-      .forEach(currentLabel => {
-        if (!this.options.dryRun) {
-          this.client.issues.removeLabel({
-            owner: owner,
-            repo: repo,
-            issue_number: number,
-            name: currentLabel
-          });
-        }
-        core.debug(
-          `removed label ${currentLabel} in ${owner}/${repo}#${number}`
-        );
-      });
+    for (const currentLabel of currentLabels.filter(
+      label => label !== desiredLabel
+    )) {
+      if (!this.options.dryRun) {
+        this.client.issues.removeLabel({
+          owner,
+          repo,
+          issue_number: number,
+          name: currentLabel
+        });
+      }
+      core.debug(`removed label ${currentLabel} in ${owner}/${repo}#${number}`);
+    }
 
     if (!this.options.dryRun) {
       this.client.issues.addLabels({
@@ -119,7 +126,7 @@ export class Processor {
   }
 
   private static shouldHandle(): boolean {
-    return github.context.action == 'synchronize';
+    return github.context.action === 'synchronize';
   }
 
   private static getChangedLines(): number {

@@ -8704,7 +8704,15 @@ class Processor {
         }
     }
     process() {
-        return __awaiter(this, void 0, void 0, function* () { });
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Processor.shouldHandle) {
+                return;
+            }
+            const changes = Processor.getChangedLines();
+            const desiredLabel = yield this.determineLabel(changes);
+            const currentLabels = yield this.getCurrentSizeLabels();
+            yield this.updateSizeLabel(desiredLabel, currentLabels);
+        });
     }
     getCurrentSizeLabels() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -8752,19 +8760,17 @@ class Processor {
             const repo = github.context.repo.repo;
             const number = payload.pull_request.number;
             // TODO(micnncim): Make processes asynchronous.
-            currentLabels
-                .filter(currentLabel => currentLabel !== desiredLabel)
-                .forEach(currentLabel => {
+            for (const currentLabel of currentLabels.filter(label => label !== desiredLabel)) {
                 if (!this.options.dryRun) {
                     this.client.issues.removeLabel({
-                        owner: owner,
-                        repo: repo,
+                        owner,
+                        repo,
                         issue_number: number,
                         name: currentLabel
                     });
                 }
                 core.debug(`removed label ${currentLabel} in ${owner}/${repo}#${number}`);
-            });
+            }
             if (!this.options.dryRun) {
                 this.client.issues.addLabels({
                     owner: github.context.repo.owner,
@@ -8777,7 +8783,7 @@ class Processor {
         });
     }
     static shouldHandle() {
-        return github.context.action == 'synchronize';
+        return github.context.action === 'synchronize';
     }
     static getChangedLines() {
         const payload = github.context
