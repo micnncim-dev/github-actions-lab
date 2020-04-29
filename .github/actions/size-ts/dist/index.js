@@ -3527,7 +3527,6 @@ function run() {
         }
         catch (error) {
             core.error(error);
-            core.setFailed(error.message);
         }
     });
 }
