@@ -37,7 +37,7 @@ export class Processor {
     this.client = new github.GitHub(options.githubToken);
 
     if (this.options.dryRun) {
-      core.warning(
+      core.debug(
         'Running in dry-run mode. Debug output will be written but nothing will be processed.'
       );
     }
