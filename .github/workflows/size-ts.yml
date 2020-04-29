@@ -10,3 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/size-ts
+        with:
+            dry_run: true
