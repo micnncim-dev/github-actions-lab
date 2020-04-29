@@ -51,7 +51,7 @@ export class Processor {
     const changes = Processor.getChangedLines();
     const desiredLabel = await this.determineLabel(changes);
     const currentLabels = await this.getCurrentSizeLabels();
-    await this.updateSizeLabel(desiredLabel, currentLabels);
+    return this.updateSizeLabel(desiredLabel, currentLabels);
   }
 
   private async getCurrentSizeLabels(): Promise<string[]> {

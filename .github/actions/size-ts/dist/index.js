@@ -3517,12 +3517,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
-const IssueProcessor_1 = __webpack_require__(656);
+const Processor_1 = __webpack_require__(393);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const args = getAndValidateArgs();
-            const processor = new IssueProcessor_1.Processor(args);
+            const processor = new Processor_1.Processor(args);
             yield processor.process();
         }
         catch (error) {
@@ -4966,6 +4966,134 @@ function readShebang(command) {
 }
 
 module.exports = readShebang;
+
+
+/***/ }),
+
+/***/ 393:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core = __importStar(__webpack_require__(470));
+const github = __importStar(__webpack_require__(469));
+/***
+ * Processor handles processing.
+ */
+class Processor {
+    constructor(options) {
+        this.options = options;
+        this.client = new github.GitHub(options.githubToken);
+        if (this.options.dryRun) {
+            core.warning('Running in dry-run mode. Debug output will be written but nothing will be processed.');
+        }
+    }
+    process() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Processor.shouldHandle) {
+                return;
+            }
+            const changes = Processor.getChangedLines();
+            const desiredLabel = yield this.determineLabel(changes);
+            const currentLabels = yield this.getCurrentSizeLabels();
+            return this.updateSizeLabel(desiredLabel, currentLabels);
+        });
+    }
+    getCurrentSizeLabels() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const payload = github.context
+                .payload;
+            return payload.pull_request.labels
+                .filter(label => [
+                this.options.sizeXSLabel,
+                this.options.sizeSLabel,
+                this.options.sizeMLabel,
+                this.options.sizeLLabel,
+                this.options.sizeXLLabel,
+                this.options.sizeXXLLabel
+            ].includes(label.name))
+                .map(label => label.name);
+        });
+    }
+    determineLabel(changes) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (changes < this.options.sizeSThreshold) {
+                return this.options.sizeXSLabel;
+            }
+            else if (changes < this.options.sizeMThreshold) {
+                return this.options.sizeSLabel;
+            }
+            else if (changes < this.options.sizeLThreshold) {
+                return this.options.sizeMLabel;
+            }
+            else if (changes < this.options.sizeXLThreshold) {
+                return this.options.sizeLLabel;
+            }
+            else if (changes < this.options.sizeXXLThreshold) {
+                return this.options.sizeXLLabel;
+            }
+            else {
+                return this.options.sizeXXLLabel;
+            }
+        });
+    }
+    updateSizeLabel(desiredLabel, currentLabels) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const payload = github.context
+                .payload;
+            const owner = github.context.repo.owner;
+            const repo = github.context.repo.repo;
+            const number = payload.pull_request.number;
+            // TODO(micnncim): Make processes asynchronous.
+            for (const currentLabel of currentLabels.filter(label => label !== desiredLabel)) {
+                if (!this.options.dryRun) {
+                    this.client.issues.removeLabel({
+                        owner,
+                        repo,
+                        issue_number: number,
+                        name: currentLabel
+                    });
+                }
+                core.debug(`removed label ${currentLabel} in ${owner}/${repo}#${number}`);
+            }
+            if (!this.options.dryRun) {
+                this.client.issues.addLabels({
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    issue_number: number,
+                    labels: [desiredLabel]
+                });
+            }
+            core.debug(`added label ${desiredLabel} in ${owner}/${repo}#${number}`);
+        });
+    }
+    static shouldHandle() {
+        return github.context.action === 'synchronize';
+    }
+    static getChangedLines() {
+        const payload = github.context
+            .payload;
+        return payload.pull_request.additions + payload.pull_request.deletions;
+    }
+}
+exports.Processor = Processor;
 
 
 /***/ }),
@@ -8664,134 +8792,6 @@ if (process.platform === 'linux') {
     'SIGUNUSED'
   )
 }
-
-
-/***/ }),
-
-/***/ 656:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(470));
-const github = __importStar(__webpack_require__(469));
-/***
- * Processor handles processing.
- */
-class Processor {
-    constructor(options) {
-        this.options = options;
-        this.client = new github.GitHub(options.githubToken);
-        if (this.options.dryRun) {
-            core.warning('Running in dry-run mode. Debug output will be written but nothing will be processed.');
-        }
-    }
-    process() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!Processor.shouldHandle) {
-                return;
-            }
-            const changes = Processor.getChangedLines();
-            const desiredLabel = yield this.determineLabel(changes);
-            const currentLabels = yield this.getCurrentSizeLabels();
-            yield this.updateSizeLabel(desiredLabel, currentLabels);
-        });
-    }
-    getCurrentSizeLabels() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const payload = github.context
-                .payload;
-            return payload.pull_request.labels
-                .filter(label => [
-                this.options.sizeXSLabel,
-                this.options.sizeSLabel,
-                this.options.sizeMLabel,
-                this.options.sizeLLabel,
-                this.options.sizeXLLabel,
-                this.options.sizeXXLLabel
-            ].includes(label.name))
-                .map(label => label.name);
-        });
-    }
-    determineLabel(changes) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (changes < this.options.sizeSThreshold) {
-                return this.options.sizeXSLabel;
-            }
-            else if (changes < this.options.sizeMThreshold) {
-                return this.options.sizeSLabel;
-            }
-            else if (changes < this.options.sizeLThreshold) {
-                return this.options.sizeMLabel;
-            }
-            else if (changes < this.options.sizeXLThreshold) {
-                return this.options.sizeLLabel;
-            }
-            else if (changes < this.options.sizeXXLThreshold) {
-                return this.options.sizeXLLabel;
-            }
-            else {
-                return this.options.sizeXXLLabel;
-            }
-        });
-    }
-    updateSizeLabel(desiredLabel, currentLabels) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const payload = github.context
-                .payload;
-            const owner = github.context.repo.owner;
-            const repo = github.context.repo.repo;
-            const number = payload.pull_request.number;
-            // TODO(micnncim): Make processes asynchronous.
-            for (const currentLabel of currentLabels.filter(label => label !== desiredLabel)) {
-                if (!this.options.dryRun) {
-                    this.client.issues.removeLabel({
-                        owner,
-                        repo,
-                        issue_number: number,
-                        name: currentLabel
-                    });
-                }
-                core.debug(`removed label ${currentLabel} in ${owner}/${repo}#${number}`);
-            }
-            if (!this.options.dryRun) {
-                this.client.issues.addLabels({
-                    owner: github.context.repo.owner,
-                    repo: github.context.repo.repo,
-                    issue_number: number,
-                    labels: [desiredLabel]
-                });
-            }
-            core.debug(`added label ${desiredLabel} in ${owner}/${repo}#${number}`);
-        });
-    }
-    static shouldHandle() {
-        return github.context.action === 'synchronize';
-    }
-    static getChangedLines() {
-        const payload = github.context
-            .payload;
-        return payload.pull_request.additions + payload.pull_request.deletions;
-    }
-}
-exports.Processor = Processor;
 
 
 /***/ }),
