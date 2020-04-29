@@ -55,10 +55,6 @@ export class Processor {
     const payload = github.context
       .payload as Webhooks.WebhookPayloadPullRequest;
 
-    core.debug(
-      `[DEBUG] rawCurrentLabels=${payload.pull_request.labels.map(l => l.name)}`
-    );
-
     return payload.pull_request.labels
       .filter(label =>
         [

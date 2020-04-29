@@ -22,7 +22,7 @@ function getAndValidateArgs(): ProcessorOptions {
     sizeMLabel: core.getInput('size_m_label'),
     sizeLLabel: core.getInput('size_l_label'),
     sizeXLLabel: core.getInput('size_xl_label'),
-    sizeXXLLabel: core.getInput('size_xl_label'),
+    sizeXXLLabel: core.getInput('size_xll_label'),
 
     sizeSThreshold: parseInt(core.getInput('size_s_threshold')),
     sizeMThreshold: parseInt(core.getInput('size_m_threshold')),

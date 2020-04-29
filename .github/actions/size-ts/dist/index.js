@@ -3539,7 +3539,7 @@ function getAndValidateArgs() {
         sizeMLabel: core.getInput('size_m_label'),
         sizeLLabel: core.getInput('size_l_label'),
         sizeXLLabel: core.getInput('size_xl_label'),
-        sizeXXLLabel: core.getInput('size_xl_label'),
+        sizeXXLLabel: core.getInput('size_xll_label'),
         sizeSThreshold: parseInt(core.getInput('size_s_threshold')),
         sizeMThreshold: parseInt(core.getInput('size_m_threshold')),
         sizeLThreshold: parseInt(core.getInput('size_l_threshold')),
@@ -5069,7 +5069,6 @@ class Processor {
     getCurrentSizeLabels() {
         const payload = github.context
             .payload;
-        core.debug(`[DEBUG] rawCurrentLabels=${payload.pull_request.labels.map(l => l.name)}`);
         return payload.pull_request.labels
             .filter(label => [
             this.options.sizeXSLabel,
