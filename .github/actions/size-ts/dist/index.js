@@ -5128,8 +5128,8 @@ class Processor {
                 issue_number: number,
                 labels: [desiredLabel]
             });
+            core.debug(`added label ${desiredLabel} in ${owner}/${repo}#${number}`);
         }
-        core.debug(`added label ${desiredLabel} in ${owner}/${repo}#${number}`);
     }
     static shouldHandle() {
         return github.context.action === 'synchronize';
