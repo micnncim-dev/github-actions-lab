@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import {Processor, ProcessorOptions} from './IssueProcessor';
+import {Processor, ProcessorOptions} from './Processor';
 
 async function run(): Promise<void> {
   try {
