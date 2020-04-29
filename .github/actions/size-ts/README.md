@@ -48,6 +48,23 @@ Must be a maximal number, rather than a range.
 | `size_xl_threshold`  | `500`   |
 | `size_xxl_threshold` | `1000`  |
 
+## Example
+
+```yaml
+name: Size
+
+on:
+  pull_request:
+    types: [synchronize]
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-size@v1
+```
+
 ## License
 
 Copyright 2020 Action Ecosystem Authors.
