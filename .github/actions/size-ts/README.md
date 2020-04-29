@@ -55,7 +55,7 @@ name: Size
 
 on:
   pull_request:
-    types: [synchronize]
+    types: [opened, synchronize]
 
 jobs:
   size:
@@ -63,6 +63,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions-ecosystem/action-size@v1
+        with:
+          github_token: ${{ secrets.github_token }}
 ```
 
 ## License
