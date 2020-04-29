@@ -5060,9 +5060,6 @@ class Processor {
         }
     }
     process() {
-        if (!Processor.shouldHandle) {
-            return;
-        }
         const changes = Processor.getChangedLines();
         const desiredLabel = this.determineLabel(changes);
         const currentLabels = this.getCurrentSizeLabels();
@@ -5072,6 +5069,7 @@ class Processor {
     getCurrentSizeLabels() {
         const payload = github.context
             .payload;
+        core.debug(`[DEBUG] rawCurrentLabels=${payload.pull_request.labels.map(l => l.name)}`);
         return payload.pull_request.labels
             .filter(label => [
             this.options.sizeXSLabel,
@@ -5130,9 +5128,6 @@ class Processor {
             });
             core.debug(`added label ${desiredLabel} in ${owner}/${repo}#${number}`);
         }
-    }
-    static shouldHandle() {
-        return github.context.action === 'synchronize';
     }
     static getChangedLines() {
         const payload = github.context

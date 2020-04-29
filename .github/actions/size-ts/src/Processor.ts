@@ -44,10 +44,6 @@ export class Processor {
   }
 
   process() {
-    if (!Processor.shouldHandle) {
-      return;
-    }
-
     const changes = Processor.getChangedLines();
     const desiredLabel = this.determineLabel(changes);
     const currentLabels = this.getCurrentSizeLabels();
@@ -58,6 +54,10 @@ export class Processor {
   private getCurrentSizeLabels(): string[] {
     const payload = github.context
       .payload as Webhooks.WebhookPayloadPullRequest;
+
+    core.debug(
+      `[DEBUG] rawCurrentLabels=${payload.pull_request.labels.map(l => l.name)}`
+    );
 
     return payload.pull_request.labels
       .filter(label =>
@@ -121,10 +121,6 @@ export class Processor {
       });
       core.debug(`added label ${desiredLabel} in ${owner}/${repo}#${number}`);
     }
-  }
-
-  private static shouldHandle(): boolean {
-    return github.context.action === 'synchronize';
   }
 
   private static getChangedLines(): number {
