@@ -9,7 +9,7 @@ This action is inspired by [Kubernetes Prow's size plugin](https://prow.k8s.io/p
 
 ## Inputs
 
-`github_token`: **Required**. Must be in form of github_token: ${{ secrets.github_token }}.
+`github_token`: **Required**. Must be in form of `github_token: ${{ secrets.github_token }}`.
 
 The inputs for labels are optional. The default values are below.
 
