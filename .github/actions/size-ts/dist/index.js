@@ -3527,6 +3527,7 @@ function run() {
         }
         catch (error) {
             core.error(error);
+            core.setFailed(error);
         }
     });
 }
@@ -5065,6 +5066,7 @@ class Processor {
         const changes = Processor.getChangedLines();
         const desiredLabel = this.determineLabel(changes);
         const currentLabels = this.getCurrentSizeLabels();
+        core.debug(`desiredLabel=${desiredLabel}, currentLabels=${currentLabels}`);
         this.updateSizeLabel(desiredLabel, currentLabels);
     }
     getCurrentSizeLabels() {
@@ -5119,7 +5121,7 @@ class Processor {
             }
             core.debug(`removed label ${currentLabel} in ${owner}/${repo}#${number}`);
         }
-        if (!this.options.dryRun) {
+        if (!this.options.dryRun && !currentLabels.includes(desiredLabel)) {
             this.client.issues.addLabels({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,

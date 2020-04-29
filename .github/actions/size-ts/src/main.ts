@@ -9,6 +9,7 @@ async function run(): Promise<void> {
     processor.process();
   } catch (error) {
     core.error(error);
+    core.setFailed(error);
   }
 }
 
