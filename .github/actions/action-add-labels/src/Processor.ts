@@ -32,6 +32,8 @@ export class Processor {
   }
 
   process() {
+    core.debug(`owner=${this.options.owner}, repo=${this.options.repo}, number=${this.options.number}, labels=${this.options.labels}`)
+
     this.client.issues.addLabels({
       owner: this.options.owner,
       repo: this.options.repo,
