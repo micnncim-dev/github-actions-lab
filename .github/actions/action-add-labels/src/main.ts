@@ -17,7 +17,7 @@ function getAndValidateArgs(): ProcessorOptions {
   const args: ProcessorOptions = {
     githubToken: core.getInput('github_token', {required: true}),
 
-    labels: JSON.parse(core.getInput('labels')),
+    labels: JSON.parse(core.getInput('labels')) as string[],
 
     owner: core.getInput('owner'),
     repo: core.getInput('repo'),
