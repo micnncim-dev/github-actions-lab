@@ -15,7 +15,7 @@ inputs:
   repo:
     description: The repository name.
     required: false
-    default: ${{ github.repository.name }}
+    default: ${{ github.event.repository.name }}
   dry_run:
     description: Run the action in dry-run mode. If true, the action doesn't affect actual labels at all.
     required: false
