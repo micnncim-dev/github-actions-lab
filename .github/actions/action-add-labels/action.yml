@@ -11,11 +11,11 @@ inputs:
   owner:
     description: The repository owner name.
     required: false
-    default: ${{ github.repository_owner }}
+    default: ${{ github.event.repository.owner.login }}
   repo:
     description: The repository name.
     required: false
-    default: ${{ github.repository }}
+    default: ${{ github.repository.name }}
   dry_run:
     description: Run the action in dry-run mode. If true, the action doesn't affect actual labels at all.
     required: false
