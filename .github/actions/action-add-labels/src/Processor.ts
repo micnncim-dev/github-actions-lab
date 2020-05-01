@@ -38,7 +38,7 @@ export class Processor {
     this.client.issues.addLabels({
       owner: this.options.owner,
       repo: this.options.repo,
-      number: this.options.number,
+      issue_number: this.options.number,
       labels: this.options.labels
     });
   }
