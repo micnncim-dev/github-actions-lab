@@ -33,12 +33,12 @@ export class Processor {
   }
 
   process() {
-    const number = github.context.payload.number;
+    core.debug(`typeof github.context.payload ${typeof github.context.payload}`);
 
     this.client.issues.addLabels({
       owner: this.options.owner,
       repo: this.options.repo,
-      number: number,
+      number: this.options.number,
       labels: this.options.labels
     });
   }
