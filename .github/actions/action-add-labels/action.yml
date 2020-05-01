@@ -1,0 +1,28 @@
+name: Actions Ecosystem Add Label
+description: Add label to an issue or a pull request.
+author: The Actions Ecosystem Authors
+inputs:
+  github_token:
+    description: A GitHub token.
+    required: true
+  labels:
+    description: The label names to be added. The form must be JSON array.
+    required: true
+  owner:
+    description: The repository owner name.
+    required: false
+    default: ${{ github.repository_owner }}
+  repo:
+    description: The repository name.
+    required: false
+    default: ${{ github.repository }}
+  dry_run:
+    description: Run the action in dry-run mode. If true, the action doesn't affect actual labels at all.
+    required: false
+    default: "false"
+runs:
+  using: node12
+  main: dist/index.js
+branding:
+  icon: bookmark
+  color: green
