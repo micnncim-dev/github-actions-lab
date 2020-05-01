@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import * as Webhooks from '@octokit/webhooks';
 
 export interface ProcessorOptions {
   githubToken: string;
@@ -32,12 +33,12 @@ export class Processor {
   }
 
   process() {
-    core.debug(`owner=${this.options.owner}, repo=${this.options.repo}, number=${this.options.number}, labels=${this.options.labels}`)
+    const number = github.context.payload.number;
 
     this.client.issues.addLabels({
       owner: this.options.owner,
       repo: this.options.repo,
-      number: this.options.number,
+      number: number,
       labels: this.options.labels
     });
   }
