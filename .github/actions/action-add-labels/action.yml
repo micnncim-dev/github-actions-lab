@@ -16,6 +16,10 @@ inputs:
     description: The repository name.
     required: false
     default: ${{ github.event.repository.name }}
+  number:
+    description: The number of the issue or pull request.
+    required: false
+    default: ${{ github.event.pull_request.number }}
   dry_run:
     description: Run the action in dry-run mode. If true, the action doesn't affect actual labels at all.
     required: false
