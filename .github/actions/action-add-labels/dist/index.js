@@ -3542,14 +3542,15 @@ function getAndValidateArgs() {
                     .filter(l => l !== ''),
                 owner: core.getInput('repo').split('/')[0],
                 repo: core.getInput('repo').split('/')[1],
-                number: parseInt(core.getInput('number')),
+                // number: parseInt(core.getInput('number')),
+                number: 0,
                 dryRun: core.getInput('dry_run') === 'true'
             };
-            for (const numberInput of ['number']) {
-                if (isNaN(parseInt(core.getInput(numberInput)))) {
-                    throw Error(`input ${numberInput} did not parse to a valid integer`);
-                }
-            }
+            // for (const numberInput of ['number']) {
+            //   if (isNaN(parseInt(core.getInput(numberInput)))) {
+            //     throw Error(`input ${numberInput} did not parse to a valid integer`);
+            //   }
+            // }
             return args;
         }
         catch (error) {
@@ -5102,6 +5103,7 @@ function isWebhookPayloadIssues(arg) {
         typeof arg.issue === 'object' &&
         typeof arg.issue.number === 'number');
 }
+exports.isWebhookPayloadIssues = isWebhookPayloadIssues;
 function isWebhookPayloadPullRequest(arg) {
     return (arg !== null &&
         typeof arg === 'object' &&
@@ -5109,6 +5111,7 @@ function isWebhookPayloadPullRequest(arg) {
         typeof arg.pull_request === 'object' &&
         typeof arg.pull_request.number === 'number');
 }
+exports.isWebhookPayloadPullRequest = isWebhookPayloadPullRequest;
 
 
 /***/ }),

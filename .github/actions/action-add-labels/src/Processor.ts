@@ -61,7 +61,7 @@ export class Processor {
   }
 }
 
-function isWebhookPayloadIssues(
+export function isWebhookPayloadIssues(
   arg: any
 ): arg is Webhooks.WebhookPayloadIssues {
   return (
@@ -73,7 +73,7 @@ function isWebhookPayloadIssues(
   );
 }
 
-function isWebhookPayloadPullRequest(
+export function isWebhookPayloadPullRequest(
   arg: any
 ): arg is Webhooks.WebhookPayloadPullRequest {
   return (
