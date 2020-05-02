@@ -8,32 +8,56 @@ It would be more useful to use this with other GitHub Actions' outputs.
 
 ## Inputs
 
-|      Key       | Required |             Default              |                                  Note                                  |
-| -------------- | -------- | -------------------------------- | ---------------------------------------------------------------------- |
-| `github_token` | `true`   | N/A                              | Must be in form of `github_token: ${{ secrets.github_token }}`.        |
-| `labels`       | `true`   | N/A                              | Must be in form of JSON array. e.g. `'["documentation", "changelog"]'` |
-| `owner`        | `false`  | `${{ github.repository_owner }}` |                                                                        |
-| `repo`         | `false`  | `${{ github.repository }}`       |                                                                        |
-| `dry_run`      | `false`  | `false`                          |                                                                        |
+|      Key       | Required |                            Default                             |                                 Note                                 |
+| -------------- | -------- | -------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `github_token` | `true`   | N/A                                                            | Must be in form of `github_token: ${{ secrets.github_token }}`.      |
+| `labels`       | `true`   | N/A                                                            | Must be in form of a string with line breaks. See the example below. |
+| `repo`         | `false`  | `${{ github.repository }}`                                     | The owner and repository name. e.g. `Codertocat/Hello-World`.        |
+| `number`       | `false`  | The number of the issue or PR which has triggered this action. | The owner and repository name. e.g. `Codertocat/Hello-World`.        |
+| `dry_run`      | `false`  | `false`                                                        |                                                                      |
 
 ## Example
 
+### Add a single label
+
 ```yaml
-name: Add Label
+name: Add Labels
 
 on:
-  pull_request:
+  issues:
     types: opened
 
 jobs:
-  size:
+  add_labels:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.github_token }}
-          label: '["enhancement"]'
+          labels: bug
+```
+
+### Add multiple labels
+
+```yaml
+name: Add Labels
+
+on:
+  pull_request:
+    types: opened
+
+jobs:
+  add_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          labels: |
+            documentation
+            changelog
 ```
 
 ## License

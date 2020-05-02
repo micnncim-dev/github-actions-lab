@@ -6,12 +6,8 @@ inputs:
     description: A GitHub token.
     required: true
   labels:
-    description: The label names to be added. The form must be JSON array.
+    description: The label names to be added.
     required: true
-  owner:
-    description: The repository owner name.
-    required: false
-    default: ${{ github.event.repository.owner.login }}
   repo:
     description: The repository name.
     required: false
@@ -19,7 +15,6 @@ inputs:
   number:
     description: The number of the issue or pull request.
     required: false
-    default: ${{ github.event.issue.number }}
   dry_run:
     description: Run the action in dry-run mode. If true, the action doesn't affect actual labels at all.
     required: false
