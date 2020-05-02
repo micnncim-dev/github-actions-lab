@@ -2,32 +2,35 @@
 
 ![screenshot](./docs/assets/screenshot.png)
 
-This is a GitHub Action to add GitHub label to an issue or a pull request.
+This is a GitHub Action to add GitHub labels to an issue or a pull request.
+
+This action extract the number from an issue or a pull request which has triggered this by default.
+It means you don't need to care about something annoying like whether you should use `${{ github.event.issue.number }}` or `${{ github.event.pull_request.number }}`.
 
 It would be more useful to use this with other GitHub Actions' outputs.
 
 ## Inputs
 
-|      Key       | Required |                            Default                             |                                 Note                                 |
-| -------------- | -------- | -------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `github_token` | `true`   | N/A                                                            | Must be in form of `github_token: ${{ secrets.github_token }}`.      |
-| `labels`       | `true`   | N/A                                                            | Must be in form of a string with line breaks. See the example below. |
-| `repo`         | `false`  | `${{ github.repository }}`                                     | The owner and repository name. e.g. `Codertocat/Hello-World`.        |
-| `number`       | `false`  | The number of the issue or PR which has triggered this action. |                                                                      |
+|      Key       | Required |                                 Default                                  |                                 Note                                 |
+| -------------- | -------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| `github_token` | `true`   | N/A                                                                      | Must be in form of `github_token: ${{ secrets.github_token }}`.      |
+| `labels`       | `true`   | N/A                                                                      | Must be in form of a string with line breaks. See the example below. |
+| `repo`         | `false`  | `${{ github.repository }}`                                               | The owner and repository name. e.g. `Codertocat/Hello-World`.        |
+| `number`       | `false`  | The number of the issue or pull request which has triggered this action. |                                                                      |
 
 ## Example
 
 ### Add a single label
 
 ```yaml
-name: Add Labels
+name: Add Label
 
 on:
   issues:
     types: opened
 
 jobs:
-  add_labels:
+  add_label:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
