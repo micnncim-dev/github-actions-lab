@@ -5058,9 +5058,8 @@ class Processor {
     process() {
         const changes = Processor.getChangedLines();
         const newLabel = this.determineLabel(changes);
-        const staleLabels = this.getCurrentSizeLabels();
-        core.debug(`newLabel=${newLabel}, staleLabels=${staleLabels}`);
         core.setOutput('new_label', newLabel);
+        const staleLabels = this.getCurrentSizeLabels();
         core.setOutput('stale_labels', staleLabels.join('\n'));
     }
     getCurrentSizeLabels() {
