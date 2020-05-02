@@ -9,9 +9,9 @@ inputs:
     description: The label names to be added.
     required: true
   repo:
-    description: The repository name.
+    description: The owner and repository name. e.g.) Codertocat/Hello-World.
     required: false
-    default: ${{ github.event.repository.name }}
+    default: ${{ github.repository }}
   number:
     description: The number of the issue or pull request.
     required: false
