@@ -3,7 +3,7 @@ import {Processor, ProcessorOptions} from './Processor';
 
 async function run(): Promise<void> {
   try {
-    const args = getAndValidateArgs();
+    const args = await getAndValidateArgs();
     const processor: Processor = new Processor(args);
 
     await processor.process();
@@ -13,7 +13,8 @@ async function run(): Promise<void> {
   }
 }
 
-function getAndValidateArgs(): ProcessorOptions {
+async function getAndValidateArgs(): Promise<ProcessorOptions> {
+  try {
   const args: ProcessorOptions = {
     githubToken: core.getInput('github_token', {required: true}),
 
@@ -36,6 +37,9 @@ function getAndValidateArgs(): ProcessorOptions {
   }
 
   return args;
+  } catch (error) {
+    throw error; 
+  }
 }
 
 run();

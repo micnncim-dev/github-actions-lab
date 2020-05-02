@@ -3521,7 +3521,7 @@ const Processor_1 = __webpack_require__(393);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const args = getAndValidateArgs();
+            const args = yield getAndValidateArgs();
             const processor = new Processor_1.Processor(args);
             yield processor.process();
         }
@@ -3532,23 +3532,30 @@ function run() {
     });
 }
 function getAndValidateArgs() {
-    const args = {
-        githubToken: core.getInput('github_token', { required: true }),
-        labels: core
-            .getInput('labels')
-            .split('\n')
-            .filter(l => l !== ''),
-        owner: core.getInput('repo').split('/')[0],
-        repo: core.getInput('repo').split('/')[1],
-        number: parseInt(core.getInput('number')),
-        dryRun: core.getInput('dry_run') === 'true'
-    };
-    for (const numberInput of ['number']) {
-        if (isNaN(parseInt(core.getInput(numberInput)))) {
-            throw Error(`input ${numberInput} did not parse to a valid integer`);
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const args = {
+                githubToken: core.getInput('github_token', { required: true }),
+                labels: core
+                    .getInput('labels')
+                    .split('\n')
+                    .filter(l => l !== ''),
+                owner: core.getInput('repo').split('/')[0],
+                repo: core.getInput('repo').split('/')[1],
+                number: parseInt(core.getInput('number')),
+                dryRun: core.getInput('dry_run') === 'true'
+            };
+            for (const numberInput of ['number']) {
+                if (isNaN(parseInt(core.getInput(numberInput)))) {
+                    throw Error(`input ${numberInput} did not parse to a valid integer`);
+                }
+            }
+            return args;
         }
-    }
-    return args;
+        catch (error) {
+            throw error;
+        }
+    });
 }
 run();
 
