@@ -1,4 +1,4 @@
-require('./sourcemap-register.js');module.exports =
+module.exports =
 /******/ (function(modules, runtime) { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The module cache
@@ -5067,18 +5067,18 @@ class Processor {
     }
     process() {
         return __awaiter(this, void 0, void 0, function* () {
-            let number = 0;
-            const payload = github.context.payload;
-            if (isWebhookPayloadPullRequest(payload)) {
-                number = payload.pull_request.number;
-            }
-            if (isWebhookPayloadIssues(payload)) {
-                number = payload.issue.number;
-            }
-            if (this.options.number !== 0) {
-                number = this.options.number;
-            }
             try {
+                let number = 0;
+                const payload = github.context.payload;
+                if (isWebhookPayloadPullRequest(payload)) {
+                    number = payload.pull_request.number;
+                }
+                if (isWebhookPayloadIssues(payload)) {
+                    number = payload.issue.number;
+                }
+                if (this.options.number !== 0) {
+                    number = this.options.number;
+                }
                 if (!this.options.dryRun) {
                     this.client.issues.addLabels({
                         owner: this.options.owner,
@@ -5089,7 +5089,7 @@ class Processor {
                 }
             }
             catch (error) {
-                core.setFailed(error.message);
+                throw error;
             }
         });
     }
@@ -25539,4 +25539,3 @@ function onceStrict (fn) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.js.map

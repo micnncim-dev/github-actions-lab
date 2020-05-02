@@ -33,30 +33,30 @@ export class Processor {
   }
 
   async process(): Promise<void> {
-    let number: number = 0;
-    const payload = github.context.payload;
-
-    if (isWebhookPayloadPullRequest(payload)) {
-      number = payload.pull_request.number;
-    }
-    if (isWebhookPayloadIssues(payload)) {
-      number = payload.issue.number;
-    }
-    if (this.options.number !== 0) {
-      number = this.options.number;
-    }
-
     try {
-      if (!this.options.dryRun) {
-        this.client.issues.addLabels({
-          owner: this.options.owner,
-          repo: this.options.repo,
-          issue_number: number,
-          labels: this.options.labels
-        });
+      let number: number = 0;
+      const payload = github.context.payload;
+
+      if (isWebhookPayloadPullRequest(payload)) {
+        number = payload.pull_request.number;
       }
+      if (isWebhookPayloadIssues(payload)) {
+        number = payload.issue.number;
+      }
+      if (this.options.number !== 0) {
+        number = this.options.number;
+      }
+
+        if (!this.options.dryRun) {
+          this.client.issues.addLabels({
+            owner: this.options.owner,
+            repo: this.options.repo,
+            issue_number: number,
+            labels: this.options.labels
+          });
+        }
     } catch (error) {
-      core.setFailed(error.message);
+      throw error; 
     }
   }
 }
