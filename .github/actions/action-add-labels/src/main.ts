@@ -15,20 +15,22 @@ async function run(): Promise<void> {
 
 async function getAndValidateArgs(): Promise<ProcessorOptions> {
   try {
-  const args: ProcessorOptions = {
-    githubToken: core.getInput('github_token', {required: true}),
+    core.debug(`core.getInput('labels')=${core.getInput('labels')}`)
 
-    labels: core
-      .getInput('labels')
-      .split('\n')
-      .filter(l => l !== ''),
+    const args: ProcessorOptions = {
+      githubToken: core.getInput('github_token', {required: true}),
 
-    owner: core.getInput('repo').split('/')[0],
-    repo: core.getInput('repo').split('/')[1],
-    number: core.getInput('number') === '' ? 0 : parseInt(core.getInput('number')),
-  };
+      labels: core
+        .getInput('labels')
+        .split('\n')
+        .filter(l => l !== ''),
 
-  return args;
+      owner: core.getInput('repo').split('/')[0],
+      repo: core.getInput('repo').split('/')[1],
+      number: core.getInput('number') === '' ? 0 : parseInt(core.getInput('number')),
+    };
+
+    return args;
   } catch (error) {
     throw error; 
   }

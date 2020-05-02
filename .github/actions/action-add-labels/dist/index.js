@@ -3534,6 +3534,7 @@ function run() {
 function getAndValidateArgs() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            core.debug(`core.getInput('labels')=${core.getInput('labels')}`);
             const args = {
                 githubToken: core.getInput('github_token', { required: true }),
                 labels: core
