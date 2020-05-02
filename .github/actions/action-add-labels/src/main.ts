@@ -25,17 +25,10 @@ async function getAndValidateArgs(): Promise<ProcessorOptions> {
 
     owner: core.getInput('repo').split('/')[0],
     repo: core.getInput('repo').split('/')[1],
-    // number: parseInt(core.getInput('number')),
-    number: 0,
+    number: core.getInput('number') === '' ? 0 : parseInt(core.getInput('number')),
 
     dryRun: core.getInput('dry_run') === 'true'
   };
-
-  // for (const numberInput of ['number']) {
-  //   if (isNaN(parseInt(core.getInput(numberInput)))) {
-  //     throw Error(`input ${numberInput} did not parse to a valid integer`);
-  //   }
-  // }
 
   return args;
   } catch (error) {
