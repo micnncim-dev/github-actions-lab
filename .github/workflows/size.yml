@@ -16,8 +16,10 @@ jobs:
       - uses: ./.github/actions/action-remove-labels
         with:
           github_token: ${{ secrets.github_token }}
-          labels: ${{ steps.size.outputs.stale_labels }}
+          labels: |
+            ${{ steps.size.outputs.stale_labels }}
       - uses: ./.github/actions/action-add-labels
         with:
           github_token: ${{ secrets.github_token }}
-          labels: ${{ steps.size.outputs.new_labels }}
+          labels: |
+            ${{ steps.size.outputs.new_labels }}
