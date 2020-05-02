@@ -15,10 +15,6 @@ inputs:
   number:
     description: The number of the issue or pull request.
     required: false
-  dry_run:
-    description: Run the action in dry-run mode. If true, the action doesn't affect actual labels at all.
-    required: false
-    default: "false"
 runs:
   using: node12
   main: dist/index.js

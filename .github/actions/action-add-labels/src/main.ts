@@ -26,8 +26,6 @@ async function getAndValidateArgs(): Promise<ProcessorOptions> {
     owner: core.getInput('repo').split('/')[0],
     repo: core.getInput('repo').split('/')[1],
     number: core.getInput('number') === '' ? 0 : parseInt(core.getInput('number')),
-
-    dryRun: core.getInput('dry_run') === 'true'
   };
 
   return args;

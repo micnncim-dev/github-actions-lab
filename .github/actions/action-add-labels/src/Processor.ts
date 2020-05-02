@@ -10,8 +10,6 @@ export interface ProcessorOptions {
   owner: string;
   repo: string;
   number: number;
-
-  dryRun: boolean;
 }
 
 /***
@@ -24,12 +22,6 @@ export class Processor {
   constructor(options: ProcessorOptions) {
     this.options = options;
     this.client = new github.GitHub(options.githubToken);
-
-    if (this.options.dryRun) {
-      core.debug(
-        'Running in dry-run mode. Debug output will be written but nothing will be processed.'
-      );
-    }
   }
 
   async process(): Promise<void> {
@@ -47,14 +39,12 @@ export class Processor {
         number = this.options.number;
       }
 
-        if (!this.options.dryRun) {
-          this.client.issues.addLabels({
-            owner: this.options.owner,
-            repo: this.options.repo,
-            issue_number: number,
-            labels: this.options.labels
-          });
-        }
+      this.client.issues.addLabels({
+        owner: this.options.owner,
+        repo: this.options.repo,
+        issue_number: number,
+        labels: this.options.labels
+      });
     } catch (error) {
       throw error; 
     }

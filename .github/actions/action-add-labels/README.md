@@ -14,7 +14,6 @@ It would be more useful to use this with other GitHub Actions' outputs.
 | `labels`       | `true`   | N/A                                                            | Must be in form of a string with line breaks. See the example below. |
 | `repo`         | `false`  | `${{ github.repository }}`                                     | The owner and repository name. e.g. `Codertocat/Hello-World`.        |
 | `number`       | `false`  | The number of the issue or PR which has triggered this action. |                                                                      |
-| `dry_run`      | `false`  | `false`                                                        |                                                                      |
 
 ## Example
 

@@ -3543,7 +3543,6 @@ function getAndValidateArgs() {
                 owner: core.getInput('repo').split('/')[0],
                 repo: core.getInput('repo').split('/')[1],
                 number: core.getInput('number') === '' ? 0 : parseInt(core.getInput('number')),
-                dryRun: core.getInput('dry_run') === 'true'
             };
             return args;
         }
@@ -5047,7 +5046,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
 /***
  * Processor handles processing.
@@ -5056,9 +5054,6 @@ class Processor {
     constructor(options) {
         this.options = options;
         this.client = new github.GitHub(options.githubToken);
-        if (this.options.dryRun) {
-            core.debug('Running in dry-run mode. Debug output will be written but nothing will be processed.');
-        }
     }
     process() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -5074,14 +5069,12 @@ class Processor {
                 if (this.options.number !== 0) {
                     number = this.options.number;
                 }
-                if (!this.options.dryRun) {
-                    this.client.issues.addLabels({
-                        owner: this.options.owner,
-                        repo: this.options.repo,
-                        issue_number: number,
-                        labels: this.options.labels
-                    });
-                }
+                this.client.issues.addLabels({
+                    owner: this.options.owner,
+                    repo: this.options.repo,
+                    issue_number: number,
+                    labels: this.options.labels
+                });
             }
             catch (error) {
                 throw error;
