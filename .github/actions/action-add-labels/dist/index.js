@@ -3523,20 +3523,23 @@ function run() {
         try {
             const args = getAndValidateArgs();
             const processor = new Processor_1.Processor(args);
-            processor.process();
+            yield processor.process();
         }
         catch (error) {
             core.error(error);
-            core.setFailed(error);
+            core.setFailed(error.message);
         }
     });
 }
 function getAndValidateArgs() {
     const args = {
         githubToken: core.getInput('github_token', { required: true }),
-        labels: JSON.parse(core.getInput('labels')),
-        owner: core.getInput('owner'),
-        repo: core.getInput('repo'),
+        labels: core
+            .getInput('labels')
+            .split('\n')
+            .filter(l => l !== ''),
+        owner: core.getInput('repo').split('/')[0],
+        repo: core.getInput('repo').split('/')[1],
         number: parseInt(core.getInput('number')),
         dryRun: core.getInput('dry_run') === 'true'
     };
@@ -5025,6 +5028,15 @@ module.exports = readShebang;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -5047,15 +5059,49 @@ class Processor {
         }
     }
     process() {
-        this.client.issues.addLabels({
-            owner: this.options.owner,
-            repo: this.options.repo,
-            number: this.options.number,
-            labels: this.options.labels
+        return __awaiter(this, void 0, void 0, function* () {
+            let number = 0;
+            const payload = github.context.payload;
+            if (isWebhookPayloadPullRequest(payload)) {
+                number = payload.pull_request.number;
+            }
+            if (isWebhookPayloadIssues(payload)) {
+                number = payload.issue.number;
+            }
+            if (this.options.number !== 0) {
+                number = this.options.number;
+            }
+            try {
+                if (!this.options.dryRun) {
+                    this.client.issues.addLabels({
+                        owner: this.options.owner,
+                        repo: this.options.repo,
+                        issue_number: number,
+                        labels: this.options.labels
+                    });
+                }
+            }
+            catch (error) {
+                core.setFailed(error.message);
+            }
         });
     }
 }
 exports.Processor = Processor;
+function isWebhookPayloadIssues(arg) {
+    return (arg !== null &&
+        typeof arg === 'object' &&
+        arg.issue !== null &&
+        typeof arg.issue === 'object' &&
+        typeof arg.issue.number === 'number');
+}
+function isWebhookPayloadPullRequest(arg) {
+    return (arg !== null &&
+        typeof arg === 'object' &&
+        arg.pull_request !== null &&
+        typeof arg.pull_request === 'object' &&
+        typeof arg.pull_request.number === 'number');
+}
 
 
 /***/ }),

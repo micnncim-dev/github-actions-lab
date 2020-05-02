@@ -4,12 +4,12 @@ import {Processor, ProcessorOptions} from './Processor';
 async function run(): Promise<void> {
   try {
     const args = getAndValidateArgs();
-
     const processor: Processor = new Processor(args);
-    processor.process();
+
+    await processor.process();
   } catch (error) {
     core.error(error);
-    core.setFailed(error);
+    core.setFailed(error.message);
   }
 }
 
@@ -17,10 +17,13 @@ function getAndValidateArgs(): ProcessorOptions {
   const args: ProcessorOptions = {
     githubToken: core.getInput('github_token', {required: true}),
 
-    labels: JSON.parse(core.getInput('labels')) as string[],
+    labels: core
+      .getInput('labels')
+      .split('\n')
+      .filter(l => l !== ''),
 
-    owner: core.getInput('owner'),
-    repo: core.getInput('repo'),
+    owner: core.getInput('repo').split('/')[0],
+    repo: core.getInput('repo').split('/')[1],
     number: parseInt(core.getInput('number')),
 
     dryRun: core.getInput('dry_run') === 'true'
