@@ -3,8 +3,6 @@ import * as github from '@actions/github';
 import * as Webhooks from '@octokit/webhooks';
 
 export interface ProcessorOptions {
-  githubToken: string;
-
   sizeXSLabel: string;
   sizeSLabel: string;
   sizeMLabel: string;
@@ -23,22 +21,20 @@ export interface ProcessorOptions {
  * Processor handles processing.
  */
 export class Processor {
-  readonly client: github.GitHub;
   readonly options: ProcessorOptions;
 
   constructor(options: ProcessorOptions) {
     this.options = options;
-    this.client = new github.GitHub(options.githubToken); 
   }
 
   process() {
     const changes = Processor.getChangedLines();
 
     const newLabel = this.determineLabel(changes);
-    core.setOutput('new_label', newLabel)
+    core.setOutput('new_label', newLabel);
 
     const staleLabels = this.getCurrentSizeLabels();
-    core.setOutput('stale_labels', staleLabels.join('\n'))
+    core.setOutput('stale_labels', staleLabels.join('\n'));
   }
 
   private getCurrentSizeLabels(): string[] {

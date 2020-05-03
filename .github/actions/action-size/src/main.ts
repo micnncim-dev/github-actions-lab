@@ -9,14 +9,12 @@ async function run(): Promise<void> {
     processor.process();
   } catch (error) {
     core.error(error);
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
 function getAndValidateArgs(): ProcessorOptions {
   const args: ProcessorOptions = {
-    githubToken: core.getInput('github_token', {required: true}),
-
     sizeXSLabel: core.getInput('size_xs_label'),
     sizeSLabel: core.getInput('size_s_label'),
     sizeMLabel: core.getInput('size_m_label'),
@@ -28,7 +26,7 @@ function getAndValidateArgs(): ProcessorOptions {
     sizeMThreshold: parseInt(core.getInput('size_m_threshold')),
     sizeLThreshold: parseInt(core.getInput('size_l_threshold')),
     sizeXLThreshold: parseInt(core.getInput('size_xl_threshold')),
-    sizeXXLThreshold: parseInt(core.getInput('size_xxl_threshold')),
+    sizeXXLThreshold: parseInt(core.getInput('size_xxl_threshold'))
   };
 
   for (const numberInput of [
