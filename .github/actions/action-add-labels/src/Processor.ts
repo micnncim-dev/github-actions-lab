@@ -1,4 +1,3 @@
-import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as Webhooks from '@octokit/webhooks';
 
@@ -26,7 +25,11 @@ export class Processor {
 
   async process(): Promise<void> {
     try {
-      let number: number = 0;
+      if (this.options.labels.length === 0){
+        return
+      }
+
+      let number = 0;
       const payload = github.context.payload;
 
       if (isWebhookPayloadPullRequest(payload)) {
@@ -46,7 +49,7 @@ export class Processor {
         labels: this.options.labels
       });
     } catch (error) {
-      throw error; 
+      throw error;
     }
   }
 }
