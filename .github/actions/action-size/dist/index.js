@@ -5057,10 +5057,10 @@ class Processor {
         const changes = Processor.getChangedLines();
         const newLabel = this.determineLabel(changes);
         core.setOutput('new_label', newLabel);
-        const staleLabels = this.getCurrentSizeLabels();
+        const staleLabels = this.getStaleLabels(newLabel);
         core.setOutput('stale_labels', staleLabels.join('\n'));
     }
-    getCurrentSizeLabels() {
+    getStaleLabels(newLabel) {
         const payload = github.context
             .payload;
         return payload.pull_request.labels
@@ -5072,6 +5072,7 @@ class Processor {
             this.options.sizeXLLabel,
             this.options.sizeXXLLabel
         ].includes(label.name))
+            .filter(label => label.name !== newLabel)
             .map(label => label.name);
     }
     determineLabel(changes) {
