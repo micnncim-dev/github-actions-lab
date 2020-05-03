@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import {Processor, ProcessorOptions} from './Processor';
+import { Processor, ProcessorOptions } from './Processor';
 
 async function run(): Promise<void> {
   try {
@@ -15,24 +15,23 @@ async function run(): Promise<void> {
 
 async function getAndValidateArgs(): Promise<ProcessorOptions> {
   try {
-    core.debug(`core.getInput('labels')=${core.getInput('labels')}`)
-
     const args: ProcessorOptions = {
-      githubToken: core.getInput('github_token', {required: true}),
+      githubToken: core.getInput('github_token', { required: true }),
 
       labels: core
-        .getInput('labels')
+        .getInput('labels', { required: true })
         .split('\n')
         .filter(l => l !== ''),
 
       owner: core.getInput('repo').split('/')[0],
       repo: core.getInput('repo').split('/')[1],
-      number: core.getInput('number') === '' ? 0 : parseInt(core.getInput('number')),
+      number:
+        core.getInput('number') === '' ? 0 : parseInt(core.getInput('number'))
     };
 
     return args;
   } catch (error) {
-    throw error; 
+    throw error;
   }
 }
 
