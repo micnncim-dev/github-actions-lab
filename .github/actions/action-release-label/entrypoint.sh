@@ -5,10 +5,9 @@ set -e
 event=${INPUT_EVENT}
 prefix=${INPUT_LABEL_PREFIX}
 
-# Production requires this condition, but comment it out for test.
-# if [ "$(echo "${event}" | jq -r '.pull_request.merged')" -ne 'merged' ]; then
-#     exit 0
-# fi
+if [ "$(echo "${event}" | jq -r '.pull_request.merged')" -ne 'merged' ]; then
+    exit 0
+fi
 
 label=$(echo "${event}" | jq -r ".pull_request.labels[].name | select(test(\"$prefix(major|minor|patch)\"))")
 
