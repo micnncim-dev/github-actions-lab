@@ -1,6 +1,11 @@
 name: Get Latest Tag
 
-on: [issue_comment]
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [synchronize]
+  push:
 
 jobs:
   get_latest_tag:
@@ -10,7 +15,6 @@ jobs:
       - uses: ./.github/actions/action-get-latest-tag
         id: get-latest-tag
       - uses: actions-ecosystem/action-create-comment@v1
-        if: ${{ startsWith(github.event.comment.body, '/get-latest-tag') }}
         with:
           github_token: ${{ secrets.github_token }}
           body: |
