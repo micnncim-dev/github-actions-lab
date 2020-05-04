@@ -9,7 +9,7 @@ inputs:
   event:
     description: An event that triggers this action. Must be a pull request event.
     required: false
-    default: ${{ github.event }}
+    default: ${{ toJson(github.event) }}
 outputs:
   level:
     description: A semver update level ({major, minor, patch}).
