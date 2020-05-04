@@ -19,4 +19,7 @@ jobs:
             Hello, @${{ github.actor }}!
             The semver update level of the release label: ${{ steps.release-label.outputs.level }}
 
+            steps.release-label.outputs.level != null == ${{ steps.release-label.outputs.level != null }}
+            steps.release-label.outputs.level != '' == ${{ steps.release-label.outputs.level != '' }}
+
             *This message has been sent via actions-ecosystem/action-create-comment.*
