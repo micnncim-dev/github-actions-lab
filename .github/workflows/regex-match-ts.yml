@@ -1,4 +1,4 @@
-name: Create Comment with Regex Match
+name: Create Comment with Regex Match TypeScript
 
 on: [issue_comment]
 
