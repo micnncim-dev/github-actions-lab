@@ -18,3 +18,10 @@ jobs:
           github_token: ${{ secrets.github_token }}
           body: |
             Hello, @${{ github.actor }}!
+      - uses: ./.github/actions/action-create-comment
+        if: ${{ steps.regex-match.outputs.match == 'false' }}
+        with:
+          github_token: ${{ secrets.github_token }}
+          body: |
+            Good morning, @${{ github.actor }}!
+
