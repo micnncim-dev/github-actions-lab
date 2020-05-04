@@ -18,4 +18,4 @@ curl -s -X POST \
     -H "Authorization: token ${token}" \
     -H "Content-Type: application/json" \
     "https://api.github.com/repos/${repository}/issues/${number}/comments" \
-    -d "$(printf '{ "body": "The actual latest version: v1.0.0\nThe latest release version of %s: %s" }' "${repository}" "${latest_version}")"
+    -d "$(printf '{ "body": "The actual latest version: v1.0.0, The latest release version of %s: %s" }' "${repository}" "${latest_version}")"
