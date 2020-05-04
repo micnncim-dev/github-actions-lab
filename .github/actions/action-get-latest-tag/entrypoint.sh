@@ -10,6 +10,10 @@ if [ "${INPUT_ALL_BRANCH}" = 'true' ]; then
     exit 0
 fi
 
+echo "::debug:: GITHUB_REF=${GITHUB_REF}"
+echo "::debug:: git branch --show-current=$(git branch --show-current)"
+echo "::debug:: git rev-parse --abbrev-ref HEAD=$(git rev-parse --abbrev-ref HEAD)"
+
 branch=${GITHUB_REF##*/} # default is current branch
 if [ -n "${INPUT_BRANCH}" ]; then
     branch="${INPUT_BRANCH}"
