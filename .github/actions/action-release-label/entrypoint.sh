@@ -5,14 +5,20 @@ set -e
 event=${INPUT_EVENT}
 prefix=${INPUT_LABEL_PREFIX}
 
-if [ "$(echo "${event}" | jq -r '.pull_request.merged')" -ne 'merged' ]; then
-    exit 0
-fi
+# Production requires this condition, but comment it out for test.
+# if [ "$(echo "${event}" | jq -r '.pull_request.merged')" -ne 'merged' ]; then
+#     exit 0
+# fi
 
 label=$(echo "${event}" | jq -r ".pull_request.labels[].name | select(test(\"$prefix(major|minor|patch)\"))")
 
+if [ -z "${label}" ]; then
+    echo "::debug:: no release label"
+    exit 0
+fi
+
 if [ "$(echo "${label}" | wc -l)" -ne 1 ]; then
-    echo "::debug:: multiple release labels not allowed: labels=$(echo "${label}" | tr '\n' ',')"
+    echo "::error:: multiple release labels not allowed: labels=$(echo "${label}" | tr '\n' ',')"
     exit 1
 fi
 
