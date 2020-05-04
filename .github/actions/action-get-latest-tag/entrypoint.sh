@@ -14,7 +14,7 @@ echo "::debug:: GITHUB_REF=${GITHUB_REF}"
 echo "::debug:: git branch --show-current=$(git branch --show-current)"
 echo "::debug:: git rev-parse --abbrev-ref HEAD=$(git rev-parse --abbrev-ref HEAD)"
 
-branch=${GITHUB_REF##*/} # default is current branch
+branch=$(git rev-parse --abbrev-ref HEAD) # default is current branch
 
 # When the event is pull request one, get current branch from event.
 if [ "${branch}" = 'HEAD' ]; then
