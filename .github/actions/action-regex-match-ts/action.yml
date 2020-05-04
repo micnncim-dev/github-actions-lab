@@ -8,6 +8,9 @@ inputs:
   regex:
     description: A regex for inputs.text. Supports capturing groups.
     required: true
+  flags:
+    description: Flags for inputs.regex.
+    required: false
 outputs:
   match:
     description: The whole matched text. If the input.regex doesn't match input.text, outputs.matched is ''.
