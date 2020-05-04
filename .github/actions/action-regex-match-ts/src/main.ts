@@ -13,7 +13,7 @@ async function run(): Promise<void> {
       for (const x of result) {
         const index = result.indexOf(x);
         if (index === 0) {
-          core.setOutput('matched', x);
+          core.setOutput('match', x);
           return;
         }
 
