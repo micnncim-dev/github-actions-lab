@@ -11,7 +11,7 @@ jobs:
         id: regex-match
         with:
           text: ${{ github.event.comment.body }}
-          regex: '([0-9]{3})(.*)(world)'
+          regex: '```release_note([\\s\\S]*)```'
       - uses: ./.github/actions/action-create-comment
         if: ${{ steps.regex-match.outputs.match != '' }}
         with:
@@ -19,15 +19,7 @@ jobs:
           body: |
             Hello, @${{ github.actor }}!
 
-            outputs.match: ${{ steps.regex-match.outputs.match }}
-            outputs.group1: ${{ steps.regex-match.outputs.group1 }}
-            outputs.group2: ${{ steps.regex-match.outputs.group2 }}
-            outputs.group3: ${{ steps.regex-match.outputs.group3 }}
-            outputs.group4: ${{ steps.regex-match.outputs.group4 }}
-            outputs.group5: ${{ steps.regex-match.outputs.group5 }}
-            outputs.group6: ${{ steps.regex-match.outputs.group6 }}
-            outputs.group7: ${{ steps.regex-match.outputs.group7 }}
-            outputs.group8: ${{ steps.regex-match.outputs.group8 }}
-            outputs.group9: ${{ steps.regex-match.outputs.group9 }}
+            The raw release note is here.
+            ${{ steps.regex-match.outputs.group1 }} 
 
             *This message has been sent via actions-ecosystem/action-regex-match-ts.*
