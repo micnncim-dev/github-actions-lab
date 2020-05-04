@@ -1,14 +1,6 @@
 name: Actions Ecosystem Action Get Latest Tag
 description: Get a latest Git tag.
 author: Actions Ecosystem
-inputs:
-  branch:
-    description: The branch that has a tag.
-    required: false
-  all_branch:
-    description: Whether this action gets a latest tag across all branches, not just the current branch. Overrides inputs.branch.
-    required: false
-    default: "false"
 outputs:
   tag:
     description: The latest tag.
