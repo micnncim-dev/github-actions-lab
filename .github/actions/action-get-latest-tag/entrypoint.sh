@@ -16,13 +16,13 @@ echo "::debug:: git rev-parse --abbrev-ref HEAD: $(git rev-parse --abbrev-ref HE
 
 echo "::debug:: git branch: $(git branch)"
 echo "::debug:: git branch -a: $(git branch -a)"
-echo "::debug:: ls: $(ls)"
 
 branch=$(git rev-parse --abbrev-ref HEAD) # default is current branch
 
 # When the event is pull request one, get current branch from event.
 if [ "${branch}" = 'HEAD' ]; then
     branch=$(jq '.pull_request.head.ref' "${GITHUB_EVENT_PATH}")
+    echo "::debug:: pull_request.head.ref: ${branch}"
 fi
 
 # Override branch with inputs.branch if it's specified.
