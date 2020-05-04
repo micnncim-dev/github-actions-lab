@@ -22,7 +22,7 @@ branch=$(git rev-parse --abbrev-ref HEAD) # default is current branch
 
 # When the event is pull request one, get current branch from event.
 if [ "${branch}" = 'HEAD' ]; then
-    branch=$(jq '.pull_request.head.ref' "${GITHUB_EVENT_PATH}")
+    branch=$(jq -r '.pull_request.head.ref' "${GITHUB_EVENT_PATH}")
     echo "::debug:: pull_request.head.ref: ${branch}"
 fi
 
