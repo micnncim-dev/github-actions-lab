@@ -15,7 +15,7 @@ echo "::debug:: git branch --show-current: $(git branch --show-current)"
 echo "::debug:: git rev-parse --abbrev-ref HEAD: $(git rev-parse --abbrev-ref HEAD)"
 
 echo "::debug:: git branch: $(git branch)"
-echo "::debug:: git branch: $(git branch -a)"
+echo "::debug:: git branch -a: $(git branch -a)"
 echo "::debug:: ls: $(ls)"
 
 branch=$(git rev-parse --abbrev-ref HEAD) # default is current branch
