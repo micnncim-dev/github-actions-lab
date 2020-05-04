@@ -9,12 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-ecosystem/action-regex-match@v1
-        id: regex-match
-        with:
-            text: ${{ github.event.comment.body }}
-            regex: '^/latest-version'
       - uses: ./
-        if: ${{ steps.regex-match.outputs.match == 'true' }}
+        if: ${{ startsWith(github.event.comment.body, '/latest-release') }}
         with:
           github_token: ${{ secrets.github_token }}
