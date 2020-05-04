@@ -5,7 +5,7 @@ inputs:
   branch:
     description: The branch that has a tag.
     required: false
-    default: master
+    default: ${{ github.ref }}
   all_branch:
     description: Whether this action gets a latest tag across all branches, not just the current branch. Overrides inputs.branch.
     required: false
