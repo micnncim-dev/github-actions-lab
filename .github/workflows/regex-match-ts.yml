@@ -20,6 +20,8 @@ jobs:
             Hello, @${{ github.actor }}!
 
             The raw release note is here.
+            ---
             ${{ steps.regex-match.outputs.group1 }} 
+            ---
 
             *This message has been sent via actions-ecosystem/action-regex-match-ts.*
