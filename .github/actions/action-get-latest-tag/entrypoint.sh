@@ -31,6 +31,7 @@ if [ -n "${INPUT_BRANCH}" ]; then
     branch="${INPUT_BRANCH}"
 fi
 
-git switch "${branch}" || git switch "origin/${branch}" -c "${branch}"
+# git switch "${branch}" || git switch "origin/${branch}" -c "${branch}"
+git switch "${branch}"
 
 echo "::set-output name=tag::$(git describe --abbrev=0 --tags)"
