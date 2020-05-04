@@ -43,7 +43,8 @@
         "assignees": [],
         "requested_reviewers": [],
         "requested_teams": [],
-        "labels": [{
+        "labels": [
+            {
                 "color": "ff0000",
                 "default": false,
                 "description": "Need help",
