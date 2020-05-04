@@ -13,7 +13,6 @@ prefix=${INPUT_LABEL_PREFIX}
 label=$(echo "${event}" | jq -r ".pull_request.labels[].name | select(test(\"$prefix(major|minor|patch)\"))")
 
 if [ -z "${label}" ]; then
-    echo "::set-output name=level::''"
     echo "::debug:: no release label"
     exit 0
 fi

@@ -12,14 +12,11 @@ jobs:
       - uses: ./.github/actions/action-release-label
         id: release-label
       - uses: ./.github/actions/action-create-comment
+        if: ${{ steps.release-label.outputs.level != null }}
         with:
           github_token: ${{ secrets.github_token }}
-          if: ${{ steps.release-label.outputs.level != null }}
           body: |
             Hello, @${{ github.actor }}!
-            The semver update level of the release label: ${{ steps.release-label.outputs.level }}
-
-            steps.release-label.outputs.level != null == ${{ steps.release-label.outputs.level != null }}
-            steps.release-label.outputs.level != '' == ${{ steps.release-label.outputs.level != '' }}
+            The semver update level of the release label: `${{ steps.release-label.outputs.level }}`
 
             *This message has been sent via actions-ecosystem/action-create-comment.*
