@@ -10,5 +10,10 @@ if [ "${INPUT_ALL_BRANCH}" = 'true' ]; then
     exit 0
 fi
 
-git switch "${INPUT_BRANCH}"
+branch=$(git rev-parse --abbrev-ref HEAD) # default is current branch
+if [ -n "${INPUT_BRANCH}" ]; then
+    branch="${INPUT_BRANCH}"
+fi
+
+git switch "${branch}"
 echo "::set-output name=tag::$(git describe --abbrev=0 --tags)"
