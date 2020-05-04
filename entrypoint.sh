@@ -8,7 +8,7 @@ number=${INPUT_NUMBER}
 
 latest_version=$(
     curl -s \
-        -H "Authorization: token ${GITHUB_TOKEN}" \
+        -H "Authorization: token ${token}" \
         -H "Content-Type: application/json" \
         "https://api.github.com/repos/${repository}/releases/latest" |
         jq -r '.tag_name'
