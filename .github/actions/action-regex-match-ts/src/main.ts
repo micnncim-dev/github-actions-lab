@@ -14,7 +14,7 @@ async function run(): Promise<void> {
         const index = result.indexOf(x);
         if (index === 0) {
           core.setOutput('match', x);
-          return;
+          continue
         }
 
         core.setOutput(`group${index}`, x);
