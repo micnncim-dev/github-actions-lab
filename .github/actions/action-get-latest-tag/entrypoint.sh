@@ -10,11 +10,14 @@ if [ "${INPUT_ALL_BRANCH}" = 'true' ]; then
     exit 0
 fi
 
-echo "::debug:: GITHUB_REF=${GITHUB_REF}"
-echo "::debug:: git branch --show-current=$(git branch --show-current)"
-echo "::debug:: git rev-parse --abbrev-ref HEAD=$(git rev-parse --abbrev-ref HEAD)"
-
 branch=${GITHUB_REF##*/} # default is current branch
+
+# When the event is pull request one, get current branch from event.
+if [ "${branch}" = 'HEAD' ]; then
+    branch=$(jq '.pull_request.head.ref' "${GITHUB_EVENT_PATH}")
+fi
+
+# Override branch with inputs.branch if it's specified.
 if [ -n "${INPUT_BRANCH}" ]; then
     branch="${INPUT_BRANCH}"
 fi
