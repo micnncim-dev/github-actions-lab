@@ -40,15 +40,9 @@
         "merged_at": null,
         "merge_commit_sha": null,
         "assignee": null,
-        "assignees": [
-
-        ],
-        "requested_reviewers": [
-
-        ],
-        "requested_teams": [
-
-        ],
+        "assignees": [],
+        "requested_reviewers": [],
+        "requested_teams": [],
         "labels": [{
                 "color": "ff0000",
                 "default": false,
