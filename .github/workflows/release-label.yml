@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/action-release-label
+        id: release-label
       - uses: ./.github/actions/action-create-comment
         with:
           github_token: ${{ secrets.github_token }}
