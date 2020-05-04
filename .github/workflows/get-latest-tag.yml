@@ -13,9 +13,3 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/action-get-latest-tag
-        id: get-latest-tag
-      - uses: actions-ecosystem/action-create-comment@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          body: |
-            steps.get-latest-tag.outputs.tag: ${{ steps.get-latest-tag.outputs.tag }}
