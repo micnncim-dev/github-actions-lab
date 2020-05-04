@@ -2,7 +2,6 @@
 
 set -e
 
-git fetch
 git fetch --tags
 git fetch --prune --unshallow
 
@@ -29,7 +28,9 @@ fi
 # Override branch with inputs.branch if it's specified.
 if [ -n "${INPUT_BRANCH}" ]; then
     branch="${INPUT_BRANCH}"
+    git switch "origin/${branch}" -c "${branch}"
+else
+    git switch "${branch}"
 fi
 
-git switch "${branch}"
 echo "::set-output name=tag::$(git describe --abbrev=0 --tags)"
