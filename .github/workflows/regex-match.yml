@@ -10,13 +10,13 @@ jobs:
       - uses: ./.github/actions/action-regex-match
         id: regex-match
         with:
-            text: ${{ github.event.comment.body }}
-            regex: '^/[Hh]ello'
+          text: ${{ github.event.comment.body }}
+          regex: "^/[Hh]ello"
       - uses: ./.github/actions/action-create-comment
         if: ${{ steps.regex-match.outputs.match == 'true' }}
         with:
           github_token: ${{ secrets.github_token }}
           body: |
             Hello, @${{ github.actor }}!
-            
+
             *This message has been sent via actions-ecosystem/action-regex-match.*
