@@ -2,6 +2,7 @@
 
 set -e
 
+git fetch
 git fetch --tags
 git fetch --prune --unshallow
 
