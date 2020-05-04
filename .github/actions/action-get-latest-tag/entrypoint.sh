@@ -10,7 +10,7 @@ if [ "${INPUT_ALL_BRANCH}" = 'true' ]; then
     exit 0
 fi
 
-branch=$(git rev-parse --abbrev-ref HEAD) # default is current branch
+branch=${GITHUB_REF##*/} # default is current branch
 if [ -n "${INPUT_BRANCH}" ]; then
     branch="${INPUT_BRANCH}"
 fi
