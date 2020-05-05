@@ -29,7 +29,7 @@ jobs:
           tag: ${{ steps.bump-semver.outputs.new_version }}
           message: ${{ steps.regex-match.outputs.group1 }}
       - uses: actions/create-release@v1
-        if: ${{ steps.release-label.outputs.level == 'major') || steps.release-label.outputs.level == 'minor' }}
+        if: ${{ steps.release-label.outputs.level == 'major' || steps.release-label.outputs.level == 'minor' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
