@@ -12,13 +12,12 @@ jobs:
         with:
           text: ${{ github.event.comment.body }}
           regex: '```release_note([\s\S]*)```'
-          flags: gm
       - uses: ./.github/actions/action-create-comment
         if: ${{ steps.regex-match.outputs.match != '' }}
         with:
           github_token: ${{ secrets.github_token }}
           body: |
-            Hello, @${{ github.actor }}!
+            @${{ github.actor }}
 
             The raw release note is here.
 
@@ -27,5 +26,3 @@ jobs:
             ${{ steps.regex-match.outputs.group1 }} 
 
             ---
-
-            *This message has been sent via actions-ecosystem/action-regex-match-ts.*
