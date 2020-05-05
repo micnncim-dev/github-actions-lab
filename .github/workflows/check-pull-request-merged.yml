@@ -1,0 +1,17 @@
+name: Create Comment for PR merge
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  create_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-create-comment@v1
+        if: ${{ github.event.pull_request.merged == 'true' }}
+        with:
+          github_token: ${{ secrets.github_token }}
+          body: |
+            This PR has been merged by @${{ github.actor }}.
