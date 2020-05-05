@@ -13,7 +13,8 @@ jobs:
         with:
           text: ${{ github.event.comment.body }}
           regex: '^/label\s*(.*?)\s*$'
-          
+
       - uses: actions-ecosystem/action-add-labels@v1
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: ${{ steps.regex-match.outputs.group1 }}
