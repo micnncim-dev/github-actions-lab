@@ -1,4 +1,4 @@
-name: Release with label
+name: Release with Pull Request
 
 on:
   pull_request:
@@ -33,7 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.bump-semver.new_version }}
+          tag_name: ${{ steps.bump-semver.outputs.new_version }}
           body: ${{ steps.regex-match.outputs.group1 }}
       - uses: actions-ecosystem/action-create-comment@v1
         with:
