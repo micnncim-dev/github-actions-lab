@@ -7,8 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/action-bump-semver
-        if: ${{ startsWith(github.event.comment.body, '/bump-semver') }}
+
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
         with:
-          current_version: v1.2.3
-          level: major
+          text: ${{ github.event.comment.body }}
+          regex: '^/bump-semver\\s*([\\w\.]+)\\s*([\\w\.]+)$'
+
+      - uses: ./.github/actions/action-bump-semver
+        id: bump-semver
+        with:
+          current_version: ${{ steps.regex-match.outputs.group1 }}
+          level: ${{ steps.regex-match.outputs.group2 }}
+
+      - uses: actions-ecosystem/action-create-comment@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          body: |
+            ${{ steps.regex-match.outputs.group1 }} -> ${{ steps.bump-semver.outputs.new_version }}
