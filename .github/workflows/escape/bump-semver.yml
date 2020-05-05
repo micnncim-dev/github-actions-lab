@@ -1,0 +1,14 @@
+name: Bump Semver
+
+on: [issue_comment]
+
+jobs:
+  bump_semver:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/action-bump-semver
+        if: ${{ startsWith(github.event.comment.body, '/bump-semver') }}
+        with:
+          current_version: 1.2.3
+          level: major
