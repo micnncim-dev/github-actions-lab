@@ -334,7 +334,7 @@
         },
         "author_association": "OWNER",
         "draft": false,
-        "merged": false,
+        "merged": true,
         "mergeable": null,
         "rebaseable": null,
         "mergeable_state": "unknown",
