@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/action-create-comment
-        if: ${{ github.event.comment.action == 'created' && startsWith(github.event.comment.body, '/hello') }}
+        if: ${{ github.event.action == 'created' && startsWith(github.event.comment.body, '/hello') }}
         with:
           github_token: ${{ secrets.github_token }}
           body: |
