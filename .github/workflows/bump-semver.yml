@@ -12,7 +12,7 @@ jobs:
         id: regex-match
         with:
           text: ${{ github.event.comment.body }}
-          regex: '^/bump-semver\\s*([\\w\.]+)\\s*([\\w\.]+)$'
+          regex: '^/bump-semver\s*([\w\.]+)\s*([\w\.]+)$'
 
       - uses: ./.github/actions/action-bump-semver
         id: bump-semver
