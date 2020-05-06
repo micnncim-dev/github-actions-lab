@@ -1,11 +1,9 @@
 name: Get Latest Tag
 
 on:
-  issue_comment:
-    types: [created]
-  pull_request:
-    types: [synchronize]
   push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   get_latest_tag:
