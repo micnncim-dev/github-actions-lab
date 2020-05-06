@@ -2032,13 +2032,27 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const payload = github.context.payload;
-            if (isWebhookPayloadPullRequest(payload)) {
-                core.setOutput('title', payload.pull_request.title);
-                core.setOutput('body', payload.pull_request.body);
-                core.setOutput('number', payload.pull_request.number);
-                core.setOutput('labels', payload.pull_request.labels.map(l => l.name));
-                core.setOutput('assignees', payload.pull_request.assignees.map(a => a.login));
+            if (!isWebhookPayloadPush(payload)) {
+                return;
             }
+            const client = new github.GitHub(core.getInput('github_token'));
+            const resp = yield client.pulls.list({
+                owner: payload.repository.owner.login,
+                repo: payload.repository.name,
+                sort: 'updated',
+                direction: 'desc',
+                state: 'closed',
+                per_page: 100
+            });
+            const pull = resp.data.find(p => p.merge_commit_sha === payload.ref);
+            if (!pull) {
+                return;
+            }
+            core.setOutput('title', pull.title);
+            core.setOutput('body', pull.body);
+            core.setOutput('number', pull.number);
+            core.setOutput('labels', pull.labels.map(l => l.name));
+            core.setOutput('assignees', pull.assignees.map(a => a.login));
         }
         catch (e) {
             core.error(e);
@@ -2046,13 +2060,13 @@ function run() {
         }
     });
 }
-function isWebhookPayloadPullRequest(arg) {
+function isWebhookPayloadPush(arg) {
     return (arg !== null &&
         typeof arg === 'object' &&
-        arg.pull_request !== null &&
-        typeof arg.pull_request === 'object');
+        typeof arg.ref === 'string' &&
+        typeof arg.before === 'string' &&
+        typeof arg.after === 'string');
 }
-exports.isWebhookPayloadPullRequest = isWebhookPayloadPullRequest;
 run();
 
 
