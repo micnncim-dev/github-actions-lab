@@ -21,8 +21,13 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.get-merged-pull-request.outputs.number }}
           body: |
-            steps.get-merged-pull-request.outputs.title: ${{ steps.get-merged-pull-request.outputs.title }}
-            steps.get-merged-pull-request.outputs.body: ${{ steps.get-merged-pull-request.outputs.body }}
-            steps.get-merged-pull-request.outputs.number: ${{ steps.get-merged-pull-request.outputs.number }}
-            steps.get-merged-pull-request.outputs.labels: ${{ steps.get-merged-pull-request.outputs.labels }}
-            steps.get-merged-pull-request.outputs.assignees: ${{ steps.get-merged-pull-request.outputs.assignees }}
+            steps.get-merged-pull-request.outputs.title: `${{ steps.get-merged-pull-request.outputs.title }}`
+            steps.get-merged-pull-request.outputs.body: `${{ steps.get-merged-pull-request.outputs.body }}`
+            steps.get-merged-pull-request.outputs.number: `${{ steps.get-merged-pull-request.outputs.number }}`
+            steps.get-merged-pull-request.outputs.labels: `${{ steps.get-merged-pull-request.outputs.labels }}`
+            steps.get-merged-pull-request.outputs.assignees: `${{ steps.get-merged-pull-request.outputs.assignees }}`
+
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          labels: ${{ steps.get-merged-pull-request.outputs.labels }}
