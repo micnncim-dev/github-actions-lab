@@ -17,6 +17,12 @@ number=$(echo "${pull_request}" | jq -r '.number')
 labels=$(echo "${pull_request}" | jq -r '.labels[].name')
 assignees=$(echo "${pull_request}" | jq -r '.assignees[].login')
 
+labels="|
+${labels}"
+
+assignees="|
+${assignees}"
+
 echo "::debug:: labels=${labels}"
 echo "::debug:: assignees=${assignees}"
 
