@@ -29,14 +29,8 @@ async function run(): Promise<void> {
     core.setOutput('title', pull.title);
     core.setOutput('body', pull.body);
     core.setOutput('number', pull.number);
-    core.setOutput(
-      'labels',
-      pull.labels.map(l => l.name)
-    );
-    core.setOutput(
-      'assignees',
-      pull.assignees.map(a => a.login)
-    );
+    core.setOutput('labels', pull.labels.map(l => l.name).join('\n'));
+    core.setOutput('assignees', pull.assignees.map(a => a.login).join('\n'));
   } catch (e) {
     core.error(e);
     core.setFailed(e.message);

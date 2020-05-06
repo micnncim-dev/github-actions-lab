@@ -17,8 +17,5 @@ outputs:
   assignees:
     description: The username of assignees for the pull request. Separated with line breaks if there're multiple assignees.
 runs:
-  using: docker
-  image: Dockerfile
-branding:
-  icon: paperclip
-  color: blue
+  using: node12
+  main: dist/index.js
