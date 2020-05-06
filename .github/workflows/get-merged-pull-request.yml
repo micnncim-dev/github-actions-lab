@@ -19,7 +19,6 @@ jobs:
       - uses: actions-ecosystem/action-create-comment@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          repo: ${{ github.repository }}
           number: ${{ steps.get-merged-pull-request.outputs.number }}
           body: |
             steps.get-merged-pull-request.outputs.title: ${{ steps.get-merged-pull-request.outputs.title }}
