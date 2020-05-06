@@ -11,4 +11,14 @@ pull_request=$(
         jq -r ".[] | select(.merge_commit_sha==\"${GITHUB_SHA}\")"
 )
 
-echo "::set-output name=pull_request::${pull_request}"
+title=$(echo "${pull_request}" | jq -r '.title')
+body=$(echo "${pull_request}" | jq -r '.body')
+number=$(echo "${pull_request}" | jq -r '.number')
+labels=$(echo "${pull_request}" | jq -r '.labels[].name')
+assignees=$(echo "${pull_request}" | jq -r '.assignees[].login')
+
+echo "::set-output name=title::${title}"
+echo "::set-output name=body::${body}"
+echo "::set-output name=number::${number}"
+echo "::set-output name=labels::${labels}"
+echo "::set-output name=assignees::${assignees}"
