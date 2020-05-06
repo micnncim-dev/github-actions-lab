@@ -17,6 +17,9 @@ number=$(echo "${pull_request}" | jq -r '.number')
 labels=$(echo "${pull_request}" | jq -r '.labels[].name')
 assignees=$(echo "${pull_request}" | jq -r '.assignees[].login')
 
+echo "::debug:: labels=${labels}"
+echo "::debug:: assignees=${assignees}"
+
 echo "::set-output name=title::${title}"
 echo "::set-output name=body::${body}"
 echo "::set-output name=number::${number}"
