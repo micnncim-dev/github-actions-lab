@@ -2029,30 +2029,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const github = __importStar(__webpack_require__(469));
 const core = __importStar(__webpack_require__(393));
 function run() {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const payload = github.context.payload;
-            if (!isWebhookPayloadPush(payload)) {
-                return;
-            }
-            const client = new github.GitHub(core.getInput('github_token'));
-            const resp = yield client.pulls.list({
-                owner: payload.repository.owner.login,
-                repo: payload.repository.name,
-                sort: 'updated',
-                direction: 'desc',
-                state: 'closed',
-                per_page: 100
-            });
-            const pull = resp.data.find(p => p.merge_commit_sha === payload.ref);
-            if (!pull) {
-                return;
-            }
+            const pull = yield getMergedPullRequest(core.getInput('github_token'), github.context.repo.owner, github.context.repo.repo, github.context.sha);
             core.setOutput('title', pull.title);
             core.setOutput('body', pull.body);
             core.setOutput('number', pull.number);
-            core.setOutput('labels', pull.labels.map(l => l.name).join('\n'));
-            core.setOutput('assignees', pull.assignees.map(a => a.login).join('\n'));
+            core.setOutput('labels', (_a = pull.labels) === null || _a === void 0 ? void 0 : _a.join('\n'));
+            core.setOutput('assignees', (_b = pull.assignees) === null || _b === void 0 ? void 0 : _b.join('\n'));
         }
         catch (e) {
             core.error(e);
@@ -2060,12 +2045,29 @@ function run() {
         }
     });
 }
-function isWebhookPayloadPush(arg) {
-    return (arg !== null &&
-        typeof arg === 'object' &&
-        typeof arg.ref === 'string' &&
-        typeof arg.before === 'string' &&
-        typeof arg.after === 'string');
+function getMergedPullRequest(githubToken, owner, repo, sha) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const client = new github.GitHub(githubToken);
+        const resp = yield client.pulls.list({
+            owner,
+            repo,
+            sort: 'updated',
+            direction: 'desc',
+            state: 'closed',
+            per_page: 100
+        });
+        const pull = resp.data.find(p => p.merge_commit_sha === sha);
+        if (!pull) {
+            throw new Error('pull request not found');
+        }
+        return {
+            title: pull.title,
+            body: pull.body,
+            number: pull.number,
+            labels: pull.labels.map(l => l.name),
+            assignees: pull.assignees.map(a => a.login)
+        };
+    });
 }
 run();
 
