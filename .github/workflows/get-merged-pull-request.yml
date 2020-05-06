@@ -1,0 +1,23 @@
+name: Release Label
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/action-get-merged-pull-request
+        id: get-merged-pull-request
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions-ecosystem/action-create-comment@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            steps.get-merged-pull-request.outputs: ${{ steps.get-merged-pull-request.outputs }}
