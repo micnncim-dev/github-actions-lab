@@ -339,10 +339,10 @@
         "rebaseable": null,
         "mergeable_state": "unknown",
         "merged_by": null,
-        "comments": 8,
+        "comments": 7,
         "review_comments": 0,
         "maintainer_can_modify": false,
-        "commits": 10,
+        "commits": 13,
         "additions": 13,
         "deletions": 8,
         "changed_files": 2
