@@ -1,0 +1,28 @@
+name: Get Merged Pull Request
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/action-get-merged-pull-request-ts
+        id: get-merged-pull-request
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions-ecosystem/action-create-comment@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.get-merged-pull-request.outputs.number }}
+          body: |
+            steps.get-merged-pull-request.outputs.title: `${{ steps.get-merged-pull-request.outputs.title }}`
+            steps.get-merged-pull-request.outputs.body: `${{ steps.get-merged-pull-request.outputs.body }}`
+            steps.get-merged-pull-request.outputs.number: `${{ steps.get-merged-pull-request.outputs.number }}`
+            steps.get-merged-pull-request.outputs.labels: `${{ steps.get-merged-pull-request.outputs.labels }}`
+            steps.get-merged-pull-request.outputs.assignees: `${{ steps.get-merged-pull-request.outputs.assignees }}`
