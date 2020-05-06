@@ -1,0 +1,16 @@
+name: Actions Ecosystem Action Get Merged Pull Request
+description: Get merged pull request as JSON object.
+author: Actions Ecosystem
+inputs:
+  github_token:
+    description: A GitHub token.
+    required: true
+outputs:
+  pull_request:
+    description: A JSON of the fetched pull request.
+runs:
+  using: docker
+  image: Dockerfile
+branding:
+  icon: paperclip
+  color: blue
