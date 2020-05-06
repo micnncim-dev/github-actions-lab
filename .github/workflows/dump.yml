@@ -2,7 +2,7 @@ name: Dump
 
 on:
   pull_request:
-    types: [opened, closed]
+    types: [labeled]
 
 jobs:
   dump:
