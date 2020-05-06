@@ -339,13 +339,13 @@
         "rebaseable": null,
         "mergeable_state": "unknown",
         "merged_by": null,
-        "comments": 7,
+        "comments": 8,
         "review_comments": 0,
         "maintainer_can_modify": false,
         "commits": 13,
         "additions": 18,
         "deletions": 9,
-        "changed_files": 2
+        "changed_files": 4
     },
     "repository": {
         "id": 186853002,
