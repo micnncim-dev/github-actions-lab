@@ -1,4 +1,4 @@
-name: Release Label
+name: Get Merged Pull Request
 
 on:
   push:
