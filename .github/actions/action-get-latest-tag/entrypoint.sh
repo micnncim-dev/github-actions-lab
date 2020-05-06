@@ -15,6 +15,7 @@ else
     for tag in $(git tag | sort -r); do
         if echo "${tag}" | grep -Eq '^v?([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$'; then
             latest_tag="${tag}"
+            break
         fi
     done
 fi
