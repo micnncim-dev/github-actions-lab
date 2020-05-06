@@ -1,12 +1,19 @@
 name: Release Label
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     types: [closed]
 
 jobs:
-  create_comment:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: ./.github/actions/action-release-label
+        id: release-label
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
