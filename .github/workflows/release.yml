@@ -64,4 +64,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.get-merged-pull-request.outputs.number }}
           body: |
-            The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released.
+            The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
