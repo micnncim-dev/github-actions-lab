@@ -13,7 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ./.github/actions/action-release-label
-        id: release-label
+      - uses: actions-ecosystem/action-get-merged-pull-request@v1
+        id: get-merged-pull-request
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: ./.github/actions/action-release-label
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: ${{ steps.get-merged-pull-request.outputs.labels }}
