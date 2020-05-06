@@ -4,7 +4,6 @@ on:
   pull_request:
     types:
       - labeled
-      - unlabeled
 
 jobs:
   release:
@@ -14,6 +13,7 @@ jobs:
 
       - uses: actions-ecosystem/action-release-label@v1
         id: release-label
+        if: ${{ startsWith(github.event.label.name, 'release/') }}
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
