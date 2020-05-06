@@ -1,6 +1,6 @@
 name: Dump
 
-on: [push, issues, pull_request, issue_comment]
+on: [pull_request]
 
 jobs:
   dump:
