@@ -40,7 +40,7 @@ jobs:
         id: regex-match
         if: ${{ steps.bump-semver.outputs.new_version != null }}
         with:
-          text: ${{ github.event.pull_request.body }}
+          text: ${{ steps.get-merged-pull-request.outputs.body }}
           regex: '```release_note([\s\S]*)```'
 
       - uses: actions-ecosystem/action-push-tag@v1
