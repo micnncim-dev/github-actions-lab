@@ -19,8 +19,8 @@ jobs:
       - uses: actions-ecosystem/action-create-comment@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          owner: ${{ fromJSON(steps.get-merged-pull-request.outputs.pull_request).base.repo.owner }}
-          repo: ${{ fromJSON(steps.get-merged-pull-request.outputs.pull_request).base.repo.name }}
-          number: ${{ fromJSON(steps.get-merged-pull-request.outputs.pull_request).number }}
+          owner: ${{ steps.get-merged-pull-request.outputs.pull_request.base.repo.owner }}
+          repo: ${{ steps.get-merged-pull-request.outputs.pull_request.base.repo.name }}
+          number: ${{ steps.get-merged-pull-request.outputs.pull_request.number }}
           body: |
             steps.get-merged-pull-request.outputs: ${{ steps.get-merged-pull-request.outputs.pull_request }}
