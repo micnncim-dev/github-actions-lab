@@ -17,7 +17,7 @@ jobs:
         id: regex-match
         with:
           text: ${{ github.event.pull-request.title }}
-          regex: "help|n['o]t work"
+          regex: ".*help|n['o]t work.*"
           flags: 'gi'
 
       - uses: actions-ecosystem/action-add-labels@v1
