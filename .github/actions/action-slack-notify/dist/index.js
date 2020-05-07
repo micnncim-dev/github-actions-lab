@@ -3346,7 +3346,7 @@ function run() {
                         fields: [
                             {
                                 type: 'mrkdwn',
-                                text: `*Repository:*\n${owner}/${repo}`
+                                text: `*Repository:*\n\`${owner}/${repo}\``
                             },
                             {
                                 type: 'mrkdwn',
@@ -3354,11 +3354,11 @@ function run() {
                             },
                             {
                                 type: 'mrkdwn',
-                                text: `*Workflow:*\n${workflow}`
+                                text: `*Workflow:*\n\`${workflow}\``
                             },
                             {
                                 type: 'mrkdwn',
-                                text: `*Number:*\n${number}`
+                                text: `*Number:*\n\`${number}\``
                             }
                         ]
                     }
