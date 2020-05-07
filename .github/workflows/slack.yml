@@ -20,3 +20,4 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel: dev
           message: ${{ steps.regex-match.outputs.match }}, hello!
+          verbose: true
