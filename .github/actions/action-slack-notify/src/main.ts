@@ -17,7 +17,7 @@ async function run(): Promise<void> {
     const { number } = github.context.issue;
     const { ref, eventName, action, workflow } = github.context;
 
-    const runId = process.env['GITHUB_RUN_ID']
+    const runId = process.env['GITHUB_RUN_ID'];
 
     core.debug(`eventName=${eventName}`);
     core.debug(`action=${action}`);
@@ -75,7 +75,7 @@ async function run(): Promise<void> {
     client.chat.postMessage({
       channel,
       text: '',
-      blocks: blocks,
+      blocks,
       username,
       icon_emoji: ':smile:'
     });

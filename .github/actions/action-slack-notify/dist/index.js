@@ -3387,36 +3387,7 @@ function run() {
             client.chat.postMessage({
                 channel,
                 text: '',
-                blocks: [
-                    {
-                        type: 'section',
-                        text: {
-                            type: 'mrkdwn',
-                            text: message
-                        }
-                    },
-                    {
-                        type: 'section',
-                        fields: [
-                            {
-                                type: 'mrkdwn',
-                                text: `*Repository:*\n\`${owner}/${repo}\``
-                            },
-                            {
-                                type: 'mrkdwn',
-                                text: `*Ref:*\n\`${ref}\``
-                            },
-                            {
-                                type: 'mrkdwn',
-                                text: `*Workflow:*\n\`${workflow}\``
-                            },
-                            {
-                                type: 'mrkdwn',
-                                text: `*Number:*\n\`${number}\``
-                            }
-                        ]
-                    }
-                ],
+                blocks,
                 username,
                 icon_emoji: ':smile:'
             });
