@@ -3,7 +3,7 @@ name: Slack Notify
 on: [issue_comment]
 
 jobs:
-  add_labels:
+  notify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,7 +12,7 @@ jobs:
         id: regex-match
         with:
           text: ${{ github.event.comment.body }}
-          regex: '\B(@(?!.*(-){2,}.*|.*\/.*)[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?)\b'
+          regex: '\B@(?!.*(-){2,}.*|.*\/.*)[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?\b'
 
       - uses: ./.github/actions/action-slack-notify
         if: ${{ steps.regex-match.outputs.match != '' }}
