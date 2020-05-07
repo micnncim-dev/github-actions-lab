@@ -17,10 +17,14 @@ async function run(): Promise<void> {
     const { number } = github.context.issue;
     const { ref, eventName, action, workflow } = github.context;
 
+    const runId = process.env['GITHUB_RUN_ID']
+
     core.debug(`eventName=${eventName}`);
     core.debug(`action=${action}`);
 
     const repoUrl = `https://github.com/${owner}/${repo}`;
+
+    core.debug(`url=${repoUrl}/runs/${runId}`);
 
     const blocks: SectionBlock[] = [
       {
