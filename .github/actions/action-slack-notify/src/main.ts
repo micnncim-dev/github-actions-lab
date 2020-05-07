@@ -13,13 +13,14 @@ async function run(): Promise<void> {
 
     const verbose = core.getInput('verbose') === 'true';
 
-    const owner = github.context.repo.owner;
-    const repo = github.context.repo.repo;
-    const ref = github.context.ref;
-    const action = github.context.action;
-    const workflow = github.context.workflow;
+    const { owner, repo } = github.context.repo;
+    const { number } = github.context.issue;
+    const { ref, eventName, action, workflow } = github.context;
 
-    const number = github.context.issue.number;
+    core.debug(`eventName=${eventName}`);
+    core.debug(`action=${action}`);
+
+    const repoUrl = `https://github.com/${owner}/${repo}`;
 
     const blocks: SectionBlock[] = [
       {
@@ -35,25 +36,29 @@ async function run(): Promise<void> {
       const fields: MrkdwnElement[] = [
         {
           type: 'mrkdwn',
-          text: `*Repository:*\n\`${owner}/${repo}\``
+          text: `*Repository:*\n[${owner}/${repo}](${repoUrl})`
         },
         {
           type: 'mrkdwn',
-          text: `*Ref:*\n\`${ref}\``
+          text: `*Ref:*\n${ref}`
         },
         {
           type: 'mrkdwn',
-          text: `*Workflow:*\n\`${workflow}\``
+          text: `*Workflow:*\n${workflow}`
         },
         {
           type: 'mrkdwn',
-          text: `*Action:*\n\`${action}\``
+          text: `*Event:*\n${eventName}`
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Action:*\n${action}`
         }
       ];
       if (number) {
         fields.push({
           type: 'mrkdwn',
-          text: `*Number:*\n\`${number}\``
+          text: `*Number:*\n${number}`
         });
       }
 
