@@ -5,12 +5,12 @@ inputs:
   slack_token:
     description: A Slack token.
     required: true
+  message:
+    description: A message for channel.
+    required: true
   channel:
     description: The labels' name to be added. Must be separated with line breaks if there're multiple labels.
     required: true
-  message:
-    description: A message for channel. The default is ''.
-    required: false
   username:
     description: The username who sends a message.
     required: false
