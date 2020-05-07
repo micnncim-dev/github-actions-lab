@@ -3332,10 +3332,11 @@ function run() {
             const channel = core.getInput('channel');
             const message = core.getInput('message');
             const username = core.getInput('username');
-            const verbose = core.getInput('verbose') == 'true';
+            const verbose = core.getInput('verbose') === 'true';
             const owner = github.context.repo.owner;
             const repo = github.context.repo.repo;
             const ref = github.context.ref;
+            const action = github.context.action;
             const workflow = github.context.workflow;
             const number = github.context.issue.number;
             const blocks = [
@@ -3348,26 +3349,33 @@ function run() {
                 }
             ];
             if (verbose) {
+                const fields = [
+                    {
+                        type: 'mrkdwn',
+                        text: `*Repository:*\n\`${owner}/${repo}\``
+                    },
+                    {
+                        type: 'mrkdwn',
+                        text: `*Ref:*\n\`${ref}\``
+                    },
+                    {
+                        type: 'mrkdwn',
+                        text: `*Workflow:*\n\`${workflow}\``
+                    },
+                    {
+                        type: 'mrkdwn',
+                        text: `*Action:*\n\`${action}\``
+                    }
+                ];
+                if (number) {
+                    fields.push({
+                        type: 'mrkdwn',
+                        text: `*Number:*\n\`${number}\``
+                    });
+                }
                 blocks.push({
                     type: 'section',
-                    fields: [
-                        {
-                            type: 'mrkdwn',
-                            text: `*Repository:*\n\`${owner}/${repo}\``
-                        },
-                        {
-                            type: 'mrkdwn',
-                            text: `*Ref:*\n\`${ref}\``
-                        },
-                        {
-                            type: 'mrkdwn',
-                            text: `*Workflow:*\n\`${workflow}\``
-                        },
-                        {
-                            type: 'mrkdwn',
-                            text: `*Number:*\n\`${number}\``
-                        }
-                    ]
+                    fields
                 });
             }
             client.chat.postMessage({

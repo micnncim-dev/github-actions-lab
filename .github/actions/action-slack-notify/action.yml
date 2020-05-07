@@ -6,15 +6,19 @@ inputs:
     description: A Slack token.
     required: true
   message:
-    description: A message for channel.
+    description: A message for the channel.
     required: true
   channel:
-    description: The labels' name to be added. Must be separated with line breaks if there're multiple labels.
+    description: A channel that will receives the message.
     required: true
   username:
     description: The username who sends a message.
     required: false
     default: 'GitHub Actions'
+  verbose:
+    description: 'Whether message contains metadata: repository, ref, workflow, action, number'
+    required: false
+    default: 'false'
 runs:
   using: node12
   main: dist/index.js

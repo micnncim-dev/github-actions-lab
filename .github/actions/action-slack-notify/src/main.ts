@@ -1,7 +1,7 @@
 import * as github from '@actions/github';
 import * as core from '@actions/core';
 import * as slack from '@slack/web-api';
-import { SectionBlock } from '@slack/web-api';
+import { SectionBlock, MrkdwnElement } from '@slack/web-api';
 
 async function run(): Promise<void> {
   try {
@@ -11,11 +11,12 @@ async function run(): Promise<void> {
     const message = core.getInput('message');
     const username = core.getInput('username');
 
-    const verbose = core.getInput('verbose') == 'true';
+    const verbose = core.getInput('verbose') === 'true';
 
     const owner = github.context.repo.owner;
     const repo = github.context.repo.repo;
     const ref = github.context.ref;
+    const action = github.context.action;
     const workflow = github.context.workflow;
 
     const number = github.context.issue.number;
@@ -31,26 +32,34 @@ async function run(): Promise<void> {
     ];
 
     if (verbose) {
+      const fields: MrkdwnElement[] = [
+        {
+          type: 'mrkdwn',
+          text: `*Repository:*\n\`${owner}/${repo}\``
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Ref:*\n\`${ref}\``
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Workflow:*\n\`${workflow}\``
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Action:*\n\`${action}\``
+        }
+      ];
+      if (number) {
+        fields.push({
+          type: 'mrkdwn',
+          text: `*Number:*\n\`${number}\``
+        });
+      }
+
       blocks.push({
         type: 'section',
-        fields: [
-          {
-            type: 'mrkdwn',
-            text: `*Repository:*\n\`${owner}/${repo}\``
-          },
-          {
-            type: 'mrkdwn',
-            text: `*Ref:*\n\`${ref}\``
-          },
-          {
-            type: 'mrkdwn',
-            text: `*Workflow:*\n\`${workflow}\``
-          },
-          {
-            type: 'mrkdwn',
-            text: `*Number:*\n\`${number}\``
-          }
-        ]
+        fields
       });
     }
 
