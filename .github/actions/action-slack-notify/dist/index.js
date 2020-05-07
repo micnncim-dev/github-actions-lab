@@ -3339,8 +3339,15 @@ function run() {
             const number = github.context.issue.number;
             client.chat.postMessage({
                 channel,
-                text: message,
+                text: 'text',
                 blocks: [
+                    {
+                        type: 'section',
+                        text: {
+                            type: 'mrkdwn',
+                            text: message,
+                        }
+                    },
                     {
                         type: 'section',
                         fields: [
@@ -3350,7 +3357,7 @@ function run() {
                             },
                             {
                                 type: 'mrkdwn',
-                                text: `*Ref:*\n${ref}`
+                                text: `*Ref:*\n\`${ref}\``
                             },
                             {
                                 type: 'mrkdwn',

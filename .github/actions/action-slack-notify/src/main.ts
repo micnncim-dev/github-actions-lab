@@ -19,8 +19,15 @@ async function run(): Promise<void> {
 
     client.chat.postMessage({
       channel,
-      text: message,
+      text: 'text',
       blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: message,
+          }
+        },
         {
           type: 'section',
           fields: [
@@ -30,7 +37,7 @@ async function run(): Promise<void> {
             },
             {
               type: 'mrkdwn',
-              text: `*Ref:*\n${ref}`
+              text: `*Ref:*\n\`${ref}\``
             },
             {
               type: 'mrkdwn',
