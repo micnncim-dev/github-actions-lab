@@ -1,5 +1,5 @@
 {
-  "name": "action-get-merged-pull-request",
+  "name": "action-slack-notifier",
   "version": "1.0.0",
   "private": true,
   "description": "Get the pull request merged with base branch.",
@@ -13,12 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions-ecosystem/action-get-merged-pull-request.git"
+    "url": "git+https://github.com/actions-ecosystem/action-slack-notifier.git"
   },
   "keywords": [
     "actions",
     "github",
-    "versioning"
+    "slack",
+    "notification"
   ],
   "author": "The Actions Ecosystem Authors",
   "license": "Apache 2.0",

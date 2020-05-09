@@ -1,5 +1,5 @@
-name: Actions Ecosystem Add Labels
-description: Add labels to an issue or a pull request.
+name: Actions Ecosystem Slack Notifier
+description: Send notifications to Slack
 author: The Actions Ecosystem Authors
 inputs:
   slack_token:
@@ -14,17 +14,17 @@ inputs:
   username:
     description: The username who sends a message.
     required: false
-    default: 'GitHub Actions'
+    default: "GitHub Actions"
   color:
     description: The color of a message. The color names {black, red, green, yellow, blue, magenta, cyan, white} and color code (e.g., '#4CAF50') are available. The default is no-color.
     required: false
   verbose:
-    description: 'Whether message contains metadata: repository, ref, workflow, action, number'
+    description: "Whether message contains metadata: repository, ref, workflow, event, action, number"
     required: false
-    default: 'false'
+    default: "false"
 runs:
   using: node12
   main: dist/index.js
 branding:
-  icon: bookmark
-  color: green
+  icon: bell
+  color: yellow
