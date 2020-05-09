@@ -3325,13 +3325,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const github = __importStar(__webpack_require__(469));
 const core = __importStar(__webpack_require__(393));
 const slack = __importStar(__webpack_require__(114));
+const colorCodes = new Map([
+    ['black', '#000000'],
+    ['red', '#F44336'],
+    ['green', '#4CAF50'],
+    ['yellow', '#FFEB3B'],
+    ['blue', '#2196F3'],
+    ['magenta', '#FF00FF'],
+    ['cyan', '#00BCD4'],
+    ['white', '#FFFFFF']
+]);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const client = new slack.WebClient(core.getInput('slack_token'));
             const channel = core.getInput('channel');
             const message = core.getInput('message');
-            const username = core.getInput('username') || 'GitHub Actions';
+            const username = core.getInput('username');
+            const color = core.getInput('color');
             const verbose = core.getInput('verbose') === 'true';
             const { owner, repo } = github.context.repo;
             const { number } = github.context.issue;
@@ -3354,7 +3365,7 @@ function run() {
                 const fields = [
                     {
                         type: 'mrkdwn',
-                        text: `*Repository:*\n<${owner}/${repo}|${repoUrl}>`
+                        text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
                     },
                     {
                         type: 'mrkdwn',
@@ -3384,18 +3395,26 @@ function run() {
                     fields
                 });
             }
-            const attachment = {
-                color: '#2cbe4e',
-                blocks
-            };
-            client.chat.postMessage({
+            const arg = {
                 channel,
                 text: '',
-                attachments: [attachment],
                 username,
                 as_user: true,
                 icon_emoji: ':smile:'
-            });
+            };
+            const colorCode = colorCodes.get(color) || color;
+            if (colorCode) {
+                arg.attachments = [
+                    {
+                        color: colorCode,
+                        blocks
+                    }
+                ];
+            }
+            else {
+                arg.blocks = blocks;
+            }
+            client.chat.postMessage(arg);
         }
         catch (e) {
             core.error(e);

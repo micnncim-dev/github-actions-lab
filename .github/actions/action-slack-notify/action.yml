@@ -6,7 +6,7 @@ inputs:
     description: A Slack token.
     required: true
   message:
-    description: A message for the channel.
+    description: A message for the channel. Supports Markdown format.
     required: true
   channel:
     description: A channel that will receives the message.
@@ -16,7 +16,7 @@ inputs:
     required: false
     default: 'GitHub Actions'
   color:
-    description: The color of a message.
+    description: The color of a message. The color names {black, red, green, yellow, blue, magenta, cyan, white} and color code (e.g., '#4CAF50') are available. The default is no-color.
     required: false
   verbose:
     description: 'Whether message contains metadata: repository, ref, workflow, action, number'

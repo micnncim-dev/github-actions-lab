@@ -1,7 +1,22 @@
 import * as github from '@actions/github';
 import * as core from '@actions/core';
 import * as slack from '@slack/web-api';
-import { SectionBlock, MrkdwnElement, MessageAttachment } from '@slack/web-api';
+import {
+  SectionBlock,
+  MrkdwnElement,
+  ChatPostMessageArguments
+} from '@slack/web-api';
+
+const colorCodes = new Map<string, string>([
+  ['black', '#000000'],
+  ['red', '#F44336'],
+  ['green', '#4CAF50'],
+  ['yellow', '#FFEB3B'],
+  ['blue', '#2196F3'],
+  ['magenta', '#FF00FF'],
+  ['cyan', '#00BCD4'],
+  ['white', '#FFFFFF']
+]);
 
 async function run(): Promise<void> {
   try {
@@ -9,7 +24,8 @@ async function run(): Promise<void> {
 
     const channel = core.getInput('channel');
     const message = core.getInput('message');
-    const username = core.getInput('username') || 'GitHub Actions';
+    const username = core.getInput('username');
+    const color = core.getInput('color');
 
     const verbose = core.getInput('verbose') === 'true';
 
@@ -40,7 +56,7 @@ async function run(): Promise<void> {
       const fields: MrkdwnElement[] = [
         {
           type: 'mrkdwn',
-          text: `*Repository:*\n<${owner}/${repo}|${repoUrl}>`
+          text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
         },
         {
           type: 'mrkdwn',
@@ -72,19 +88,27 @@ async function run(): Promise<void> {
       });
     }
 
-    const attachment: MessageAttachment = {
-      color: '#2cbe4e',
-      blocks
-    };
-
-    client.chat.postMessage({
+    const arg: ChatPostMessageArguments = {
       channel,
       text: '',
-      attachments: [attachment],
       username,
       as_user: true,
       icon_emoji: ':smile:'
-    });
+    };
+
+    const colorCode = colorCodes.get(color) || color;
+    if (colorCode) {
+      arg.attachments = [
+        {
+          color: colorCode,
+          blocks
+        }
+      ];
+    } else {
+      arg.blocks = blocks;
+    }
+
+    client.chat.postMessage(arg);
   } catch (e) {
     core.error(e);
     core.setFailed(e.message);
