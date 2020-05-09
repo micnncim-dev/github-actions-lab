@@ -19,15 +19,6 @@ jobs:
           regex: '(?:add|update|fix)\([a-z]+\):\s.+'
 
       - uses: actions-ecosystem/action-create-comment@v1
-        if: ${{ steps.regex-match.outputs.match != '' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            :warning: The title of this pull request is invalid. Please make the title match `(?:add|update|fix)\([a-z]+\):\s.+`.
-
-            Good examples are `add(cli): enable --verbose flag` and `fix(api): avoid unexpected error in handler`
-
-      - uses: actions-ecosystem/action-create-comment@v1
         if: ${{ steps.regex-match.outputs.match == '' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -37,6 +28,12 @@ jobs:
             Please make the title match `(?:add|update|fix)\([a-z]+\):\s.+`.
 
             e.g.) `add(cli): enable --verbose flag`, `fix(api): avoid unexpected error in handler`
+
+      - uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ steps.regex-match.outputs.match == '' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: 'invalid/title'
 
       - uses: ./.github/actions/action-set-action-status
         if: ${{ steps.regex-match.outputs.match == '' }}
