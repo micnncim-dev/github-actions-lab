@@ -3335,21 +3335,21 @@ const colorCodes = new Map([
     ['cyan', '#00BCD4'],
     ['white', '#FFFFFF']
 ]);
+const slackColors = ['good', 'warning', 'danger'];
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const client = new web_api_1.WebClient(core.getInput('slack_token'));
-            const channel = core.getInput('channel');
+            const channel = core.getInput('channel').replace('^E', '');
             const message = core.getInput('message');
             const username = core.getInput('username');
-            const color = core.getInput('color');
+            const color = colorCodes.get(core.getInput('color')) || core.getInput('color');
             const verbose = core.getInput('verbose') === 'true';
             const { owner, repo } = github.context.repo;
             const { payload, ref, eventName, workflow } = github.context;
             const runId = process.env['GITHUB_RUN_ID'] || '';
-            const colorCode = colorCodes.get(color) || color;
             const elements = yield createMetadataElements(owner, repo, payload, ref, eventName, workflow, runId);
-            const args = yield createPostMessageArguments(channel, message, username, elements, verbose, colorCode);
+            const args = yield createPostMessageArguments(channel, message, username, elements, verbose, color);
             client.chat.postMessage(args);
         }
         catch (e) {
@@ -3358,7 +3358,7 @@ function run() {
         }
     });
 }
-function createPostMessageArguments(channel, message, username, elements, verbose, colorCode) {
+function createPostMessageArguments(channel, message, username, elements, verbose, color) {
     return __awaiter(this, void 0, void 0, function* () {
         const args = {
             channel,
@@ -3368,7 +3368,8 @@ function createPostMessageArguments(channel, message, username, elements, verbos
             unfurl_links: true,
             unfurl_media: true
         };
-        const colored = colorCode.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
+        const colored = color.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/) ||
+            slackColors.includes(color)
             ? true
             : false;
         // verbose && colored -> .text, .attachments[].{color, blocks}
@@ -3394,7 +3395,7 @@ function createPostMessageArguments(channel, message, username, elements, verbos
         }
         args.attachments = [
             {
-                color: colorCode,
+                color,
                 text: verbose ? undefined : message,
                 blocks: verbose
                     ? [

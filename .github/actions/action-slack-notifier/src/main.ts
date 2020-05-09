@@ -18,14 +18,18 @@ const colorCodes = new Map<string, string>([
   ['white', '#FFFFFF']
 ]);
 
+const slackColors = ['good', 'warning', 'danger'];
+
 async function run(): Promise<void> {
   try {
     const client = new WebClient(core.getInput('slack_token'));
 
-    const channel = core.getInput('channel');
+    const channel = core.getInput('channel').replace('^E', '');
+
     const message = core.getInput('message');
     const username = core.getInput('username');
-    const color = core.getInput('color');
+    const color =
+      colorCodes.get(core.getInput('color')) || core.getInput('color');
 
     const verbose = core.getInput('verbose') === 'true';
 
@@ -33,8 +37,6 @@ async function run(): Promise<void> {
     const { payload, ref, eventName, workflow } = github.context;
 
     const runId = process.env['GITHUB_RUN_ID'] || '';
-
-    const colorCode = colorCodes.get(color) || color;
 
     const elements = await createMetadataElements(
       owner,
@@ -52,7 +54,7 @@ async function run(): Promise<void> {
       username,
       elements,
       verbose,
-      colorCode
+      color
     );
 
     client.chat.postMessage(args);
@@ -68,7 +70,7 @@ async function createPostMessageArguments(
   username: string,
   elements: MrkdwnElement[],
   verbose: boolean,
-  colorCode: string
+  color: string
 ): Promise<ChatPostMessageArguments> {
   const args: ChatPostMessageArguments = {
     channel,
@@ -79,9 +81,11 @@ async function createPostMessageArguments(
     unfurl_media: true
   };
 
-  const colored = colorCode.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
-    ? true
-    : false;
+  const colored =
+    color.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/) ||
+    slackColors.includes(color)
+      ? true
+      : false;
 
   // verbose && colored -> .text, .attachments[].{color, blocks}
   // verbose && !colored -> .blocks[]
@@ -110,7 +114,7 @@ async function createPostMessageArguments(
 
   args.attachments = [
     {
-      color: colorCode,
+      color,
       text: verbose ? undefined : message,
       blocks: verbose
         ? [
