@@ -1,15 +1,13 @@
 name: Get Latest Tag
 
-on:
-  issue_comment:
-    types: [created]
+on: push
 
 jobs:
   get_latest_tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: ./.github/actions/action-get-latest-tag
-        if: ${{ startsWith(github.event.comment.body, '/get-latest-tag') }}
         with:
           semver_only: true
