@@ -3393,6 +3393,7 @@ function createPostMessageArguments(channel, message, username, elements, verbos
         if (!colored) {
             return args;
         }
+        core.debug(`color=${color}`);
         args.attachments = [
             {
                 color,

@@ -112,6 +112,7 @@ async function createPostMessageArguments(
     return args;
   }
 
+  core.debug(`color=${color}`)
   args.attachments = [
     {
       color,
