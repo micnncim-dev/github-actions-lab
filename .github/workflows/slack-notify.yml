@@ -15,4 +15,4 @@ jobs:
           message: '@micnncim Hello'
           channel: dev
           # color: green
-          verbose: true
+          # verbose: true
