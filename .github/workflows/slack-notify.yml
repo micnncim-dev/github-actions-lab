@@ -20,5 +20,5 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: ${{ steps.regex-match.outputs.match }}
           channel: dev
-          # color: cyan
-          verbose: true
+          color: cyan
+          # verbose: true
