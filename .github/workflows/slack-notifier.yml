@@ -1,21 +1,28 @@
 name: Slack Notifier
 
 on:
-  issues:
+  issue_comment:
     types:
-      - labeled
+      - created
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions-ecosystem/action-regex-match@v1
+        id: regex-match
+        with:
+          regex: '\/cc(?:( +@[-\w]+?)+)\s'
+          text: ${{ github.event.comment.body }}
+
       - uses: ./.github/actions/action-slack-notifier
-        if: ${{ github.event.label.name == 'help wanted' }}
+        if: ${{ steps.regex-match.outputs.match != '' }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: |
-            `${{ github.event.label.name }}` label has been added.
+            `${{ steps.regex-match.outputs.group1 }}` are mentioned.
           channel: dev
           color: blue # optional
           verbose: true # optional
