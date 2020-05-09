@@ -10,11 +10,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: ./.github/actions/action-slack-notifier
-        if: ${{ steps.regex-match.outputs.match != '' }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          message: |
-            ${{ steps.regex-match.outputs.match }}
+          message: Hello
           channel: dev
           color: blue # optional
           verbose: true # optional
