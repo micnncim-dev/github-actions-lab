@@ -1,6 +1,8 @@
-name: Test
+name: Propagate Comment
 
-on: push
+on:
+  issue_comment:
+  issues:
 
 jobs:
   test:
@@ -8,16 +10,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - uses: actions-ecosystem/action-set-action-status@v1
+      - uses: actions-ecosystem/action-regex-match@v1
+        id: regex-match
         with:
-          status: failure
+          text: ${{  }}
+          regex: '\B@(?!.*(-){2,}.*|.*\/.*)[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?\b'
           
       - uses: ./.github/actions/action-slack-notifier
         if: ${{ failure() }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: |
-            @${{ github.actor }} test failed.
+            @${{ github.actor }} mentioned 
           channel: dev
-          color: red # optional
+          color: blue # optional
           verbose: true # optional
