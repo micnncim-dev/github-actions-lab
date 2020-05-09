@@ -112,7 +112,14 @@ async function createPostMessageArguments(
     {
       color: colorCode,
       text: verbose ? undefined : message,
-      blocks: verbose ? elements : undefined
+      blocks: verbose
+        ? [
+            {
+              type: 'section',
+              fields: elements
+            }
+          ]
+        : undefined
     }
   ];
 
@@ -144,7 +151,7 @@ async function createMetadataElements(
     issueOrPullUrl = `${repoUrl}/pull/${number}`;
   }
 
-  const fields: MrkdwnElement[] = [
+  const elements: MrkdwnElement[] = [
     {
       type: 'mrkdwn',
       text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
@@ -167,13 +174,13 @@ async function createMetadataElements(
     }
   ];
   if (number) {
-    fields.push({
+    elements.push({
       type: 'mrkdwn',
       text: `*Number:*\n<${issueOrPullUrl}|${number}>`
     });
   }
 
-  return fields;
+  return elements;
 }
 
 function isWebhookPayloadIssues(

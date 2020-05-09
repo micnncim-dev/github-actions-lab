@@ -3396,7 +3396,14 @@ function createPostMessageArguments(channel, message, username, elements, verbos
             {
                 color: colorCode,
                 text: verbose ? undefined : message,
-                blocks: verbose ? elements : undefined
+                blocks: verbose
+                    ? [
+                        {
+                            type: 'section',
+                            fields: elements
+                        }
+                    ]
+                    : undefined
             }
         ];
         return args;
@@ -3418,7 +3425,7 @@ function createMetadataElements(owner, repo, payload, ref, event, workflow, runI
             number = payload.pull_request.number;
             issueOrPullUrl = `${repoUrl}/pull/${number}`;
         }
-        const fields = [
+        const elements = [
             {
                 type: 'mrkdwn',
                 text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
@@ -3441,12 +3448,12 @@ function createMetadataElements(owner, repo, payload, ref, event, workflow, runI
             }
         ];
         if (number) {
-            fields.push({
+            elements.push({
                 type: 'mrkdwn',
                 text: `*Number:*\n<${issueOrPullUrl}|${number}>`
             });
         }
-        return fields;
+        return elements;
     });
 }
 function isWebhookPayloadIssues(arg) {
