@@ -14,7 +14,7 @@ jobs:
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          regex: '^\/cc(?:( +@[-\w]+)+)\s*$'
+          regex: '^\/cc(( +@[-\w]+)+)\s*$'
           text: ${{ github.event.comment.body }}
 
       - uses: ./.github/actions/action-slack-notifier
@@ -22,9 +22,7 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: |
-            `${{ steps.regex-match.outputs.match }}`
-            `${{ steps.regex-match.outputs.group1 }}`
-            `${{ steps.regex-match.outputs.group2 }}`
+            ${{ steps.regex-match.outputs.match }}
           channel: dev
           color: blue # optional
           verbose: true # optional
