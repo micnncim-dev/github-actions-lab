@@ -13,7 +13,7 @@ jobs:
           status: failure
           
       - uses: ./.github/actions/action-slack-notifier
-        if: ${{ failure() }}
+        if: ${{ always() }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: |
