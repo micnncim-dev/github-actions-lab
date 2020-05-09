@@ -3,8 +3,7 @@ import * as core from '@actions/core';
 import {
   WebClient,
   MrkdwnElement,
-  ChatPostMessageArguments,
-  SectionBlock
+  ChatPostMessageArguments
 } from '@slack/web-api';
 
 const colorCodes = new Map<string, string>([
@@ -37,7 +36,7 @@ async function run(): Promise<void> {
 
     const colorCode = colorCodes.get(color) || color;
 
-    const block = await createMetadataBlock(
+    const elements = await createMetadataElements(
       owner,
       repo,
       ref,
@@ -51,7 +50,7 @@ async function run(): Promise<void> {
       channel,
       message,
       username,
-      block,
+      elements,
       verbose,
       colorCode
     );
@@ -67,7 +66,7 @@ async function createPostMessageArguments(
   channel: string,
   message: string,
   username: string,
-  block: SectionBlock,
+  elements: MrkdwnElement[],
   verbose: boolean,
   colorCode: string
 ): Promise<ChatPostMessageArguments> {
@@ -91,22 +90,36 @@ async function createPostMessageArguments(
 
   args.text = !verbose && colored ? '' : message;
 
-  args.blocks = verbose && !colored ? [block] : undefined;
+  if (verbose && !colored) {
+    args.blocks = [
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: message
+        },
+        fields: elements
+      }
+    ];
+    return args;
+  }
 
-  args.attachments = colored
-    ? [
-        {
-          color: colorCode,
-          text: verbose ? undefined : message,
-          blocks: verbose ? [block] : undefined
-        }
-      ]
-    : undefined;
+  if (!colored) {
+    return args;
+  }
+
+  args.attachments = [
+    {
+      color: colorCode,
+      text: verbose ? undefined : message,
+      blocks: verbose ? elements : undefined
+    }
+  ];
 
   return args;
 }
 
-async function createMetadataBlock(
+async function createMetadataElements(
   owner: string,
   repo: string,
   ref: string,
@@ -114,7 +127,7 @@ async function createMetadataBlock(
   workflow: string,
   runId: string,
   number?: number
-): Promise<SectionBlock> {
+): Promise<MrkdwnElement[]> {
   const repoUrl = `https://github.com/${owner}/${repo}`;
   const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
   const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
@@ -149,10 +162,7 @@ async function createMetadataBlock(
     });
   }
 
-  return {
-    type: 'section',
-    fields
-  };
+  return fields;
 }
 
 run();
