@@ -1,7 +1,12 @@
 import * as github from '@actions/github';
 import * as core from '@actions/core';
 import * as slack from '@slack/web-api';
-import { MrkdwnElement, ChatPostMessageArguments, Block } from '@slack/web-api';
+import {
+  MrkdwnElement,
+  ChatPostMessageArguments,
+  SectionBlock,
+  Block
+} from '@slack/web-api';
 
 const colorCodes = new Map<string, string>([
   ['black', '#000000'],
@@ -31,51 +36,83 @@ async function run(): Promise<void> {
 
     const runId = process.env['GITHUB_RUN_ID'] || '';
 
-    const arg: ChatPostMessageArguments = {
+    const colorCode = colorCodes.get(color) || color;
+
+    const block = await createMetadataBlock(
+      owner,
+      repo,
+      ref,
+      eventName,
+      action,
+      workflow,
+      runId,
+      number
+    );
+
+    const args = await createPostMessageArguments(
       channel,
-      text: message,
-      username
-    };
+      message,
+      username,
+      block,
+      verbose,
+      colorCode
+    );
 
-    const blocks: Block[] = verbose
-      ? await createBlocks(
-          owner,
-          repo,
-          ref,
-          eventName,
-          action,
-          workflow,
-          runId,
-          number
-        )
-      : [];
-
-    if (color) {
-      arg.attachments = colorCodes.get(color)
-        ? [
-            {
-              color: colorCodes.get(color),
-              blocks
-            }
-          ]
-        : [
-            {
-              color,
-              blocks
-            }
-          ];
-    } else {
-      arg.blocks = blocks;
-    }
-
-    client.chat.postMessage(arg);
+    client.chat.postMessage(args);
   } catch (e) {
     core.error(e);
     core.setFailed(e.message);
   }
 }
 
-async function createBlocks(
+async function createPostMessageArguments(
+  channel: string,
+  message: string,
+  username: string,
+  block: SectionBlock,
+  verbose: boolean,
+  colorCode: string
+): Promise<ChatPostMessageArguments> {
+  const args: ChatPostMessageArguments = {
+    channel,
+    text: '',
+    username
+  };
+
+  const colored = colorCode.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
+    ? true
+    : false;
+
+  // verbose && colored -> .text, .attachments[].{color, blocks}
+  // verbose && !colored -> .blocks[]
+  // !verbose && colored -> .attachments[].{color, text}
+  // !verbose && !colored -> .text
+
+  args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
+  args.blocks =
+    verbose && !colored
+      ? undefined
+      : [
+          ((b: SectionBlock): SectionBlock => {
+            b.text = { type: 'mrkdwn', text: message };
+            return b;
+          })(block)
+        ];
+
+  args.attachments =
+    !verbose && colored
+      ? [
+          {
+            color: colorCode,
+            text: verbose ? undefined : message,
+            blocks: verbose ? [block] : undefined
+          }
+        ]
+      : undefined;
+  return args;
+}
+
+async function createMetadataBlock(
   owner: string,
   repo: string,
   ref: string,
@@ -84,13 +121,13 @@ async function createBlocks(
   workflow: string,
   runId: string,
   number?: number
-): Promise<MrkdwnElement[]> {
+): Promise<SectionBlock> {
   const repoUrl = `https://github.com/${owner}/${repo}`;
   const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
   const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
   const actionUrl = `${repoUrl}/actions/runs/${runId}`;
 
-  const blocks: MrkdwnElement[] = [
+  const fields: MrkdwnElement[] = [
     {
       type: 'mrkdwn',
       text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
@@ -113,13 +150,16 @@ async function createBlocks(
     }
   ];
   if (number) {
-    blocks.push({
+    fields.push({
       type: 'mrkdwn',
       text: `*Number:*\n${number}`
     });
   }
 
-  return blocks;
+  return {
+    type: 'section',
+    fields
+  };
 }
 
 run();

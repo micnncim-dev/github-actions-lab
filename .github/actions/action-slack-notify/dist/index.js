@@ -3348,33 +3348,10 @@ function run() {
             const { number } = github.context.issue;
             const { ref, eventName, action, workflow } = github.context;
             const runId = process.env['GITHUB_RUN_ID'] || '';
-            const arg = {
-                channel,
-                text: message,
-                username
-            };
-            const blocks = verbose
-                ? yield createBlocks(owner, repo, ref, eventName, action, workflow, runId, number)
-                : [];
-            if (color) {
-                arg.attachments = colorCodes.get(color)
-                    ? [
-                        {
-                            color: colorCodes.get(color),
-                            blocks
-                        }
-                    ]
-                    : [
-                        {
-                            color,
-                            blocks
-                        }
-                    ];
-            }
-            else {
-                arg.blocks = blocks;
-            }
-            client.chat.postMessage(arg);
+            const colorCode = colorCodes.get(color) || color;
+            const block = yield createMetadataBlock(owner, repo, ref, eventName, action, workflow, runId, number);
+            const args = yield createPostMessageArguments(channel, message, username, block, verbose, colorCode);
+            client.chat.postMessage(args);
         }
         catch (e) {
             core.error(e);
@@ -3382,13 +3359,50 @@ function run() {
         }
     });
 }
-function createBlocks(owner, repo, ref, event, action, workflow, runId, number) {
+function createPostMessageArguments(channel, message, username, block, verbose, colorCode) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const args = {
+            channel,
+            text: '',
+            username
+        };
+        const colored = colorCode.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
+            ? true
+            : false;
+        // verbose && colored -> .text, .attachments[].{color, blocks}
+        // verbose && !colored -> .blocks[]
+        // !verbose && colored -> .attachments[].{color, text}
+        // !verbose && !colored -> .text
+        args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
+        args.blocks =
+            verbose && !colored
+                ? undefined
+                : [
+                    ((b) => {
+                        b.text = { type: 'mrkdwn', text: message };
+                        return b;
+                    })(block)
+                ];
+        args.attachments =
+            !verbose && colored
+                ? [
+                    {
+                        color: colorCode,
+                        text: verbose ? undefined : message,
+                        blocks: verbose ? [block] : undefined
+                    }
+                ]
+                : undefined;
+        return args;
+    });
+}
+function createMetadataBlock(owner, repo, ref, event, action, workflow, runId, number) {
     return __awaiter(this, void 0, void 0, function* () {
         const repoUrl = `https://github.com/${owner}/${repo}`;
         const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
         const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
         const actionUrl = `${repoUrl}/actions/runs/${runId}`;
-        const blocks = [
+        const fields = [
             {
                 type: 'mrkdwn',
                 text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
@@ -3411,12 +3425,15 @@ function createBlocks(owner, repo, ref, event, action, workflow, runId, number) 
             }
         ];
         if (number) {
-            blocks.push({
+            fields.push({
                 type: 'mrkdwn',
                 text: `*Number:*\n${number}`
             });
         }
-        return blocks;
+        return {
+            type: 'section',
+            fields
+        };
     });
 }
 run();
