@@ -1,20 +1,20 @@
 name: Slack Notifier
 
 on:
-  # issue_comment:
-  # issues:
-  push:
+  issues:
+    types:
+      - labeled
 
 jobs:
-  test:
+  notify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
       - uses: ./.github/actions/action-slack-notifier
+        if: ${{ github.event.label.name == 'help wanted' }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          message: 'Test for _good_ color'
+          message: |
+            `${{ github.event.label.name }}` label has been added.
           channel: dev
-          color: yellow # optional
+          color: blue # optional
           verbose: true # optional
