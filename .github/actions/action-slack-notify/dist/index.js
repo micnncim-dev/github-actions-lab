@@ -3363,7 +3363,7 @@ function createPostMessageArguments(channel, message, username, block, verbose, 
     return __awaiter(this, void 0, void 0, function* () {
         const args = {
             channel,
-            text: '',
+            text: message,
             username
         };
         const colored = colorCode.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)

@@ -74,7 +74,7 @@ async function createPostMessageArguments(
 ): Promise<ChatPostMessageArguments> {
   const args: ChatPostMessageArguments = {
     channel,
-    text: '',
+    text: message,
     username
   };
 
