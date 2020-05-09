@@ -14,5 +14,5 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: '@micnncim Hello'
           channel: dev
-          # color: green
+          color: green
           verbose: true
