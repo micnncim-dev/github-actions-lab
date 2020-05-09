@@ -25,7 +25,7 @@ jobs:
           body: |
             :warning: The title of this PR is invalid.
 
-            Please make the title match the regex `${{ steps.regex-match.inputs.regex }}`.
+            Please make the title match the regex `(?:add|update|fix)\([a-z]+\):\s.+`.
 
             e.g.) `add(cli): enable --verbose flag`, `fix(api): avoid unexpected error in handler`
 
