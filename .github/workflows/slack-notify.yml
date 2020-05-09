@@ -12,7 +12,7 @@ jobs:
       - uses: ./.github/actions/action-slack-notify
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          message: action-slack-notify
+          message: '*action-slack-notify*'
           channel: dev
-          color: magenta
+          color: green
           verbose: true
