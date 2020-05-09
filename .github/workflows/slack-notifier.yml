@@ -9,6 +9,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/action-slack-notifier
         if: ${{ github.event.label.name == 'help wanted' }}
         with:
