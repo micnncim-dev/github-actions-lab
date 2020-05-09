@@ -90,7 +90,7 @@ async function run(): Promise<void> {
 
     const arg: ChatPostMessageArguments = {
       channel,
-      text: '',
+      text: 'Hello',
       username,
       as_user: true,
       icon_emoji: ':smile:'

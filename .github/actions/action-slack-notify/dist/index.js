@@ -3397,7 +3397,7 @@ function run() {
             }
             const arg = {
                 channel,
-                text: '',
+                text: 'Hello',
                 username,
                 as_user: true,
                 icon_emoji: ':smile:'
