@@ -1,0 +1,13 @@
+name: Actions Ecosystem Action Set Action Status
+description: Set the status of an action.
+author: Actions Ecosystem
+inputs:
+  status:
+    description: The status of an action. 'success' or 'failure' are available.
+    required: false
+runs:
+  using: docker
+  image: Dockerfile
+branding:
+  icon: search
+  color: yellow
