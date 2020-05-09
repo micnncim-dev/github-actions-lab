@@ -1,20 +1,21 @@
-name: Slack Notify
+name: Test
 
-on:
-  issue_comment:
-  issues:
-  pull_request:
+on: push
 
 jobs:
-  notify:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: ./.github/actions/action-slack-notify
+      - uses: actions-ecosystem/action-set-action-status@v1
+        with:
+          status: failure
+          
+      - uses: ./.github/actions/action-slack-notifier@v1
+        if: ${{ failure() }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          message: '@micnncim Pull request opened by micnncim'
-          channel: dev
-          color: green
-          verbose: true
+          message: |
+            @{{ github.actor }} test failed.
+          channel: develop
+          color: red # optional
+          verbose: true # optional
