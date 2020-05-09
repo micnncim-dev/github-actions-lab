@@ -16,5 +16,5 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: 'Test for _good_ color'
           channel: dev
-          color: good # optional
+          color: warning # optional
           verbose: true # optional
