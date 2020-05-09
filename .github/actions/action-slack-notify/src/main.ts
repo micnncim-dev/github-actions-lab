@@ -31,7 +31,7 @@ async function run(): Promise<void> {
 
     const { owner, repo } = github.context.repo;
     const { number } = github.context.issue;
-    const { ref, eventName, action, workflow } = github.context;
+    const { ref, eventName, workflow } = github.context;
 
     const runId = process.env['GITHUB_RUN_ID'] || '';
 
@@ -42,7 +42,6 @@ async function run(): Promise<void> {
       repo,
       ref,
       eventName,
-      action,
       workflow,
       runId,
       number
@@ -113,7 +112,6 @@ async function createMetadataBlock(
   repo: string,
   ref: string,
   event: string,
-  action: string,
   workflow: string,
   runId: string,
   number?: number
@@ -142,7 +140,7 @@ async function createMetadataBlock(
     },
     {
       type: 'mrkdwn',
-      text: `*Action:*\n<${actionUrl}|${action}>`
+      text: `*Action:*\n<${actionUrl}|Link>`
     }
   ];
   if (number) {

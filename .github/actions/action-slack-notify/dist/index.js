@@ -3346,10 +3346,10 @@ function run() {
             const verbose = core.getInput('verbose') === 'true';
             const { owner, repo } = github.context.repo;
             const { number } = github.context.issue;
-            const { ref, eventName, action, workflow } = github.context;
+            const { ref, eventName, workflow } = github.context;
             const runId = process.env['GITHUB_RUN_ID'] || '';
             const colorCode = colorCodes.get(color) || color;
-            const block = yield createMetadataBlock(owner, repo, ref, eventName, action, workflow, runId, number);
+            const block = yield createMetadataBlock(owner, repo, ref, eventName, workflow, runId, number);
             const args = yield createPostMessageArguments(channel, message, username, block, verbose, colorCode);
             client.chat.postMessage(args);
         }
@@ -3391,7 +3391,7 @@ function createPostMessageArguments(channel, message, username, block, verbose, 
         return args;
     });
 }
-function createMetadataBlock(owner, repo, ref, event, action, workflow, runId, number) {
+function createMetadataBlock(owner, repo, ref, event, workflow, runId, number) {
     return __awaiter(this, void 0, void 0, function* () {
         const repoUrl = `https://github.com/${owner}/${repo}`;
         const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
@@ -3416,7 +3416,7 @@ function createMetadataBlock(owner, repo, ref, event, action, workflow, runId, n
             },
             {
                 type: 'mrkdwn',
-                text: `*Action:*\n<${actionUrl}|${action}>`
+                text: `*Action:*\n<${actionUrl}|Link>`
             }
         ];
         if (number) {
