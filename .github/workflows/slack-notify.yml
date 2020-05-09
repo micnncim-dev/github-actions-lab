@@ -19,7 +19,7 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel: dev
-          # message: ${{ steps.regex-match.outputs.match }}
-          message: '@here'
+          message: ${{ steps.regex-match.outputs.match }}
+          # message: '@here'
           color: red
           verbose: true
