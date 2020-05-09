@@ -3347,69 +3347,29 @@ function run() {
             const { owner, repo } = github.context.repo;
             const { number } = github.context.issue;
             const { ref, eventName, action, workflow } = github.context;
-            const runId = process.env['GITHUB_RUN_ID'];
-            core.debug(`eventName=${eventName}`);
-            core.debug(`action=${action}`);
-            const repoUrl = `https://github.com/${owner}/${repo}`;
-            core.debug(`url=${repoUrl}/runs/${runId}`);
-            const blocks = [
-                {
-                    type: 'section',
-                    text: {
-                        type: 'mrkdwn',
-                        text: message
-                    }
-                }
-            ];
-            if (verbose) {
-                const fields = [
-                    {
-                        type: 'mrkdwn',
-                        text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
-                    },
-                    {
-                        type: 'mrkdwn',
-                        text: `*Ref:*\n${ref}`
-                    },
-                    {
-                        type: 'mrkdwn',
-                        text: `*Workflow:*\n${workflow}`
-                    },
-                    {
-                        type: 'mrkdwn',
-                        text: `*Event:*\n${eventName}`
-                    },
-                    {
-                        type: 'mrkdwn',
-                        text: `*Action:*\n${action}`
-                    }
-                ];
-                if (number) {
-                    fields.push({
-                        type: 'mrkdwn',
-                        text: `*Number:*\n${number}`
-                    });
-                }
-                blocks.push({
-                    type: 'section',
-                    fields
-                });
-            }
+            const runId = process.env['GITHUB_RUN_ID'] || '';
             const arg = {
                 channel,
-                text: 'Hello',
-                username,
-                as_user: true,
-                icon_emoji: ':smile:'
+                text: message,
+                username
             };
-            const colorCode = colorCodes.get(color) || color;
-            if (colorCode) {
-                arg.attachments = [
-                    {
-                        color: colorCode,
-                        blocks
-                    }
-                ];
+            const blocks = verbose
+                ? yield createBlocks(owner, repo, ref, eventName, action, workflow, runId, number)
+                : [];
+            if (color) {
+                arg.attachments = colorCodes.get(color)
+                    ? [
+                        {
+                            color: colorCodes.get(color),
+                            blocks
+                        }
+                    ]
+                    : [
+                        {
+                            color,
+                            blocks
+                        }
+                    ];
             }
             else {
                 arg.blocks = blocks;
@@ -3420,6 +3380,43 @@ function run() {
             core.error(e);
             core.setFailed(e.message);
         }
+    });
+}
+function createBlocks(owner, repo, ref, event, action, workflow, runId, number) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const repoUrl = `https://github.com/${owner}/${repo}`;
+        const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
+        const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
+        const actionUrl = `${repoUrl}/actions/runs/${runId}`;
+        const blocks = [
+            {
+                type: 'mrkdwn',
+                text: `*Repository:*\n<${repoUrl}|${owner}/${repo}>`
+            },
+            {
+                type: 'mrkdwn',
+                text: `*Ref:*\n${ref}`
+            },
+            {
+                type: 'mrkdwn',
+                text: `*Workflow:*\n<${workflowUrl}|${workflow}>`
+            },
+            {
+                type: 'mrkdwn',
+                text: `*Event:*\n<${eventUrl}|${event}>`
+            },
+            {
+                type: 'mrkdwn',
+                text: `*Action:*\n<${actionUrl}|${action}>`
+            }
+        ];
+        if (number) {
+            blocks.push({
+                type: 'mrkdwn',
+                text: `*Number:*\n${number}`
+            });
+        }
+        return blocks;
     });
 }
 run();
