@@ -8,6 +8,10 @@ import {
   ChatPostMessageArguments
 } from '@slack/web-api';
 
+interface CustomPayload {
+  blocks: Block[]
+}
+
 const colorCodes = new Map<string, string>([
   ['black', '#000000'],
   ['red', '#F44336'],
@@ -27,12 +31,11 @@ async function run(): Promise<void> {
 
     const message = core.getInput('message');
     const username = core.getInput('username');
-    const iconUrl = core.getInput('icon_url') || undefined;
     const color =
       colorCodes.get(core.getInput('color')) || core.getInput('color');
     const verbose = core.getInput('verbose') === 'true';
 
-    const customPayload: Block[] =
+    const customPayload: CustomPayload =
       core.getInput('custom_payload') !== ''
         ? JSON.parse(core.getInput('custom_payload'))
         : undefined;
@@ -60,7 +63,6 @@ async function run(): Promise<void> {
       verbose,
       color,
       customPayload,
-      iconUrl
     );
 
     await client.chat.postMessage(args);
@@ -77,21 +79,19 @@ export async function createPostMessageArguments(
   elements: MrkdwnElement[],
   verbose: boolean,
   color: string,
-  customBlocks?: Block[],
-  iconUrl?: string
+  customPayload?: CustomPayload
 ): Promise<ChatPostMessageArguments> {
   const args: ChatPostMessageArguments = {
     channel,
     text: '',
     username,
-    iconUrl,
     link_names: true,
     unfurl_links: true,
     unfurl_media: true
   };
 
-  if (customBlocks) {
-    args.blocks = customBlocks;
+  if (customPayload) {
+    args.blocks = customPayload.blocks;
     return args;
   }
 

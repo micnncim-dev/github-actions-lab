@@ -1,7 +1,6 @@
 name: Slack Notifier
 
-on:
-  push:
+on: push
 
 jobs:
   notify:
@@ -17,36 +16,38 @@ jobs:
           color: blue # optional
           verbose: true # optional
           custom_payload: |
-            [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "> message *with some bold text* and _some italicized text_."
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "This is a mrkdwn section block :ghost: *this is bold*, and ~this is crossed out~, and <https://google.com|this is a link>"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "plain_text",
-                  "text": "This is a plain text section block.",
-                  "emoji": true
-                }
-              },
-              {
-                "type": "context",
-                "elements": [
-                  {
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
                     "type": "mrkdwn",
-                    "text": "For more info, contact <support@acme.inc>"
+                    "text": "> message *with some bold text* and _some italicized text_."
                   }
-                ]
-              }
-            ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "This is a mrkdwn section block :ghost: *this is bold*, and ~this is crossed out~, and <https://google.com|this is a link>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "This is a plain text section block.",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "For more info, contact <support@acme.inc>"
+                    }
+                  ]
+                }
+              ]
+            }
