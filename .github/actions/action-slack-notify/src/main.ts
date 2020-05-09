@@ -133,6 +133,10 @@ async function createMetadataElements(
   const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
   const actionUrl = `${repoUrl}/actions/runs/${runId}`;
 
+  let issueOrPullUrl: string;
+  issueOrPullUrl = event === 'issues' ? `${repoUrl}/issues/${number}` : '';
+  issueOrPullUrl = event === 'pull_request' ? `${repoUrl}/pull/${number}` : '';
+
   const fields: MrkdwnElement[] = [
     {
       type: 'mrkdwn',
@@ -158,7 +162,7 @@ async function createMetadataElements(
   if (number) {
     fields.push({
       type: 'mrkdwn',
-      text: `*Number:*\n${number}`
+      text: `*Number:*\n<${issueOrPullUrl}|${number}>`
     });
   }
 

@@ -3409,6 +3409,9 @@ function createMetadataElements(owner, repo, ref, event, workflow, runId, number
         const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
         const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
         const actionUrl = `${repoUrl}/actions/runs/${runId}`;
+        let issueOrPullUrl;
+        issueOrPullUrl = event === 'issues' ? `${repoUrl}/issues/${number}` : '';
+        issueOrPullUrl = event === 'pull_request' ? `${repoUrl}/pull/${number}` : '';
         const fields = [
             {
                 type: 'mrkdwn',
@@ -3434,7 +3437,7 @@ function createMetadataElements(owner, repo, ref, event, workflow, runId, number
         if (number) {
             fields.push({
                 type: 'mrkdwn',
-                text: `*Number:*\n${number}`
+                text: `*Number:*\n<${issueOrPullUrl}|${number}>`
             });
         }
         return fields;
