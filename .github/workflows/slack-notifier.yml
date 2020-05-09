@@ -16,6 +16,7 @@ jobs:
         with:
           regex: '^\/cc(( +@[-\w]+)+)\s*$'
           text: ${{ github.event.comment.body }}
+          flags: 'gm'
 
       - uses: ./.github/actions/action-slack-notifier
         if: ${{ steps.regex-match.outputs.match != '' }}
