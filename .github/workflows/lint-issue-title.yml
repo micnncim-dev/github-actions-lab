@@ -1,7 +1,7 @@
-name: Lint PR Title
+name: Lint Issue Title
 
 on:
-  pull_request:
+  issues:
     types:
       - opened
       - edited
@@ -15,7 +15,7 @@ jobs:
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${{ github.event.pull_request.title }}
+          text: ${{ github.event.issue.title }}
           regex: '(?:add|update|fix)\([a-z]+\):\s.+'
 
       - uses: actions-ecosystem/action-create-comment@v1
