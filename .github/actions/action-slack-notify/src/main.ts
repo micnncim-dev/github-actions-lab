@@ -1,5 +1,6 @@
 import * as github from '@actions/github';
 import * as core from '@actions/core';
+import * as webhooks from '@octokit/webhooks';
 import {
   WebClient,
   MrkdwnElement,
@@ -29,8 +30,7 @@ async function run(): Promise<void> {
     const verbose = core.getInput('verbose') === 'true';
 
     const { owner, repo } = github.context.repo;
-    const { number } = github.context.issue;
-    const { ref, eventName, workflow } = github.context;
+    const { payload, ref, eventName, workflow } = github.context;
 
     const runId = process.env['GITHUB_RUN_ID'] || '';
 
@@ -39,11 +39,11 @@ async function run(): Promise<void> {
     const elements = await createMetadataElements(
       owner,
       repo,
+      payload,
       ref,
       eventName,
       workflow,
-      runId,
-      number
+      runId
     );
 
     const args = await createPostMessageArguments(
@@ -122,20 +122,27 @@ async function createPostMessageArguments(
 async function createMetadataElements(
   owner: string,
   repo: string,
+  payload: any,
   ref: string,
   event: string,
   workflow: string,
-  runId: string,
-  number?: number
+  runId: string
 ): Promise<MrkdwnElement[]> {
   const repoUrl = `https://github.com/${owner}/${repo}`;
   const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
   const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
   const actionUrl = `${repoUrl}/actions/runs/${runId}`;
 
-  let issueOrPullUrl: string;
-  issueOrPullUrl = event === 'issues' ? `${repoUrl}/issues/${number}` : '';
-  issueOrPullUrl = event === 'pull_request' ? `${repoUrl}/pull/${number}` : '';
+  let number = 0;
+  let issueOrPullUrl = '';
+  if (isWebhookPayloadIssues(payload)) {
+    number = payload.issue.number;
+    issueOrPullUrl = `${repoUrl}/issues/${number}`;
+  }
+  if (isWebhookPayloadPullRequest(payload)) {
+    number = payload.pull_request.number;
+    issueOrPullUrl = `${repoUrl}/pull/${number}`;
+  }
 
   const fields: MrkdwnElement[] = [
     {
@@ -167,6 +174,28 @@ async function createMetadataElements(
   }
 
   return fields;
+}
+
+function isWebhookPayloadIssues(
+  arg: any
+): arg is webhooks.WebhookPayloadIssues {
+  return (
+    arg !== null &&
+    typeof arg === 'object' &&
+    arg.issue !== null &&
+    typeof arg.issue === 'object'
+  );
+}
+
+function isWebhookPayloadPullRequest(
+  arg: any
+): arg is webhooks.WebhookPayloadPullRequest {
+  return (
+    arg !== null &&
+    typeof arg === 'object' &&
+    arg.pull_request !== null &&
+    typeof arg.pull_request === 'object'
+  );
 }
 
 run();

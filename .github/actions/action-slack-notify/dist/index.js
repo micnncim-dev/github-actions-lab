@@ -3345,11 +3345,10 @@ function run() {
             const color = core.getInput('color');
             const verbose = core.getInput('verbose') === 'true';
             const { owner, repo } = github.context.repo;
-            const { number } = github.context.issue;
-            const { ref, eventName, workflow } = github.context;
+            const { payload, ref, eventName, workflow } = github.context;
             const runId = process.env['GITHUB_RUN_ID'] || '';
             const colorCode = colorCodes.get(color) || color;
-            const elements = yield createMetadataElements(owner, repo, ref, eventName, workflow, runId, number);
+            const elements = yield createMetadataElements(owner, repo, payload, ref, eventName, workflow, runId);
             const args = yield createPostMessageArguments(channel, message, username, elements, verbose, colorCode);
             client.chat.postMessage(args);
         }
@@ -3403,15 +3402,22 @@ function createPostMessageArguments(channel, message, username, elements, verbos
         return args;
     });
 }
-function createMetadataElements(owner, repo, ref, event, workflow, runId, number) {
+function createMetadataElements(owner, repo, payload, ref, event, workflow, runId) {
     return __awaiter(this, void 0, void 0, function* () {
         const repoUrl = `https://github.com/${owner}/${repo}`;
         const workflowUrl = `${repoUrl}/actions?query=workflow%3A"${workflow}"`;
         const eventUrl = `${repoUrl}/actions?query=event%3A"${event}"`;
         const actionUrl = `${repoUrl}/actions/runs/${runId}`;
-        let issueOrPullUrl;
-        issueOrPullUrl = event === 'issues' ? `${repoUrl}/issues/${number}` : '';
-        issueOrPullUrl = event === 'pull_request' ? `${repoUrl}/pull/${number}` : '';
+        let number = 0;
+        let issueOrPullUrl = '';
+        if (isWebhookPayloadIssues(payload)) {
+            number = payload.issue.number;
+            issueOrPullUrl = `${repoUrl}/issues/${number}`;
+        }
+        if (isWebhookPayloadPullRequest(payload)) {
+            number = payload.pull_request.number;
+            issueOrPullUrl = `${repoUrl}/pull/${number}`;
+        }
         const fields = [
             {
                 type: 'mrkdwn',
@@ -3442,6 +3448,18 @@ function createMetadataElements(owner, repo, ref, event, workflow, runId, number
         }
         return fields;
     });
+}
+function isWebhookPayloadIssues(arg) {
+    return (arg !== null &&
+        typeof arg === 'object' &&
+        arg.issue !== null &&
+        typeof arg.issue === 'object');
+}
+function isWebhookPayloadPullRequest(arg) {
+    return (arg !== null &&
+        typeof arg === 'object' &&
+        arg.pull_request !== null &&
+        typeof arg.pull_request === 'object');
 }
 run();
 
