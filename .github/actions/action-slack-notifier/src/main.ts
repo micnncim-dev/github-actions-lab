@@ -32,7 +32,10 @@ async function run(): Promise<void> {
       colorCodes.get(core.getInput('color')) || core.getInput('color');
     const verbose = core.getInput('verbose') === 'true';
 
-    const customPayload: Block[] = JSON.parse(core.getInput('custom_payload'));
+    const customPayload: Block[] =
+      core.getInput('custom_payload') !== ''
+        ? JSON.parse(core.getInput('custom_payload'))
+        : undefined;
 
     const { owner, repo } = github.context.repo;
     const { payload, ref, eventName, workflow } = github.context;

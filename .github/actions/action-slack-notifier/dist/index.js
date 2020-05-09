@@ -3345,7 +3345,9 @@ function run() {
             const iconUrl = core.getInput('icon_url') || undefined;
             const color = colorCodes.get(core.getInput('color')) || core.getInput('color');
             const verbose = core.getInput('verbose') === 'true';
-            const customPayload = JSON.parse(core.getInput('custom_payload'));
+            const customPayload = core.getInput('custom_payload') !== ''
+                ? JSON.parse(core.getInput('custom_payload'))
+                : undefined;
             const { owner, repo } = github.context.repo;
             const { payload, ref, eventName, workflow } = github.context;
             const runId = process.env['GITHUB_RUN_ID'] || '';
