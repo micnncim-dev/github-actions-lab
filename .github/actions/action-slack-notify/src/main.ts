@@ -73,7 +73,7 @@ async function run(): Promise<void> {
     }
 
     const attachment: MessageAttachment = {
-      color: 'good',
+      color: '#2cbe4e',
       blocks
     };
 

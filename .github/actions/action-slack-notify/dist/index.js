@@ -3385,7 +3385,7 @@ function run() {
                 });
             }
             const attachment = {
-                color: 'good',
+                color: '#2cbe4e',
                 blocks
             };
             client.chat.postMessage({
