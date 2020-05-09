@@ -18,6 +18,6 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: |
             @{{ github.actor }} test failed.
-          channel: develop
+          channel: dev
           color: red # optional
           verbose: true # optional
