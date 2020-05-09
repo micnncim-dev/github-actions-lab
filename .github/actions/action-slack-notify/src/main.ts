@@ -74,7 +74,6 @@ async function createPostMessageArguments(
   const args: ChatPostMessageArguments = {
     channel,
     text: '',
-    as_user: true,
     username,
     link_names: true,
     unfurl_links: true,

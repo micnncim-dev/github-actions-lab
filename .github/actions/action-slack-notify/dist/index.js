@@ -3364,7 +3364,6 @@ function createPostMessageArguments(channel, message, username, block, verbose, 
         const args = {
             channel,
             text: '',
-            as_user: true,
             username,
             link_names: true,
             unfurl_links: true,
