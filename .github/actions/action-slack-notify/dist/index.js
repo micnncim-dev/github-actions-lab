@@ -3389,6 +3389,7 @@ function run() {
                 text: '',
                 blocks,
                 username,
+                as_user: true,
                 icon_emoji: ':smile:'
             });
         }

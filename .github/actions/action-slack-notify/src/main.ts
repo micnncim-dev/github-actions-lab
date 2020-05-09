@@ -77,6 +77,7 @@ async function run(): Promise<void> {
       text: '',
       blocks,
       username,
+      as_user: true,
       icon_emoji: ':smile:'
     });
   } catch (e) {
