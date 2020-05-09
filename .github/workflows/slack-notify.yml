@@ -19,7 +19,6 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel: dev
-          message: |
-            ${{ steps.regex-match.outputs.match }}!
+          message: ${{ steps.regex-match.outputs.match }}!
           color: yellow
           # verbose: true
