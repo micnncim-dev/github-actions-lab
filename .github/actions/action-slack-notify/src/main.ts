@@ -1,7 +1,7 @@
 import * as github from '@actions/github';
 import * as core from '@actions/core';
 import * as slack from '@slack/web-api';
-import { SectionBlock, MrkdwnElement } from '@slack/web-api';
+import { SectionBlock, MrkdwnElement, MessageAttachment } from '@slack/web-api';
 
 async function run(): Promise<void> {
   try {
@@ -9,7 +9,7 @@ async function run(): Promise<void> {
 
     const channel = core.getInput('channel');
     const message = core.getInput('message');
-    const username = core.getInput('username');
+    const username = core.getInput('username') || 'GitHub Actions';
 
     const verbose = core.getInput('verbose') === 'true';
 
@@ -40,7 +40,7 @@ async function run(): Promise<void> {
       const fields: MrkdwnElement[] = [
         {
           type: 'mrkdwn',
-          text: `*Repository:*\n[${owner}/${repo}](${repoUrl})`
+          text: `*Repository:*\n<${owner}/${repo}|${repoUrl}>`
         },
         {
           type: 'mrkdwn',
@@ -72,10 +72,15 @@ async function run(): Promise<void> {
       });
     }
 
+    const attachment: MessageAttachment = {
+      color: 'good',
+      blocks
+    };
+
     client.chat.postMessage({
       channel,
       text: '',
-      blocks,
+      attachments: [attachment],
       username,
       as_user: true,
       icon_emoji: ':smile:'

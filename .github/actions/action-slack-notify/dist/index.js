@@ -3331,7 +3331,7 @@ function run() {
             const client = new slack.WebClient(core.getInput('slack_token'));
             const channel = core.getInput('channel');
             const message = core.getInput('message');
-            const username = core.getInput('username');
+            const username = core.getInput('username') || 'GitHub Actions';
             const verbose = core.getInput('verbose') === 'true';
             const { owner, repo } = github.context.repo;
             const { number } = github.context.issue;
@@ -3354,7 +3354,7 @@ function run() {
                 const fields = [
                     {
                         type: 'mrkdwn',
-                        text: `*Repository:*\n[${owner}/${repo}](${repoUrl})`
+                        text: `*Repository:*\n<${owner}/${repo}|${repoUrl}>`
                     },
                     {
                         type: 'mrkdwn',
@@ -3384,10 +3384,14 @@ function run() {
                     fields
                 });
             }
+            const attachment = {
+                color: 'good',
+                blocks
+            };
             client.chat.postMessage({
                 channel,
                 text: '',
-                blocks,
+                attachments: [attachment],
                 username,
                 as_user: true,
                 icon_emoji: ':smile:'
