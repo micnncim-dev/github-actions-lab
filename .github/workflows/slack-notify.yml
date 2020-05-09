@@ -1,6 +1,7 @@
 name: Slack Notify
 
-on: [issue_comment]
+on:
+  push:
 
 jobs:
   notify:
@@ -8,17 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions-ecosystem/action-regex-match@v2
-        id: regex-match
-        with:
-          text: ${{ github.event.comment.body }}
-          regex: '\B@(?!.*(-){2,}.*|.*\/.*)[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?\b'
-
       - uses: ./.github/actions/action-slack-notify
-        if: ${{ steps.regex-match.outputs.match != '' }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          message: ${{ steps.regex-match.outputs.match }}
+          message: action-slack-notify
           channel: dev
-          # color: cyan
-          # verbose: true
+          color: magenta
+          verbose: true
