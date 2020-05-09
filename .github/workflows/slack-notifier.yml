@@ -6,6 +6,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      
       - uses: actions-ecosystem/action-set-action-status@v1
         with:
           status: failure
