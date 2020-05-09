@@ -3373,7 +3373,7 @@ function createPostMessageArguments(channel, message, username, block, verbose, 
         // verbose && !colored -> .blocks[]
         // !verbose && colored -> .attachments[].{color, text}
         // !verbose && !colored -> .text
-        args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
+        // args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
         args.blocks = verbose && !colored ? undefined : [block];
         args.attachments =
             !verbose && colored

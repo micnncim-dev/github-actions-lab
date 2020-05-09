@@ -87,7 +87,7 @@ async function createPostMessageArguments(
   // !verbose && colored -> .attachments[].{color, text}
   // !verbose && !colored -> .text
 
-  args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
+  // args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
 
   args.blocks = verbose && !colored ? undefined : [block];
 
