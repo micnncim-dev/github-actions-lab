@@ -15,6 +15,9 @@ inputs:
     description: The username who sends a message.
     required: false
     default: 'GitHub Actions'
+  color:
+    description: The color of a message.
+    required: false
   verbose:
     description: 'Whether message contains metadata: repository, ref, workflow, action, number'
     required: false
