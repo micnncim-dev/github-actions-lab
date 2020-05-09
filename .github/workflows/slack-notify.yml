@@ -14,7 +14,7 @@ jobs:
       - uses: ./.github/actions/action-slack-notify
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          message: '@micnncim Hello'
+          message: '@micnncim Pull request opened by micnncim'
           channel: dev
           color: green
           verbose: true
