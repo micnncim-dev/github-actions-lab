@@ -74,7 +74,7 @@ async function createPostMessageArguments(
 ): Promise<ChatPostMessageArguments> {
   const args: ChatPostMessageArguments = {
     channel,
-    text: message,
+    text: '',
     username
   };
 
@@ -87,7 +87,7 @@ async function createPostMessageArguments(
   // !verbose && colored -> .attachments[].{color, text}
   // !verbose && !colored -> .text
 
-  args.text = !verbose && colored ? message : '';
+  args.text = !verbose && colored ? '' : message;
 
   args.blocks = verbose && !colored ? [block] : undefined;
 

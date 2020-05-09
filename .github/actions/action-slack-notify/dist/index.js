@@ -3363,7 +3363,7 @@ function createPostMessageArguments(channel, message, username, block, verbose, 
     return __awaiter(this, void 0, void 0, function* () {
         const args = {
             channel,
-            text: message,
+            text: '',
             username
         };
         const colored = colorCode.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
@@ -3373,7 +3373,7 @@ function createPostMessageArguments(channel, message, username, block, verbose, 
         // verbose && !colored -> .blocks[]
         // !verbose && colored -> .attachments[].{color, text}
         // !verbose && !colored -> .text
-        args.text = !verbose && colored ? message : '';
+        args.text = !verbose && colored ? '' : message;
         args.blocks = verbose && !colored ? [block] : undefined;
         args.attachments = colored
             ? [
