@@ -22,4 +22,4 @@ jobs:
           message: |
             ${{ steps.regex-match.outputs.match }}!
           color: yellow
-          verbose: true
+          # verbose: true
