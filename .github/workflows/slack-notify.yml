@@ -18,7 +18,7 @@ jobs:
         if: ${{ steps.regex-match.outputs.match != '' }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          channel: dev
           message: ${{ steps.regex-match.outputs.match }}
-          color: cyan
+          channel: dev
+          # color: cyan
           verbose: true
