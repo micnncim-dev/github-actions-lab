@@ -14,5 +14,6 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: Hello
           channel: dev
+          icon_url: http://lorempixel.com/600/600
           color: blue # optional
           verbose: true # optional
