@@ -1,11 +1,10 @@
 import * as github from '@actions/github';
 import * as core from '@actions/core';
-import * as slack from '@slack/web-api';
 import {
+  WebClient,
   MrkdwnElement,
   ChatPostMessageArguments,
-  SectionBlock,
-  Block
+  SectionBlock
 } from '@slack/web-api';
 
 const colorCodes = new Map<string, string>([
@@ -21,7 +20,7 @@ const colorCodes = new Map<string, string>([
 
 async function run(): Promise<void> {
   try {
-    const client = new slack.WebClient(core.getInput('slack_token'));
+    const client = new WebClient(core.getInput('slack_token'));
 
     const channel = core.getInput('channel');
     const message = core.getInput('message');
@@ -89,15 +88,8 @@ async function createPostMessageArguments(
   // !verbose && !colored -> .text
 
   args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
-  args.blocks =
-    verbose && !colored
-      ? undefined
-      : [
-          ((b: SectionBlock): SectionBlock => {
-            b.text = { type: 'mrkdwn', text: message };
-            return b;
-          })(block)
-        ];
+
+  args.blocks = verbose && !colored ? undefined : [block];
 
   args.attachments =
     !verbose && colored
@@ -109,6 +101,7 @@ async function createPostMessageArguments(
           }
         ]
       : undefined;
+
   return args;
 }
 

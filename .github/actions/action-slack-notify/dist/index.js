@@ -3324,7 +3324,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const github = __importStar(__webpack_require__(469));
 const core = __importStar(__webpack_require__(393));
-const slack = __importStar(__webpack_require__(114));
+const web_api_1 = __webpack_require__(114);
 const colorCodes = new Map([
     ['black', '#000000'],
     ['red', '#F44336'],
@@ -3338,7 +3338,7 @@ const colorCodes = new Map([
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const client = new slack.WebClient(core.getInput('slack_token'));
+            const client = new web_api_1.WebClient(core.getInput('slack_token'));
             const channel = core.getInput('channel');
             const message = core.getInput('message');
             const username = core.getInput('username');
@@ -3374,15 +3374,7 @@ function createPostMessageArguments(channel, message, username, block, verbose, 
         // !verbose && colored -> .attachments[].{color, text}
         // !verbose && !colored -> .text
         args.text = (verbose && colored) || (!verbose && !colored) ? message : '';
-        args.blocks =
-            verbose && !colored
-                ? undefined
-                : [
-                    ((b) => {
-                        b.text = { type: 'mrkdwn', text: message };
-                        return b;
-                    })(block)
-                ];
+        args.blocks = verbose && !colored ? undefined : [block];
         args.attachments =
             !verbose && colored
                 ? [
