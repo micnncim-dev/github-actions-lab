@@ -13,11 +13,11 @@ jobs:
           status: failure
           
       - uses: ./.github/actions/action-slack-notifier
-        if: ${{ always() }}
+        if: ${{ failure() }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: |
-            @{{ github.actor }} test failed.
+            @${{ github.actor }} test failed.
           channel: dev
           color: red # optional
           verbose: true # optional
