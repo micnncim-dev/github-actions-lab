@@ -3,6 +3,7 @@ import * as core from '@actions/core';
 import * as webhooks from '@octokit/webhooks';
 import {
   WebClient,
+  Block,
   MrkdwnElement,
   ChatPostMessageArguments
 } from '@slack/web-api';
@@ -18,27 +19,27 @@ const colorCodes = new Map<string, string>([
   ['white', '#FFFFFF']
 ]);
 
-const slackColors = ['good', 'warning', 'danger'];
-
 async function run(): Promise<void> {
   try {
     const client = new WebClient(core.getInput('slack_token'));
 
-    const channel = core.getInput('channel').replace('^E', '');
+    const channel = core.getInput('channel').replace(/^#/, ''); // remove '#' prefix
 
     const message = core.getInput('message');
     const username = core.getInput('username');
+    const iconUrl = core.getInput('icon_url') || undefined;
     const color =
       colorCodes.get(core.getInput('color')) || core.getInput('color');
-
     const verbose = core.getInput('verbose') === 'true';
+
+    const customPayload: Block[] = JSON.parse(core.getInput('custom_payload'));
 
     const { owner, repo } = github.context.repo;
     const { payload, ref, eventName, workflow } = github.context;
 
     const runId = process.env['GITHUB_RUN_ID'] || '';
 
-    const elements = await createMetadataElements(
+    const elements = await createGitHubContextElements(
       owner,
       repo,
       payload,
@@ -54,7 +55,9 @@ async function run(): Promise<void> {
       username,
       elements,
       verbose,
-      color
+      color,
+      customPayload,
+      iconUrl
     );
 
     client.chat.postMessage(args);
@@ -64,37 +67,45 @@ async function run(): Promise<void> {
   }
 }
 
-async function createPostMessageArguments(
+export async function createPostMessageArguments(
   channel: string,
   message: string,
   username: string,
   elements: MrkdwnElement[],
   verbose: boolean,
-  color: string
+  color: string,
+  customBlocks?: Block[],
+  iconUrl?: string
 ): Promise<ChatPostMessageArguments> {
   const args: ChatPostMessageArguments = {
     channel,
     text: '',
     username,
+    iconUrl,
     link_names: true,
     unfurl_links: true,
     unfurl_media: true
   };
 
-  const colored =
-    color.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/) ||
-    slackColors.includes(color)
-      ? true
-      : false;
+  if (customBlocks) {
+    args.blocks = customBlocks;
+    return args;
+  }
 
-  // verbose && colored -> .text, .attachments[].{color, blocks}
-  // verbose && !colored -> .blocks[]
-  // !verbose && colored -> .attachments[].{color, text}
-  // !verbose && !colored -> .text
+  const colored = color.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
+    ? true
+    : false;
 
-  args.text = !verbose && colored ? '' : message;
+  // Make elements based on the values of colored and verbose.
+  //
+  //  colored &&  verbose -> .text, .attachments[].{color, blocks}
+  // !colored &&  verbose -> .blocks[]
+  //  colored && !verbose -> .attachments[].{color, text}
+  // !colored && !verbose -> .text
 
-  if (verbose && !colored) {
+  args.text = (!colored && verbose) || (colored && !verbose) ? '' : message;
+
+  if (!colored && verbose) {
     args.blocks = [
       {
         type: 'section',
@@ -112,7 +123,6 @@ async function createPostMessageArguments(
     return args;
   }
 
-  core.debug(`color=${color}`)
   args.attachments = [
     {
       color,
@@ -131,7 +141,7 @@ async function createPostMessageArguments(
   return args;
 }
 
-async function createMetadataElements(
+async function createGitHubContextElements(
   owner: string,
   repo: string,
   payload: any,
