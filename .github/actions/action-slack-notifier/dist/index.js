@@ -3364,7 +3364,7 @@ function createPostMessageArguments(channel, message, username, elements, verbos
     return __awaiter(this, void 0, void 0, function* () {
         const args = {
             channel,
-            text: '',
+            text: message,
             username,
             link_names: true,
             unfurl_links: true,
@@ -3383,7 +3383,7 @@ function createPostMessageArguments(channel, message, username, elements, verbos
         // !colored &&  verbose -> .blocks[]
         //  colored && !verbose -> .attachments[].{color, text}
         // !colored && !verbose -> .text
-        args.text = (!colored && verbose) || (colored && !verbose) ? '' : message;
+        args.text = (!colored && verbose) || (colored && !verbose) ? '' : args.text;
         if (!colored && verbose) {
             args.blocks = [
                 {
