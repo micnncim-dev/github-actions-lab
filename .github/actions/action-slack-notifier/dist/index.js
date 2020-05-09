@@ -3353,7 +3353,7 @@ function run() {
             const runId = process.env['GITHUB_RUN_ID'] || '';
             const elements = yield createGitHubContextElements(owner, repo, payload, ref, eventName, workflow, runId);
             const args = yield createPostMessageArguments(channel, message, username, elements, verbose, color, customPayload, iconUrl);
-            client.chat.postMessage(args);
+            yield client.chat.postMessage(args);
         }
         catch (e) {
             core.error(e);

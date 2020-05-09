@@ -63,7 +63,7 @@ async function run(): Promise<void> {
       iconUrl
     );
 
-    client.chat.postMessage(args);
+    await client.chat.postMessage(args);
   } catch (e) {
     core.error(e);
     core.setFailed(e.message);
