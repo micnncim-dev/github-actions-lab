@@ -1,22 +1,13 @@
 name: Slack Notifier
 
 on:
-  issue_comment:
-    types:
-      - created
+  push:
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions-ecosystem/action-regex-match@v2
-        id: regex-match
-        with:
-          regex: '^\/cc(( +@[-\w]+)+)\s*$'
-          text: ${{ github.event.comment.body }}
-          flags: 'gm'
 
       - uses: ./.github/actions/action-slack-notifier
         if: ${{ steps.regex-match.outputs.match != '' }}
