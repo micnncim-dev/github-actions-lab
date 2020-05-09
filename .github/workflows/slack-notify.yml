@@ -1,7 +1,9 @@
 name: Slack Notify
 
 on:
-  push:
+  issue_comment:
+  issues:
+  pull_request:
 
 jobs:
   notify:
