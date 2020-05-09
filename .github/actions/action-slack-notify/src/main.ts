@@ -75,8 +75,11 @@ async function createPostMessageArguments(
   const args: ChatPostMessageArguments = {
     channel,
     text: '',
-    username,
     as_user: true,
+    username,
+    link_names: true,
+    unfurl_links: true,
+    unfurl_media: true
   };
 
   const colored = colorCode.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)
