@@ -14,6 +14,11 @@ async function run(): Promise<void> {
       core.getInput('number') === ''
         ? github.context.issue.number
         : parseInt(core.getInput('number'));
+    
+    core.debug(`assignees=${assignees}`)
+    core.debug(`owner=${owner}`)
+    core.debug(`repo=${repo}`)
+    core.debug(`number=${number}`)
 
     const client = new github.GitHub(githubToken);
     await client.issues.addAssignees({
