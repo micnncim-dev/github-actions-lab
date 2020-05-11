@@ -7,5 +7,6 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: ${{ github.event.issue.labels.*.name }}
-      - run: echo ${{ contains(github.event.issue.labels.*.name, 'bug') }}
+      - env:
+          LABEL_NAMES: ${{ github.event.issue.labels.*.name }}
+        run: echo "${LABEL_NAMES}"
