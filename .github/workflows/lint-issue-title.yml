@@ -35,5 +35,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: 'invalid/title'
 
-      - run: exit 1
-        if: ${{ steps.regex-match.outputs.match == '' }}
+      - if: ${{ steps.regex-match.outputs.match == '' }}
+        run: exit 1
