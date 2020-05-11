@@ -1,0 +1,10 @@
+name: Check Functions
+
+on:
+  issue_comment:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ contains(github.event.issue.labels.*.name, 'bug') }}
