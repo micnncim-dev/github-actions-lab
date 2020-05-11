@@ -8,5 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - env:
-          LABEL_NAMES: ${{ github.event.issue.labels.*.name }}
+          LABEL_NAMES: ${{ toJson(github.event.issue.labels.*.name) }}
         run: echo "${LABEL_NAMES}"
