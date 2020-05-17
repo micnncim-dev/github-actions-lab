@@ -20,4 +20,4 @@ jobs:
           interval: 168h
           slack_enabled: true
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          slack_channel: ${{ secrets.SLACK_CHANNEL }}
+          slack_channel: github-star
