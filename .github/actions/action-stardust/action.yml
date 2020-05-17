@@ -1,0 +1,32 @@
+name: Action Stardust
+description: Run micnncim/stardust.
+author: micnncim
+inputs:
+  github_token:
+    description: A GitHub token.
+    required: true
+  github_username:
+    description: A GitHub username.
+    required: true
+  interval:
+    description: A interval of reports. Must be in the form of \d+[hms] like 168h.
+    required: true
+  slack_enabled:
+    description: Whether Slack is enabled as a reporter.
+    required: false
+  slack_token:
+    description: A Slack token.
+    required: false
+  slack_channel:
+    description: A Slack channel.
+    required: false
+  log_level:
+    description: A log level.
+    required: false
+    default: info
+runs:
+  using: docker
+  image: Dockerfile
+branding:
+  icon: star
+  color: yellow
