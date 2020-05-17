@@ -3,6 +3,9 @@ name: Stardust
 on:
   schedule:
     - cron: "0 9 * * 0" # At 09:00 on Sunday
+  issue_comment:
+    types:
+      - created
 
 jobs:
   run:
