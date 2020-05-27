@@ -65,3 +65,5 @@ jobs:
           number: ${{ steps.get-merged-pull-request.outputs.number }}
           body: |
             The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
+
+            Changes: https://github.com/${{ github.repository }}/compare/${{ steps.get-latest-tag.outputs.tag }}...${{ steps.bump-semver.outputs.new_version }}
