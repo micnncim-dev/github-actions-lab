@@ -16,7 +16,7 @@ jobs:
           message: |
             @micnncim OnSupport issue has been opened 👨‍💻
 
-            ${{ github.event.milestone.title }}: ${{ github.event.issue.title }}
+            `${{ github.event.milestone.title }}`: <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}>
           channel: dev
           color: blue # optional
           verbose: true # optional
