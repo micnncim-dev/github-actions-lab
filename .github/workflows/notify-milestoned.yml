@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions-ecosystem/action-slack-notifier@v1
-        if: ${{ startsWith(github.event.milestone.title, "Platform Infra / OnSupport") }}
+        if: ${{ startsWith(github.event.milestone.title, 'Platform Infra / OnSupport') }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           message: "@micnncim OnSupport issue has been opened 👨‍💻"
