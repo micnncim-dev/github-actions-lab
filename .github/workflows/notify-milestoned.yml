@@ -13,7 +13,10 @@ jobs:
         if: ${{ startsWith(github.event.milestone.title, 'Platform Infra / OnSupport') }}
         with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
-          message: "@micnncim OnSupport issue has been opened 👨‍💻"
+          message: |
+            @micnncim OnSupport issue has been opened 👨‍💻
+
+            ${{ github.event.milestone.title }}: ${{ github.event.issue.title }}
           channel: dev
           color: blue # optional
           verbose: true # optional
