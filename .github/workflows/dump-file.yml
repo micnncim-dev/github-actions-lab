@@ -1,0 +1,11 @@
+name: Dump local file
+
+on:
+  push:
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cat ./test
