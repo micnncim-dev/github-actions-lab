@@ -15,4 +15,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: micnncim/github-actions-lab
-          tags: ${{ github.ref }}
+          tag_with_ref: true
