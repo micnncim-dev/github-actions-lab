@@ -1,8 +1,8 @@
 name: Dump
 
 on:
-  pull_request:
-    types: [labeled]
+  issues:
+    types: [milestoned]
 
 jobs:
   dump:
