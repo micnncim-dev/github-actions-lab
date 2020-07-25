@@ -1,26 +1,13 @@
 {{ range .Versions }}
-<a name="{{ .Tag.Name }}"></a>
 
-## {{ if .Tag.Previous }}[{{ .Tag.Name }}]({{ $.Info.RepositoryURL }}/compare/{{ .Tag.Previous.Name }}...{{ .Tag.Name }}){{ else }}{{ .Tag.Name }}{{ end }} ({{ datetime "2006-01-02" .Tag.Date }})
+## Changelog
 
 {{ range .CommitGroups -}}
 
-### {{ .Title }}
-
 {{ range .Commits -}}
 
-* {{ if .Scope }}**{{ .Scope }}:** {{ end }}{{ .Subject }}
+- [`{{ .Hash.Short }}`](https://github.com/micnncim/github-actions-lab/commit/{{ .Hash.Long }}): {{ .Header }}
+
 {{ end }}
-{{ end -}}
-
-{{- if .NoteGroups -}}
-{{ range .NoteGroups -}}
-
-### {{ .Title }}
-
-{{ range .Notes }}
-{{ .Body }}
-{{ end }}
-{{ end -}}
 {{ end -}}
 {{ end -}}
