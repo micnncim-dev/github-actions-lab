@@ -17,7 +17,7 @@ jobs:
         id: release-note
         run: |
           wget -O /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64
-          chmod +x /usr/local/bin/git-chglog
+          sudo chmod +x /usr/local/bin/git-chglog
           echo "::set-output name=release-note::$(git-chglog ${{ github.ref }})"
 
       - name: Create Release
