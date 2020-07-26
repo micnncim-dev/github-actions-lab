@@ -21,7 +21,8 @@ jobs:
           wget -O git-chglog https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64
           sudo mv git-chglog /usr/local/bin
           sudo chmod +x /usr/local/bin/git-chglog
-          readonly version=${${{ github.ref }}#refs/tags/}
+          version=${{ github.ref }}
+          version=${version#refs/tags/}
           content=$(git-chglog "${version}")
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
