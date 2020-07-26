@@ -20,7 +20,9 @@ jobs:
           sudo mv git-chglog /usr/local/bin
           sudo chmod +x /usr/local/bin/git-chglog
           readonly version=${${{ github.ref }}#refs/tags/}
-          echo "::set-output name=release-note::$(git-chglog "${version}")"
+          content=$(git-chglog "${version}")
+          content="${content//$'\n'/'%0A'}"
+          echo "::set-output name=release-note::${content}"
 
       - name: Create Release
         uses: actions/create-release@v1
