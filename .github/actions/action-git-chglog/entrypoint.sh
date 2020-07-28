@@ -7,5 +7,6 @@ if [ -z "${INPUT_REF}" ]; then
   exit 1
 fi
 
-release_note=$(git-chglog "${INPUT_REF}")
+readonly tag=${INPUT_REF#refs/tags/}
+release_note=$(git-chglog "${tag}")
 echo "::set-output name=release_note::${release_note}"
