@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
 
       - name: Generate release note
-        id: release-note
+        id: release_note
         uses: ./.github/actions/action-git-chglog
 
       - name: Create Release
@@ -26,4 +26,4 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          body: ${{ steps.release-note.outputs.release-note }}
+          body: ${{ steps.release_note.outputs.release_note }}
