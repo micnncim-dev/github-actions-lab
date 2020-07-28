@@ -2,7 +2,7 @@
 
 set -e
 
-if [ -n "${INPUT_REF}" ]; then
+if [ -z "${INPUT_REF}" ]; then
   echo "inputs.ref must not be empty" >&2
   exit 1
 fi
