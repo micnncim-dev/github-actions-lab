@@ -17,17 +17,7 @@ jobs:
 
       - name: Generate release note
         id: release-note
-        run: |
-          wget -O git-chglog https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64
-          sudo mv git-chglog /usr/local/bin
-          sudo chmod +x /usr/local/bin/git-chglog
-          version=${{ github.ref }}
-          version=${version#refs/tags/}
-          content=$(git-chglog "${version}")
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          echo "::set-output name=release-note::${content}"
+        uses: ./.github/actions/action-git-chglog
 
       - name: Create Release
         uses: actions/create-release@v1

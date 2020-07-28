@@ -1,0 +1,13 @@
+name: Generate release note
+description: Generate release note from Git tag
+inputs:
+  ref:
+    description: A Git tag's ref used to generate a release note. e.g.) 'refs/tags/v1.2.3'
+    required: false
+    default: ${{ github.ref }}
+outputs:
+  release_note:
+    description: A content of the release note based on inputs.ref.
+runs:
+  using: docker
+  image: Dockerfile
