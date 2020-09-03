@@ -1,0 +1,14 @@
+name: Echo Comment
+
+on: [issue_comment]
+
+jobs:
+  create_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/action-create-comment
+        with:
+          github_token: ${{ secrets.github_token }}
+          body: |
+            ${{ github.event.comment.body }}
