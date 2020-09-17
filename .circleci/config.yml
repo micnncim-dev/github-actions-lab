@@ -36,4 +36,9 @@ jobs:
 workflows:
   workflows:
     jobs:
-      - echo_circleci_envs
+      - echo_circleci_envs:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
