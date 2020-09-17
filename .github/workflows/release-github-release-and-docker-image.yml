@@ -56,7 +56,7 @@ jobs:
         with:
           username: _json_key
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: mercari/spanner-autoscaler
+          repository: gcr.io/kouzoh-p-micnncim/stardust
           tags: "${{ github.sha }},${{ steps.bump-semver.outputs.new_version }}"
 
       - uses: actions-ecosystem/action-create-comment@v1
