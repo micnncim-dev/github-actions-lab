@@ -31,3 +31,5 @@ jobs:
         env:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
+      - name: Dump matrix context
+        run: echo ${{ github.sha }}
