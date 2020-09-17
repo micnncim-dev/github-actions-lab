@@ -25,4 +25,4 @@ jobs:
         with:
           push: true
           tags: |
-            kouzoh-p-micnncim/stardust:${{ github.sha }}
+            gcr.io/kouzoh-p-micnncim/stardust:${{ github.sha }}
