@@ -1,8 +1,7 @@
 name: Dump
 
 on:
-  issues:
-    types: [labeled]
+  push:
 
 jobs:
   dump:
