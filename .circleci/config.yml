@@ -1,0 +1,39 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: cimg/base:2020.01
+
+commands:
+  # https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables
+  echo_circleci_envs:
+    description: Echo CircleCI build-in environment variables
+    steps:
+      - checkout
+      - run: 
+          name: Echo CircleCI build-in environment variables
+          command: |
+            echo "CIRCLE_BRANCH: ${CIRCLE_BRANCH}"
+            echo "CIRCLE_PR_NUMBER: ${CIRCLE_PR_NUMBER}"
+            echo "CIRCLE_PR_REPONAME: ${CIRCLE_PR_REPONAME}"
+            echo "CIRCLE_PR_USERNAME: ${CIRCLE_PR_USERNAME}"
+            echo "CIRCLE_PROJECT_REPONAME: ${CIRCLE_PROJECT_REPONAME}"
+            echo "CIRCLE_PROJECT_USERNAME: ${CIRCLE_PROJECT_USERNAME}"
+            echo "CIRCLE_PULL_REQUEST: ${CIRCLE_PULL_REQUEST}"
+            echo "CIRCLE_PULL_REQUESTS: ${CIRCLE_PULL_REQUESTS}"
+            echo "CIRCLE_REPOSITORY_URL: ${CIRCLE_REPOSITORY_URL}"
+            echo "CIRCLE_SHA1: ${CIRCLE_SHA1}"
+            echo "CIRCLE_TAG: ${CIRCLE_TAG}"
+
+jobs:
+  echo_circleci_envs:
+    executor: default
+    steps:
+      - checkout
+      - echo_circleci_envs
+
+workflows:
+  workflows:
+    jobs:
+      - echo_circleci_envs
