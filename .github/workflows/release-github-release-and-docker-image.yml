@@ -1,4 +1,4 @@
-name: Bump up Git tag
+name: Create release
 
 on:
   push:
