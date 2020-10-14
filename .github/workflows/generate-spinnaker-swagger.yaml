@@ -16,6 +16,7 @@ jobs:
     - name: Generate Swagger schema
       run: |
         git clone https://github.com/spinnaker/gate.git
+        cd gate
         git switch --detach version-1.18.1
         ./swagger/generate_swagger.sh
         cat ./swagger/swagger.json
