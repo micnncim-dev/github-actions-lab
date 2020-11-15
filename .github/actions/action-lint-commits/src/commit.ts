@@ -15,22 +15,23 @@ export async function fetchCommits(
 ): Promise<{ commits: Commit[] }> {
   const commits: Commit[] = []
 
-  try {
-    github
-      .getOctokit(token)
-      .pulls.listCommits({ owner: owner, repo: repo, pull_number: number })
-      .then(resp =>
-        resp.data.map(commit =>
-          commits.push({
-            message: commit.commit.message,
-            sha: commit.sha,
-            url: commit.html_url
-          })
-        )
+  github
+    .getOctokit(token)
+    .pulls.listCommits({
+      owner: owner,
+      repo: repo,
+      pull_number: number,
+      per_page: 100
+    })
+    .then(resp =>
+      resp.data.forEach(commit =>
+        commits.push({
+          message: commit.commit.message,
+          sha: commit.sha,
+          url: commit.html_url
+        })
       )
-  } catch (e) {
-    throw e
-  }
+    )
 
   return { commits }
 }
@@ -61,7 +62,7 @@ export async function formatCommits(
   format: string
 ): Promise<string> {
   switch (format) {
-    case 'markdown':
+    case 'markdown': {
       const lines: string[] = []
       commits.forEach(commit =>
         lines.push(
@@ -69,14 +70,18 @@ export async function formatCommits(
         )
       )
       return lines.join('\n')
+    }
 
-    case 'json':
+    case 'json': {
       return JSON.stringify(commits)
+    }
 
-    case 'yaml':
+    case 'yaml': {
       return safeDump(commits)
+    }
 
-    default:
+    default: {
       return ''
+    }
   }
 }

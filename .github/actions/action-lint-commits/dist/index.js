@@ -6866,19 +6866,19 @@ const js_yaml_1 = __webpack_require__(414);
 function fetchCommits(token, owner, repo, number) {
     return __awaiter(this, void 0, void 0, function* () {
         const commits = [];
-        try {
-            github
-                .getOctokit(token)
-                .pulls.listCommits({ owner: owner, repo: repo, pull_number: number })
-                .then(resp => resp.data.map(commit => commits.push({
-                message: commit.commit.message,
-                sha: commit.sha,
-                url: commit.html_url
-            })));
-        }
-        catch (e) {
-            throw e;
-        }
+        github
+            .getOctokit(token)
+            .pulls.listCommits({
+            owner: owner,
+            repo: repo,
+            pull_number: number,
+            per_page: 100
+        })
+            .then(resp => resp.data.forEach(commit => commits.push({
+            message: commit.commit.message,
+            sha: commit.sha,
+            url: commit.html_url
+        })));
         return { commits };
     });
 }
@@ -6901,16 +6901,20 @@ exports.lintCommits = lintCommits;
 function formatCommits(commits, format) {
     return __awaiter(this, void 0, void 0, function* () {
         switch (format) {
-            case 'markdown':
+            case 'markdown': {
                 const lines = [];
                 commits.forEach(commit => lines.push(`- [\`${commit.sha.slice(0, 7)}\`](${commit.url}): ${commit.message}`));
                 return lines.join('\n');
-            case 'json':
+            }
+            case 'json': {
                 return JSON.stringify(commits);
-            case 'yaml':
+            }
+            case 'yaml': {
                 return js_yaml_1.safeDump(commits);
-            default:
+            }
+            default: {
                 return '';
+            }
         }
     });
 }

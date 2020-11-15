@@ -1,43 +1,47 @@
+jest.mock('@actions/github')
+
 import { Commit, lintCommits, formatCommits } from '../src/commit'
 
 const commits: Commit[] = [
   {
-    sha: 'b2ad2291efb88cad31ebd0b0c80e8cd6d53333a',
+    sha: 'sha1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     message: 'invalid message 1',
     url:
-      'https://github.com/org/repo/commit/b2ad2291efb88cad31ebd0b0c80e8cd6d53333a'
+      'https://github.com/owner/repo/commit/sha1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
   },
   {
-    sha: 'a2ad2291efb88cad31ebd0b0c80e8cd6d53333a',
+    sha: 'sha2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     message: 'valid message 1',
     url:
-      'https://github.com/org/repo/commit/a2ad2291efb88cad31ebd0b0c80e8cd6d53333a'
+      'https://github.com/owner/repo/commit/sha2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
   },
   {
-    sha: 'd2ad2291efb88cad31ebd0b0c80e8cd6d53333a',
+    sha: 'sha3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     message: 'invalid message 2',
     url:
-      'https://github.com/org/repo/commit/d2ad2291efb88cad31ebd0b0c80e8cd6d53333a'
+      'https://github.com/owner/repo/commit/sha3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
   }
 ]
 
-test('lint commits', async () => {
-  const re = new RegExp('^valid message \\d')
+describe('commits', () => {
+  test('lint commits', async () => {
+    const re = new RegExp('^valid message \\d')
 
-  const { matchedCommits, unmatchedCommits } = await lintCommits(commits, re)
+    const { matchedCommits, unmatchedCommits } = await lintCommits(commits, re)
 
-  expect(matchedCommits).toStrictEqual([commits[1]])
-  expect(unmatchedCommits).toStrictEqual([commits[0], commits[2]])
-})
+    expect(matchedCommits).toStrictEqual([commits[1]])
+    expect(unmatchedCommits).toStrictEqual([commits[0], commits[2]])
+  })
 
-test('format commits with markdown', async () => {
-  const output = await formatCommits(commits, 'markdown')
+  test('format commits with markdown', async () => {
+    const output = await formatCommits(commits, 'markdown')
 
-  expect(output).toEqual(`- [\`${commits[0].sha.slice(0, 7)}\`](${
-    commits[0].url
-  }): ${commits[0].message}
+    expect(output).toEqual(`- [\`${commits[0].sha.slice(0, 7)}\`](${
+      commits[0].url
+    }): ${commits[0].message}
 - [\`${commits[1].sha.slice(0, 7)}\`](${commits[1].url}): ${commits[1].message}
 - [\`${commits[2].sha.slice(0, 7)}\`](${commits[2].url}): ${
-    commits[2].message
-  }`)
+      commits[2].message
+    }`)
+  })
 })
