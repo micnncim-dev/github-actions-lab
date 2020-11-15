@@ -1,15 +1,16 @@
 name: Create Comment
 
-on: [issue_comment]
+on:
+  pull_request:
+    types: ["opened"]
 
 jobs:
   create_comment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/action-create-comment
-        if: ${{ startsWith(github.event.comment.body, '/bye') }}
+      - uses: actions-ecosystem/action-create-comment@master
         with:
           github_token: ${{ secrets.github_token }}
           body: |
-            Bye, @${{ github.actor }}!
+            Welcome, @${{ github.actor }}! Happy hacking!
