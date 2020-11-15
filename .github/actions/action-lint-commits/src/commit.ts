@@ -26,7 +26,7 @@ export async function fetchCommits(
     })
     .then(resp =>
       resp.data.forEach(commit => {
-        core.debug(JSON.stringify(commit))
+        core.debug('raw: ' + JSON.stringify(commit))
 
         commits.push({
           message: commit.commit.message,
@@ -36,7 +36,7 @@ export async function fetchCommits(
       })
     )
 
-  core.debug(JSON.stringify(commits))
+  core.debug('converted: ' + JSON.stringify(commits))
 
   return { commits }
 }
