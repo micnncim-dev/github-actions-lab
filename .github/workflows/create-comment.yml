@@ -14,3 +14,8 @@ jobs:
           github_token: ${{ secrets.github_token }}
           body: |
             Welcome, @${{ github.actor }}! Happy hacking!
+      - uses: actions-ecosystem/action-create-comment@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          body: |
+            I'm a cracker 😈 This is a malicious change 💣
