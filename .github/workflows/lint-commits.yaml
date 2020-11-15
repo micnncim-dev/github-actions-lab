@@ -8,6 +8,8 @@ jobs:
   add_labels:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+
       - uses: ./.github/actions/action-lint-commits
         id: lint-commits
         with:
