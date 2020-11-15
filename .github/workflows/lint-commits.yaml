@@ -26,3 +26,6 @@ jobs:
             ${{ steps.lint-commits.outputs.unmatched_commits }}
 
             The format `<type>(<scope>): <subject>` (`^\w+\(.+\): .+`) is acceptable. e.g., `feat(api): Add /users/get`
+
+      - if: ${{ steps.lint-commits.outputs.unmatched_commits != '' }}
+        run: exit 1

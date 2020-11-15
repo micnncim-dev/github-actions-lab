@@ -1,4 +1,5 @@
 import * as github from '@actions/github'
+import * as core from '@actions/core'
 import { safeDump } from 'js-yaml'
 
 export interface Commit {
@@ -24,14 +25,18 @@ export async function fetchCommits(
       per_page: 100
     })
     .then(resp =>
-      resp.data.forEach(commit =>
+      resp.data.forEach(commit => {
+        core.debug(JSON.stringify(commit))
+
         commits.push({
           message: commit.commit.message,
           sha: commit.sha,
           url: commit.html_url
         })
-      )
+      })
     )
+
+  core.debug(JSON.stringify(commits))
 
   return { commits }
 }

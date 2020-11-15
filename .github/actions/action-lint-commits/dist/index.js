@@ -6862,6 +6862,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatCommits = exports.lintCommits = exports.fetchCommits = void 0;
 const github = __importStar(__webpack_require__(469));
+const core = __importStar(__webpack_require__(470));
 const js_yaml_1 = __webpack_require__(414);
 function fetchCommits(token, owner, repo, number) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -6874,11 +6875,15 @@ function fetchCommits(token, owner, repo, number) {
             pull_number: number,
             per_page: 100
         })
-            .then(resp => resp.data.forEach(commit => commits.push({
-            message: commit.commit.message,
-            sha: commit.sha,
-            url: commit.html_url
-        })));
+            .then(resp => resp.data.forEach(commit => {
+            core.debug(JSON.stringify(commit));
+            commits.push({
+                message: commit.commit.message,
+                sha: commit.sha,
+                url: commit.html_url
+            });
+        }));
+        core.debug(JSON.stringify(commits));
         return { commits };
     });
 }
