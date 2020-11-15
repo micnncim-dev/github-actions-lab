@@ -16,7 +16,7 @@ export async function fetchCommits(
 ): Promise<{ commits: Commit[] }> {
   const commits: Commit[] = []
 
-  github
+  await github
     .getOctokit(token)
     .pulls.listCommits({
       owner: owner,

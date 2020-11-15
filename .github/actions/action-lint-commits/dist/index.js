@@ -6867,7 +6867,7 @@ const js_yaml_1 = __webpack_require__(414);
 function fetchCommits(token, owner, repo, number) {
     return __awaiter(this, void 0, void 0, function* () {
         const commits = [];
-        github
+        yield github
             .getOctokit(token)
             .pulls.listCommits({
             owner: owner,
