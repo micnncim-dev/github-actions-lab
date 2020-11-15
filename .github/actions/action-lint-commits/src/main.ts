@@ -17,13 +17,17 @@ async function run(): Promise<void> {
       new RegExp(regex)
     )
 
+    const matchedCommitsOutput = await formatCommits(matchedCommits, format)
+    const unmatchedCommitsOutput = await formatCommits(unmatchedCommits, format)
     core.setOutput(
       'matched_commits',
-      await formatCommits(matchedCommits, format)
+      // await formatCommits(matchedCommits, format)
+      matchedCommitsOutput
     )
     core.setOutput(
       'unmatched_commits',
-      await formatCommits(unmatchedCommits, format)
+      // await formatCommits(unmatchedCommits, format)
+      unmatchedCommitsOutput
     )
   } catch (e) {
     core.error(e)

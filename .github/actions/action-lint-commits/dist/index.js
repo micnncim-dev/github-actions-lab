@@ -1186,8 +1186,14 @@ function run() {
             const { owner, repo, number } = github.context.issue;
             const { commits } = yield commit_1.fetchCommits(githubToken, owner, repo, number);
             const { matchedCommits, unmatchedCommits } = yield commit_1.lintCommits(commits, new RegExp(regex));
-            core.setOutput('matched_commits', yield commit_1.formatCommits(matchedCommits, format));
-            core.setOutput('unmatched_commits', yield commit_1.formatCommits(unmatchedCommits, format));
+            const matchedCommitsOutput = yield commit_1.formatCommits(matchedCommits, format);
+            const unmatchedCommitsOutput = yield commit_1.formatCommits(unmatchedCommits, format);
+            core.setOutput('matched_commits', 
+            // await formatCommits(matchedCommits, format)
+            matchedCommitsOutput);
+            core.setOutput('unmatched_commits', 
+            // await formatCommits(unmatchedCommits, format)
+            unmatchedCommitsOutput);
         }
         catch (e) {
             core.error(e);

@@ -29,18 +29,18 @@ This is a GitHub Action to lint commits on a pull request.
 name: Lint Commits
 
 on:
-  pull_request:
+  pull_request_target:
     types: ["opened", "reopened", "synchronize"]
 
 jobs:
-  add_labels:
+  lint_commits:
     runs-on: ubuntu-latest
     steps:
       - uses: actions-ecosystem/action-lint-commits@v1
         id: lint-commits
         with:
-          github_token: ${{ secrets.github_token }}
-          regex: "^\w+\(.+\): .+" # e.g.) "feat(api): Add /users/get"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          regex: '^\w+\(.+\): .+' # e.g.) "feat(api): Add /users/get"
           format: markdown
 
       - uses: actions-ecosystem/action-create-comment@v1
